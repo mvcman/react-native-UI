@@ -16,7 +16,11 @@ import {
   Button,
   ActivityIndicator,
 } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DarkTheme,
+  DefaultTheme,
+} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {
   createDrawerNavigator,
@@ -33,10 +37,17 @@ import {
   TouchableRipple,
   Switch,
   Drawer as Drawer1,
+  useTheme,
 } from 'react-native-paper';
 import Main from './Main';
 import {AuthContext} from './components/context';
 import AsyncStorage from '@react-native-community/async-storage';
+import {
+  Provider as PaperProvider,
+  DarkTheme as PaperDarkTheme,
+  DefaultTheme as PaperDefaultTheme,
+} from 'react-native-paper';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Tab = createBottomTabNavigator();
 
@@ -173,6 +184,8 @@ const TabNavigator = () => {
           bottom: 10,
           left: 10,
           right: 10,
+          height: 80,
+          borderRadius: 10,
         },
       }}>
       <Tab.Screen
@@ -231,11 +244,9 @@ const Demo = () => {
   );
 };
 const DrawerContent = props => {
-  const [isDark, setIsDark] = React.useState(false);
-  const toggleTheme = () => {
-    setIsDark(!isDark);
-  };
-  const {signOut} = React.useContext(AuthContext);
+  const {signOut, toggleTheme} = React.useContext(AuthContext);
+  const paperTheme = useTheme();
+  console.log('theme', paperTheme.dark);
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView>
@@ -306,14 +317,11 @@ const DrawerContent = props => {
             />
           </Drawer1.Section>
           <Drawer1.Section>
-            <TouchableRipple
-              onPress={() => {
-                toggleTheme();
-              }}>
+            <TouchableRipple onPress={() => toggleTheme()}>
               <View>
                 <Text>Dark theme</Text>
                 <View pointerEvents="none">
-                  <Switch value={isDark} />
+                  <Switch value={paperTheme.dark} />
                 </View>
               </View>
             </TouchableRipple>
@@ -333,14 +341,34 @@ const DrawerContent = props => {
   );
 };
 const App = () => {
-  const [isLoading, setLoading] = React.useState(true);
-  const [userToken, setUserToken] = React.useState(null);
+  // const [isLoading, setLoading] = React.useState(true);
+  // const [userToken, setUserToken] = React.useState(null);
+  const [isDark, setIsDark] = React.useState(false);
   const initialState = {
     isLoading: true,
     userName: null,
     userToken: null,
   };
 
+  const CustomDefaultTheme = {
+    ...DefaultTheme,
+    ...PaperDefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      ...PaperDefaultTheme.colors,
+    },
+  };
+
+  const CustomDarkTheme = {
+    ...DarkTheme,
+    ...PaperDarkTheme,
+    colors: {
+      ...DarkTheme.colors,
+      ...PaperDarkTheme.colors,
+    },
+  };
+
+  const theme = isDark ? CustomDarkTheme : CustomDefaultTheme;
   const loginReducer = (prevState, action) => {
     switch (action.type) {
       case 'LOGIN':
@@ -376,20 +404,18 @@ const App = () => {
   const [loginState, dispatch] = React.useReducer(loginReducer, initialState);
   const authContext = React.useMemo(
     () => ({
-      signIn: async (username, password) => {
+      signIn: async foundUser => {
         // setUserToken('lmn');
         // setLoading(false);
-        console.log('Signing in', username + password);
         let userToken;
-        if (username === 'user' && password === 'pass') {
-          userToken = 'lmn';
-          try {
-            await AsyncStorage.setItem('userToken', userToken);
-          } catch (err) {
-            console.log(err);
-          }
-          dispatch({type: 'LOGIN', id: username, token: userToken});
+        userToken = foundUser[0].token;
+        const username = foundUser[0].username;
+        try {
+          await AsyncStorage.setItem('userToken', userToken);
+        } catch (err) {
+          console.log(err);
         }
+        dispatch({type: 'LOGIN', id: username, token: userToken});
       },
       signOut: async () => {
         // setUserToken(null);
@@ -409,6 +435,9 @@ const App = () => {
           userToken = 'lmn';
         }
         dispatch({type: 'REGISTER', id: username, token: userToken});
+      },
+      toggleTheme: () => {
+        setIsDark(!isDark);
       },
     }),
     [],
@@ -438,18 +467,20 @@ const App = () => {
   }
   return (
     <AuthContext.Provider value={authContext}>
-      <NavigationContainer>
-        {loginState.userToken === null ? (
-          <Main />
-        ) : (
-          <Drawer.Navigator
-            initialRouteName="Home"
-            drawerContent={props => <DrawerContent {...props} />}>
-            <Drawer.Screen name="HomeDrawer" component={TabNavigator} />
-            <Drawer.Screen name="Demo" component={Demo} />
-          </Drawer.Navigator>
-        )}
-      </NavigationContainer>
+      <PaperProvider theme={theme}>
+        <NavigationContainer theme={theme}>
+          {loginState.userToken === null ? (
+            <Main />
+          ) : (
+            <Drawer.Navigator
+              initialRouteName="Home"
+              drawerContent={props => <DrawerContent {...props} />}>
+              <Drawer.Screen name="HomeDrawer" component={TabNavigator} />
+              <Drawer.Screen name="Demo" component={Demo} />
+            </Drawer.Navigator>
+          )}
+        </NavigationContainer>
+      </PaperProvider>
     </AuthContext.Provider>
   );
 };
