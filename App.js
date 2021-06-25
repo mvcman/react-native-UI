@@ -33,7 +33,6 @@ import {
   Avatar,
   Title,
   Caption,
-  Paragraph,
   TouchableRipple,
   Switch,
   Drawer as Drawer1,
@@ -47,7 +46,6 @@ import {
   DarkTheme as PaperDarkTheme,
   DefaultTheme as PaperDefaultTheme,
 } from 'react-native-paper';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Tab = createBottomTabNavigator();
 
@@ -246,7 +244,6 @@ const Demo = () => {
 const DrawerContent = props => {
   const {signOut, toggleTheme} = React.useContext(AuthContext);
   const paperTheme = useTheme();
-  console.log('theme', paperTheme.dark);
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView>
