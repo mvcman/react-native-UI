@@ -19,6 +19,8 @@ import Feather from 'react-native-vector-icons/Feather';
 import * as Animatable from 'react-native-animatable';
 import {valid} from 'joi';
 import {valueToNode} from '@babel/types';
+import {AuthContext} from './components/context';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const RootStack = createStackNavigator();
 
@@ -62,12 +64,12 @@ function LoginScreen({navigation}) {
     check_textInputChange: false,
     secureTextEntry: true,
   });
-
+  const {signIn} = React.useContext(AuthContext);
   const textInputChange = value => {
     if (value.length !== 0) {
       setData({
         ...data,
-        email: valueToNode,
+        email: value,
         check_textInputChange: true,
       });
     } else {
@@ -89,6 +91,10 @@ function LoginScreen({navigation}) {
       ...data,
       secureTextEntry: !data.secureTextEntry,
     });
+  };
+
+  const handleLogin = (user, pass) => {
+    signIn(user, pass);
   };
   return (
     <View style={styles2.container}>
@@ -142,7 +148,11 @@ function LoginScreen({navigation}) {
           <LinearGradient
             colors={['#08d4c4', '#01ab9d']}
             style={styles2.signIn}>
-            <Text style={[styles2.textSign, {color: '#fff'}]}>Sign In</Text>
+            <Text
+              style={[styles2.textSign, {color: '#fff'}]}
+              onPress={() => handleLogin(data.email, data.password)}>
+              Sign In
+            </Text>
           </LinearGradient>
           <TouchableOpacity
             onPress={() => navigation.navigate('SignUpScreen')}
