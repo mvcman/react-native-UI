@@ -16,6 +16,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import * as Animatable from 'react-native-animatable';
 import {theme} from './ThemeColor';
+import {AuthContext} from './context';
+import {ConfirmSignUp} from './aws-functions';
 
 export default function VerifyOTP({navigation}) {
   const [data, setData] = React.useState({
@@ -23,6 +25,7 @@ export default function VerifyOTP({navigation}) {
     check_textInputChange: false,
     isValidUser: true,
   });
+  const {user} = React.useContext(AuthContext);
 
   const textInputChange = value => {
     if (value.trim().length === 6) {
@@ -57,11 +60,18 @@ export default function VerifyOTP({navigation}) {
   //     }
   //   };
 
-  const VerifyOTP = navigation => {
-    if (data.otp.length === 6) {
-      Alert.alert('OTP Verified!', 'You can sign in using your username and password!');
-      navigation.navigate('SignInScreen');
+  const VerifyOTP = async navigation => {
+    if (data.otp.length != 6) {
+      Alert.alert('Error', 'Please check your OTP!');
+      return;
     }
+    const signup = await ConfirmSignUp(user.userId, data.otp);
+    if (signup.Error) {
+      Alert.alert('Error, Please enter valid OTP!');
+      return;
+    }
+    Alert.alert('Success!');
+    navigation.navigate('SignInScreen');
   };
   return (
     <View style={styles2.container}>

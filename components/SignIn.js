@@ -91,13 +91,19 @@ export default function SignIn({navigation}) {
       Alert.alert('Wrong Input!', 'Username or Password field cannot be empty.');
       return;
     }
-    if (foundUser.length === 0) {
-      Alert.alert('Invalid User!', 'Username or Password is incorrect!');
+    // if (foundUser.length === 0) {
+    //   Alert.alert('Invalid User!', 'Username or Password is incorrect!');
+    //   return;
+    // }
+    const authenticated_user = await AWS_SignIn('+91' + data.username, data.password);
+    if (authenticated_user.Error) {
+      Alert.alert(authenticated_user.Error.name, authenticated_user.Error.message);
       return;
     }
-    // const authenticated_user = await AWS_SignIn('+91' + data.username, data.password);
-    // console.log(authenticated_user);
-    signIn(foundUser);
+    signIn({
+      userId: authenticated_user.attributes.sub,
+      token: authenticated_user.signInUserSession.accessToken.jwtToken,
+    });
   };
   return (
     <View style={styles2.container}>

@@ -3,21 +3,24 @@ import {Auth} from 'aws-amplify';
 async function SignUp(username, password) {
   console.log('Sign up', username, password);
   try {
-    const {user} = await Auth.signUp({
+    const user = await Auth.signUp({
       username,
       password,
     });
-    console.log(user);
+    console.log('Sign up user ', user);
+    return user;
   } catch (err) {
     console.log({error: err});
-    return {error: err};
+    return {Error: err};
   }
 }
 async function ConfirmSignUp(username, code) {
   try {
-    await Auth.confirmSignUp(username, code);
-  } catch (error) {
-    console.log('error confirming sign up', error);
+    const user = await Auth.confirmSignUp(username, code);
+    console.log('aws confirm signup ', user);
+  } catch (err) {
+    console.log('error confirming sign up', err);
+    return {Error: err};
   }
 }
 
@@ -27,8 +30,9 @@ async function SignIn(username, password) {
     const user = await Auth.signIn(username, password);
     console.log(user.attributes.sub);
     return user;
-  } catch (error) {
-    console.log('error signing in', error);
+  } catch (err) {
+    console.log('error signing in', err);
+    return {Error: err};
   }
 }
 

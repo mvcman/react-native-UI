@@ -9,11 +9,11 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import {NavigationContainer, DarkTheme, DefaultTheme} from '@react-navigation/native';
-import {createDrawerNavigator, DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
-import Icon from 'react-native-vector-icons/Ionicons';
+// import {createDrawerNavigator, DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
+// import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Title, Caption, TouchableRipple, Drawer as Drawer1, useTheme} from 'react-native-paper';
+// import {Title, Caption, TouchableRipple, Drawer as Drawer1, useTheme} from 'react-native-paper';
 import Main from './screens/Main';
 import {AuthContext} from './components/context';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -22,7 +22,7 @@ import {
   DarkTheme as PaperDarkTheme,
   DefaultTheme as PaperDefaultTheme,
 } from 'react-native-paper';
-import {withAuthenticator} from 'aws-amplify-react-native';
+// import {withAuthenticator} from 'aws-amplify-react-native';
 
 import HomeScreenStack from './screens/Home';
 import JobScreenStack from './screens/Jobs';
@@ -31,6 +31,7 @@ import ApplicationStack from './screens/Applications';
 import ProfileScreenStack from './screens/Profile';
 // import NotificationScreenStack from './screens/Notifications';
 import {theme} from './components/ThemeColor';
+import {fetchSingleUser} from './components/db-functions';
 
 const Tab = createBottomTabNavigator();
 // const Drawer = createDrawerNavigator();
@@ -49,9 +50,10 @@ const TabNavigator = () => {
       >
         <View
           style={{
-            width: 60,
-            height: 60,
-            borderRadius: 30,
+            top: -30,
+            width: 70,
+            height: 70,
+            borderRadius: 35,
             backgroundColor: '#FF5733',
             color: '#fff',
           }}
@@ -66,12 +68,12 @@ const TabNavigator = () => {
       tabBarOptions={{
         showLabel: false,
         style: {
-          // position: 'absolute',
-          // bottom: 10,
-          // left: 10,
-          // right: 10,
+          position: 'absolute',
+          bottom: 10,
+          left: 10,
+          right: 10,
           elevation: 0,
-          // borderRadius: 15,
+          borderRadius: 15,
           height: 70,
           ...styles.shadow,
         },
@@ -94,7 +96,7 @@ const TabNavigator = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Jobs"
         component={JobScreenStack}
         options={{
@@ -110,8 +112,8 @@ const TabNavigator = () => {
             </View>
           ),
         }}
-      />
-      {user.userType === 'employer' && (
+      /> */}
+      {user.userType === 'employer' ? (
         <Tab.Screen
           name="Create"
           component={CreateJobStack}
@@ -120,8 +122,8 @@ const TabNavigator = () => {
             tabBarButton: props => <CustomTabBarButton {...props} />,
           }}
         />
-      )}
-      <Tab.Screen
+      ) : null}
+      {/* <Tab.Screen
         name="Applications"
         component={ApplicationStack}
         options={{
@@ -137,7 +139,7 @@ const TabNavigator = () => {
             </View>
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Profile"
         component={ProfileScreenStack}
@@ -250,16 +252,23 @@ const TabNavigator = () => {
 //   );
 // };
 
-const App = () => {
+function App() {
   // const [isLoading, setLoading] = React.useState(true);
   // const [userToken, setUserToken] = React.useState(null);
   const [isDark, setIsDark] = React.useState(false);
-  const initialState = {
+  const [state, setState] = React.useState({
     isLoading: true,
     userName: null,
     userToken: null,
     userType: null,
-  };
+    userId: null,
+  });
+  // const initialState = {
+  //   isLoading: true,
+  //   userName: null,
+  //   userToken: null,
+  //   userType: null,
+  // };
 
   const CustomDefaultTheme = {
     ...DefaultTheme,
@@ -279,94 +288,155 @@ const App = () => {
     },
   };
 
-  const theme = isDark ? CustomDarkTheme : CustomDefaultTheme;
-  const loginReducer = (prevState, action) => {
-    switch (action.type) {
-      case 'LOGIN':
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          userType: action.userType,
-          isLoading: false,
-        };
-      case 'LOGOUT':
-        return {
-          ...prevState,
-          userName: null,
-          userToken: null,
-          userType: null,
-          isLoading: false,
-        };
-      case 'REGISTER':
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          userType: action.userType,
-          isLoading: false,
-        };
-      case 'GET_TOKEN':
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          userType: action.userType,
-          isLoading: false,
-        };
+  const signIn = async ({userId, token}) => {
+    // setUserToken('lmn');
+    // setLoading(false);
+    // console.log('App.js', foundUser);
+    try {
+      const getUser = await fetchSingleUser(userId);
+      console.log(getUser);
+      await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('userType', getUser.role || 'applicant');
+      await AsyncStorage.setItem('userName', getUser.contactNumber || '8945738478');
+      await AsyncStorage.setItem('userId', userId);
+      // dispatch({type: 'LOGIN', id: username, token: userToken, userType: userType});
+      setState({
+        userName: getUser.contactNumber,
+        userToken: token,
+        userType: getUser.role,
+        userId: userId,
+        isLoading: false,
+      });
+    } catch (err) {
+      console.log(err);
+      return err;
     }
   };
 
-  const [loginState, dispatch] = React.useReducer(loginReducer, initialState);
-  const authContext = React.useMemo(
-    () => ({
-      signIn: async foundUser => {
-        // setUserToken('lmn');
-        // setLoading(false);
-        console.log('App.js', foundUser);
-        let userToken;
-        userToken = foundUser[0].token;
-        const username = foundUser[0].username;
-        const userType = foundUser[0].usertype;
-        try {
-          await AsyncStorage.setItem('userToken', userToken);
-          await AsyncStorage.setItem('userType', userType);
-          await AsyncStorage.setItem('userName', username);
-          dispatch({type: 'LOGIN', id: username, token: userToken, userType: userType});
-        } catch (err) {
-          console.log(err);
-        }
-      },
-      signOut: async () => {
-        try {
-          await AsyncStorage.removeItem('userToken');
-          await AsyncStorage.removeItem('userName');
-          await AsyncStorage.removeItem('userType');
-          dispatch({type: 'LOGOUT'});
-        } catch (err) {
-          console.log(err);
-        }
-      },
-      signUp: (username, password) => {
-        // setUserToken('lmn');
-        // setLoading(false);
-        let userToken;
-        if (username === 'user' && password === 'pass') {
-          userToken = 'lmn';
-        }
-        dispatch({type: 'REGISTER', id: username, token: userToken});
-      },
-      toggleTheme: () => {
-        setIsDark(!isDark);
-      },
-      user: loginState,
-    }),
-    [],
-  );
+  const signUp = async action => {
+    setState({
+      userName: action.userName,
+      userToken: action.token,
+      userType: action.userType,
+      isLoading: false,
+    });
+  };
+
+  const signOut = async () => {
+    await AsyncStorage.removeItem('userToken');
+    await AsyncStorage.removeItem('userName');
+    await AsyncStorage.removeItem('userType');
+    setState({
+      userName: null,
+      userToken: null,
+      userType: null,
+      isLoading: false,
+    });
+  };
+
+  const getToken = async action => {
+    setState({
+      userName: action.userName,
+      userToken: action.userToken,
+      userType: action.userType,
+      isLoading: false,
+    });
+  };
+
+  const setUserId = userId => {
+    setState({
+      ...state,
+      userId: userId,
+    });
+  };
+  const theme = isDark ? CustomDarkTheme : CustomDefaultTheme;
+  // const loginReducer = (prevState, action) => {
+  //   switch (action.type) {
+  //     case 'LOGIN':
+  //       return {
+  //         ...prevState,
+  //         userName: action.id,
+  //         userToken: action.token,
+  //         userType: action.userType,
+  //         isLoading: false,
+  //       };
+  //     case 'LOGOUT':
+  //       return {
+  //         ...prevState,
+  //         userName: null,
+  //         userToken: null,
+  //         userType: null,
+  //         isLoading: false,
+  //       };
+  //     case 'REGISTER':
+  //       return {
+  //         ...prevState,
+  //         userName: action.id,
+  //         userToken: action.token,
+  //         userType: action.userType,
+  //         isLoading: false,
+  //       };
+  //     case 'GET_TOKEN':
+  //       return {
+  //         ...prevState,
+  //         userName: action.id,
+  //         userToken: action.token,
+  //         userType: action.userType,
+  //         isLoading: false,
+  //       };
+  //   }
+  // };
+
+  // const [loginState, dispatch] = React.useReducer(loginReducer, initialState);
+  // const authContext = React.useMemo(
+  //   () => ({
+  //     signIn: async foundUser => {
+  //       // setUserToken('lmn');
+  //       // setLoading(false);
+  //       console.log('App.js', foundUser);
+  //       let userToken;
+  //       userToken = foundUser[0].token;
+  //       const username = foundUser[0].username;
+  //       const userType = foundUser[0].usertype;
+  //       try {
+  //         await AsyncStorage.setItem('userToken', userToken);
+  //         await AsyncStorage.setItem('userType', userType);
+  //         await AsyncStorage.setItem('userName', username);
+  //         dispatch({type: 'LOGIN', id: username, token: userToken, userType: userType});
+  //       } catch (err) {
+  //         console.log(err);
+  //       }
+  //     },
+  //     signOut: async () => {
+  //       try {
+  //         await AsyncStorage.removeItem('userToken');
+  //         await AsyncStorage.removeItem('userName');
+  //         await AsyncStorage.removeItem('userType');
+  //         dispatch({type: 'LOGOUT'});
+  //       } catch (err) {
+  //         console.log(err);
+  //       }
+  //     },
+  //     signUp: (username, password) => {
+  //       // setUserToken('lmn');
+  //       // setLoading(false);
+  //       let userToken;
+  //       if (username === 'user' && password === 'pass') {
+  //         userToken = 'lmn';
+  //       }
+  //       dispatch({type: 'REGISTER', id: username, token: userToken});
+  //     },
+  //     toggleTheme: () => {
+  //       setIsDark(!isDark);
+  //     },
+  //     user: loginState,
+  //   }),
+  //   [],
+  // );
   React.useEffect(() => {
     console.log('Executing useEffect!');
     setTimeout(() => {
-      const getToken = async () => {
+      const getToken1 = async () => {
         let userToken;
         userToken = null;
         let userType = null;
@@ -374,16 +444,21 @@ const App = () => {
           userToken = await AsyncStorage.getItem('userToken');
           userType = await AsyncStorage.getItem('userType');
           userName = await AsyncStorage.getItem('userName');
-          dispatch({type: 'GET_TOKEN', id: userName, token: userToken, userType: userType});
+          // dispatch({type: 'GET_TOKEN', id: userName, token: userToken, userType: userType});
           console.log('fetching data', userToken, userType);
+          getToken({
+            userToken: userToken,
+            userType: userType,
+            userName: userName,
+          });
         } catch (err) {
           console.log(err);
         }
       };
-      getToken();
+      getToken1();
     }, 1000);
   }, []);
-  if (loginState.isLoading) {
+  if (state.isLoading) {
     return (
       <View style={[{flex: 1, justifyContent: 'center', alignItems: 'center'}]}>
         <ActivityIndicator size="large" color="grey" />
@@ -391,10 +466,19 @@ const App = () => {
     );
   }
   return (
-    <AuthContext.Provider value={authContext}>
+    <AuthContext.Provider
+      value={{
+        user: state,
+        signIn: signIn,
+        signUp: signUp,
+        signOut: signOut,
+        getToken: getToken,
+        setUserId: setUserId,
+      }}
+    >
       <PaperProvider theme={theme}>
         <NavigationContainer theme={theme}>
-          {loginState.userToken === null ? <Main /> : <TabNavigator />}
+          {state.userToken === null ? <Main /> : <TabNavigator />}
           {/* {loginState.userToken === null ? (
             <Main />
           ) : loginState.userType === 'employee' ? (
@@ -412,7 +496,7 @@ const App = () => {
       </PaperProvider>
     </AuthContext.Provider>
   );
-};
+}
 
 const styles = StyleSheet.create({
   drawerContent: {

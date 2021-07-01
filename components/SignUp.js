@@ -9,13 +9,17 @@ import {
   TextInput,
   StatusBar,
   Alert,
+  ScrollView,
 } from 'react-native';
+import {ButtonGroup} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import * as Animatable from 'react-native-animatable';
 import {theme} from './ThemeColor';
 import {SignUp as AWS_SignUp} from './aws-functions';
+import {createUser} from './db-functions';
+import {AuthContext} from './context';
 
 export default function SignUp({navigation}) {
   const [data, setData] = React.useState({
@@ -28,7 +32,12 @@ export default function SignUp({navigation}) {
     isValidUser: true,
     isValidPassword: true,
     isValidConfirmPassword: true,
+    index: 1,
   });
+
+  const userType = ['Employer', 'Applicant'];
+
+  const {setUserId} = React.useContext(AuthContext);
 
   const textInputChange = value => {
     if (value.trim().length === 10) {
@@ -129,16 +138,25 @@ export default function SignUp({navigation}) {
       return;
     }
     const user = await AWS_SignUp('+91' + data.username, data.password);
-    console.log(user);
+    console.log('gettting aws cognito user ', user);
     if (user.error) {
       Alert.alert(user.error.code, user.error.message);
       return;
     }
-    // try {
-
-    // } catch (err) {
-
-    // }
+    console.log('userId', user.userSub);
+    await setUserId(user.userSub);
+    const createuser = await createUser({
+      username: data.username,
+      password: data.password,
+      userId: user.userSub,
+      role: userType[data.index] === 'Employer' ? 'employer' : 'applicant',
+    });
+    console.log('after creating user ', createuser);
+    if (createuser.Error) {
+      Alert.alert('Error!', create_user.Error.message);
+      return;
+    }
+    Alert.alert('Successful!', 'User has beed created successfuly!');
     navigation.navigate('VerifyOTP');
     // signUp(foundUser);
   };
@@ -148,96 +166,109 @@ export default function SignUp({navigation}) {
       <View style={styles2.header}>
         <Text style={styles2.text_header}>Sign up here!</Text>
       </View>
-      <Animatable.View style={styles2.footer} animation="fadeInUpBig">
-        <Text style={styles2.text_footer}>Username</Text>
-        <View style={styles2.action}>
-          <FontAwesome name="user-o" color="#05375a" size={20} />
-          <TextInput
-            placeholder="Enter Valid Mobile Number"
-            style={styles2.textInput}
-            autoCapitalize="none"
-            onChangeText={text => textInputChange(text)}
-            onEndEditing={e => handleValidUser(e.nativeEvent.text)}
-          />
-          {data.check_textInputChange ? (
-            <Animatable.View animation="bounceIn">
-              <Feather name="check-circle" color="green" size={20} />
+      <ScrollView>
+        <Animatable.View style={styles2.footer} animation="fadeInUpBig">
+          <Text style={styles2.text_footer}>Username</Text>
+          <View style={styles2.action}>
+            <FontAwesome name="user-o" color="#05375a" size={20} />
+            <TextInput
+              placeholder="Enter Valid Mobile Number"
+              style={styles2.textInput}
+              autoCapitalize="none"
+              onChangeText={text => textInputChange(text)}
+              onEndEditing={e => handleValidUser(e.nativeEvent.text)}
+            />
+            {data.check_textInputChange ? (
+              <Animatable.View animation="bounceIn">
+                <Feather name="check-circle" color="green" size={20} />
+              </Animatable.View>
+            ) : null}
+          </View>
+          {data.isValidUser ? null : (
+            <Animatable.View animation="fadeInLeft" duration={500}>
+              <Text style={styles2.errorMsg}>Mobile number must be 10 characters long.</Text>
             </Animatable.View>
-          ) : null}
-        </View>
-        {data.isValidUser ? null : (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles2.errorMsg}>Mobile number must be 10 characters long.</Text>
-          </Animatable.View>
-        )}
-        <Text style={[styles2.text_footer, {marginTop: 35}]}>Password</Text>
-        <View style={styles2.action}>
-          <Feather name="lock" color="#05375a" size={20} />
-          <TextInput
-            placeholder="Your Password"
-            secureTextEntry={data.secureTextEntry}
-            style={styles2.textInput}
-            autoCapitalize="none"
-            onChangeText={text => handlePasswordChange(text)}
-          />
-          {data.secureTextEntry ? (
-            <Feather name="eye-off" color="grey" size={20} onPress={() => passwordView()} />
-          ) : (
-            <Feather name="eye" color="grey" size={20} onPress={() => passwordView()} />
           )}
-        </View>
-        {data.isValidPassword ? null : (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles2.errorMsg}>Password must be 8 characters long.</Text>
-          </Animatable.View>
-        )}
-        <Text style={[styles2.text_footer, {marginTop: 35}]}>Confirm Password</Text>
-        <View style={styles2.action}>
-          <Feather name="lock" color="#05375a" size={20} />
-          <TextInput
-            placeholder="Confirm Password"
-            secureTextEntry={data.confirmSecureTextEntry}
-            style={styles2.textInput}
-            autoCapitalize="none"
-            onChangeText={text => handleCPasswordChange(text)}
-          />
-          {data.confirmSecureTextEntry ? (
-            <Feather name="eye-off" color="grey" size={20} onPress={() => cpasswordView()} />
-          ) : (
-            <Feather name="eye" color="grey" size={20} onPress={() => cpasswordView()} />
+          <Text style={[styles2.text_footer, {marginTop: 35}]}>Password</Text>
+          <View style={styles2.action}>
+            <Feather name="lock" color="#05375a" size={20} />
+            <TextInput
+              placeholder="Your Password"
+              secureTextEntry={data.secureTextEntry}
+              style={styles2.textInput}
+              autoCapitalize="none"
+              onChangeText={text => handlePasswordChange(text)}
+            />
+            {data.secureTextEntry ? (
+              <Feather name="eye-off" color="grey" size={20} onPress={() => passwordView()} />
+            ) : (
+              <Feather name="eye" color="grey" size={20} onPress={() => passwordView()} />
+            )}
+          </View>
+          {data.isValidPassword ? null : (
+            <Animatable.View animation="fadeInLeft" duration={500}>
+              <Text style={styles2.errorMsg}>Password must be 8 characters long.</Text>
+            </Animatable.View>
           )}
-        </View>
-        {data.isValidConfirmPassword ? null : (
-          <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles2.errorMsg}>Confirm Password must be 8 characters long.</Text>
-          </Animatable.View>
-        )}
-        <View style={styles2.button}>
-          <LinearGradient colors={[theme.primary, theme.light]} style={styles2.signIn}>
-            <Text
-              style={[styles2.textSign, {color: '#fff'}]}
-              onPress={() => {
-                handleSignUp(navigation);
-              }}
+          <Text style={[styles2.text_footer, {marginTop: 35}]}>Confirm Password</Text>
+          <View style={styles2.action}>
+            <Feather name="lock" color="#05375a" size={20} />
+            <TextInput
+              placeholder="Confirm Password"
+              secureTextEntry={data.confirmSecureTextEntry}
+              style={styles2.textInput}
+              autoCapitalize="none"
+              onChangeText={text => handleCPasswordChange(text)}
+            />
+            {data.confirmSecureTextEntry ? (
+              <Feather name="eye-off" color="grey" size={20} onPress={() => cpasswordView()} />
+            ) : (
+              <Feather name="eye" color="grey" size={20} onPress={() => cpasswordView()} />
+            )}
+          </View>
+          {data.isValidConfirmPassword ? null : (
+            <Animatable.View animation="fadeInLeft" duration={500}>
+              <Text style={styles2.errorMsg}>Confirm Password must be 8 characters long.</Text>
+            </Animatable.View>
+          )}
+          <Text style={[styles2.text_footer, {marginTop: 35}]}>Select your role</Text>
+          <View style={styles2.action}>
+            <ButtonGroup
+              onPress={i => setData({...data, index: i})}
+              selectedIndex={data.index}
+              buttons={userType}
+              containerStyle={{height: 40, width: '80%', borderRadius: 10}}
+              selectedButtonStyle={{backgroundColor: theme.primary}}
+              selectedTextStyle={{color: '#fff', fontWeight: 'bold', fontSize: 16}}
+            />
+          </View>
+          <View style={styles2.button}>
+            <LinearGradient colors={[theme.primary, theme.light]} style={styles2.signIn}>
+              <Text
+                style={[styles2.textSign, {color: '#fff'}]}
+                onPress={() => {
+                  handleSignUp(navigation);
+                }}
+              >
+                Sign Up
+              </Text>
+            </LinearGradient>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('SignInScreen')}
+              style={[
+                styles2.signIn,
+                {
+                  borderColor: theme.primary,
+                  borderWidth: 1,
+                  marginTop: 15,
+                },
+              ]}
             >
-              Sign Up
-            </Text>
-          </LinearGradient>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('SignInScreen')}
-            style={[
-              styles2.signIn,
-              {
-                borderColor: theme.primary,
-                borderWidth: 1,
-                marginTop: 15,
-              },
-            ]}
-          >
-            <Text style={[styles2.textSign, {color: theme.primary}]}>Sign In</Text>
-          </TouchableOpacity>
-        </View>
-      </Animatable.View>
+              <Text style={[styles2.textSign, {color: theme.primary}]}>Sign In</Text>
+            </TouchableOpacity>
+          </View>
+        </Animatable.View>
+      </ScrollView>
     </View>
   );
 }
@@ -251,10 +282,10 @@ const styles2 = StyleSheet.create({
     backgroundColor: theme.primary,
   },
   header: {
-    flex: 1,
     justifyContent: 'flex-end',
     paddingHorizontal: 20,
     paddingBottom: 50,
+    height: 200,
   },
   footer: {
     flex: 3,
