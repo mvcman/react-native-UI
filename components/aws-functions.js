@@ -1,14 +1,16 @@
 import {Auth} from 'aws-amplify';
 
 async function SignUp(username, password) {
+  console.log('Sign up', username, password);
   try {
     const {user} = await Auth.signUp({
       username,
       password,
     });
     console.log(user);
-  } catch (error) {
-    console.log('error signing up:', error);
+  } catch (err) {
+    console.log({error: err});
+    return {error: err};
   }
 }
 async function ConfirmSignUp(username, code) {
@@ -20,8 +22,11 @@ async function ConfirmSignUp(username, code) {
 }
 
 async function SignIn(username, password) {
+  console.log(username, password);
   try {
     const user = await Auth.signIn(username, password);
+    console.log(user.attributes.sub);
+    return user;
   } catch (error) {
     console.log('error signing in', error);
   }
