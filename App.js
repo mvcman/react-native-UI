@@ -339,6 +339,7 @@ function App() {
       userName: action.userName,
       userToken: action.userToken,
       userType: action.userType,
+      userId: action.userId,
       isLoading: false,
     });
   };
@@ -437,19 +438,16 @@ function App() {
     console.log('Executing useEffect!');
     setTimeout(() => {
       const getToken1 = async () => {
-        let userToken;
-        userToken = null;
-        let userType = null;
         try {
-          userToken = await AsyncStorage.getItem('userToken');
+          userToken = await AsyncStorage.getItem('token');
           userType = await AsyncStorage.getItem('userType');
           userName = await AsyncStorage.getItem('userName');
-          // dispatch({type: 'GET_TOKEN', id: userName, token: userToken, userType: userType});
-          console.log('fetching data', userToken, userType);
+          userId = await AsyncStorage.getItem('userId');
           getToken({
             userToken: userToken,
             userType: userType,
             userName: userName,
+            userId: userId,
           });
         } catch (err) {
           console.log(err);

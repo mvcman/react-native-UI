@@ -19,8 +19,19 @@ const Profile = ({navigation}) => {
         <Text>{user.userType}</Text>
         <Text>{user.userToken}</Text>
         <TouchableOpacity onPress={() => signOut()}>
-          <View>
-            <Text>Sign Out</Text>
+          <View
+            style={{
+              backgroundColor: theme.primary,
+              width: '90%',
+              height: 40,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 10,
+              marginHorizontal: 'auto',
+            }}
+          >
+            <Text style={{color: '#fff', fontSize: 22, fontWeight: 'bold'}}>Sign Out</Text>
           </View>
         </TouchableOpacity>
       </View>
