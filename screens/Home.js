@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -10,16 +10,16 @@ import {
   StyleSheet,
   Button,
 } from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import Feather from 'react-native-vector-icons/Feather';
-import {theme} from '../components/ThemeColor';
+import { theme } from '../components/ThemeColor';
 import JobDetail from '../components/JobDetail';
 import Job from '../components/Job';
-import {fetchJobs} from '../components/db-functions';
+import { fetchJobs } from '../components/db-functions';
 
 const Stack = createStackNavigator();
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
   const [jobList, setJobList] = useState([]);
   const [list, setList] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -56,13 +56,16 @@ const HomeScreen = ({navigation}) => {
           <ActivityIndicator size="large" color="blue" />
         </View>
       ) : (
-        <View style={{flex: 1, position: 'relative'}}>
+        <View style={{ flex: 1, position: 'relative' }}>
           <View
             style={{
               position: 'absolute',
+              height: 60,
               width: '100%',
-              height: 'auto',
-              backgroundColor: '#fff',
+              backgroundColor: theme.primary,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
               zIndex: 9999,
             }}
           >
@@ -78,9 +81,9 @@ const HomeScreen = ({navigation}) => {
             </View>
           </View>
           <FlatList
-            style={{flex: 1}}
+            style={{ flex: 1, paddingVertical: 50, paddingHorizontal: 10 }}
             data={list}
-            renderItem={({item}) => <Job navigation={navigation} item={item} />}
+            renderItem={({ item }) => <Job navigation={navigation} item={item} />}
             keyExtractor={item => item.jobId}
             refreshing={refreshing}
             onRefresh={onRefresh}
@@ -91,36 +94,43 @@ const HomeScreen = ({navigation}) => {
   );
 };
 
-const HomeScreenStack = ({navigation}) => {
+const HomeScreenStack = ({ navigation }) => {
   return (
     <Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: theme.primary,
-        },
-        headerTintColor: theme.textLight,
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      }}
+    // screenOptions={{
+    //   headerShown: false,
+    // }}
     >
       <Stack.Screen
         name="Home"
         component={HomeScreen}
-        // options={{
-        //   headerLeft: () => (
-        //     <Icon
-        //       name="ios-menu"
-        //       size={35}
-        //       backgroundColor={theme.primary}
-        //       color={theme.textLight}
-        //       onPress={() => navigation.openDrawer()}
-        //       style={{marginLeft: 10}}
-        //     />
-        //   ),
-        // }}
+        options={{
+          headerShown: false,
+          // headerLeft: () => (
+          //   <Icon
+          //     name="ios-menu"
+          //     size={35}
+          //     backgroundColor={theme.primary}
+          //     color={theme.textLight}
+          //     onPress={() => navigation.openDrawer()}
+          //     style={{marginLeft: 10}}
+          //   />
+          // ),
+        }}
       />
-      <Stack.Screen name="Job Details" component={JobDetail} />
+      <Stack.Screen
+        name="Job Details"
+        component={JobDetail}
+        options={{
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -129,7 +139,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F3F3F3',
-    padding: 10,
+    // padding: 10,
   },
   loading: {
     flex: 1,
@@ -145,6 +155,12 @@ const styles = StyleSheet.create({
   },
   action: {
     flexDirection: 'row',
+    backgroundColor: '#fff',
+    width: '90%',
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    height: 40,
+    margin: 'auto',
     borderBottomWidth: 1,
     borderBottomColor: '#f2f2f2',
     display: 'flex',
@@ -156,6 +172,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     color: 'grey',
     fontSize: 18,
+    marginBottom: -3,
   },
 });
 export default HomeScreenStack;
