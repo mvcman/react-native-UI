@@ -1,4 +1,4 @@
-import {Auth} from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 
 async function SignUp(username, password) {
   console.log('Sign up', username, password);
@@ -10,8 +10,8 @@ async function SignUp(username, password) {
     console.log('Sign up user ', user);
     return user;
   } catch (err) {
-    console.log({error: err});
-    return {Error: err};
+    console.log({ error: err });
+    return { Error: err };
   }
 }
 async function ConfirmSignUp(username, code) {
@@ -20,7 +20,7 @@ async function ConfirmSignUp(username, code) {
     console.log('aws confirm signup ', user);
   } catch (err) {
     console.log('error confirming sign up', err);
-    return {Error: err};
+    return { Error: err };
   }
 }
 
@@ -32,7 +32,7 @@ async function SignIn(username, password) {
     return user;
   } catch (err) {
     console.log('error signing in', err);
-    return {Error: err};
+    return { Error: err };
   }
 }
 
@@ -48,9 +48,10 @@ async function ResendConfirmationCode(username) {
 async function SignOut() {
   try {
     await Auth.signOut();
-  } catch (error) {
-    console.log('error signing out: ', error);
+  } catch (err) {
+    console.log('error signing out: ', err);
+    return { Error: err };
   }
 }
 
-export {SignUp, ConfirmSignUp, SignIn, ResendConfirmationCode, SignOut};
+export { SignUp, ConfirmSignUp, SignIn, ResendConfirmationCode, SignOut };

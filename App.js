@@ -7,15 +7,15 @@
  */
 
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
-import {NavigationContainer, DarkTheme, DefaultTheme} from '@react-navigation/native';
+import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { NavigationContainer, DarkTheme, DefaultTheme } from '@react-navigation/native';
 // import {createDrawerNavigator, DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 // import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import {Title, Caption, TouchableRipple, Drawer as Drawer1, useTheme} from 'react-native-paper';
 import Main from './screens/Main';
-import {AuthContext} from './components/context';
+import { AuthContext } from './components/context';
 import AsyncStorage from '@react-native-community/async-storage';
 import {
   Provider as PaperProvider,
@@ -30,15 +30,16 @@ import CreateJobStack from './screens/CreateJob';
 import ApplicationStack from './screens/Applications';
 import ProfileScreenStack from './screens/Profile';
 // import NotificationScreenStack from './screens/Notifications';
-import {theme} from './components/ThemeColor';
-import {fetchSingleUser} from './components/db-functions';
+import { theme } from './components/ThemeColor';
+import { fetchSingleUser } from './components/db-functions';
+import { SignOut } from './components/aws-functions';
 
 const Tab = createBottomTabNavigator();
 // const Drawer = createDrawerNavigator();
 
 const TabNavigator = () => {
-  const {user} = React.useContext(AuthContext);
-  const CustomTabBarButton = ({children, onPress}) => {
+  const { user } = React.useContext(AuthContext);
+  const CustomTabBarButton = ({ children, onPress }) => {
     return (
       <TouchableOpacity
         style={{
@@ -83,7 +84,7 @@ const TabNavigator = () => {
         name="Home"
         component={HomeScreenStack}
         options={{
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <View
               style={{
                 alignItems: 'center',
@@ -91,7 +92,7 @@ const TabNavigator = () => {
               }}
             >
               <FontAwesomeIcon name="home" size={20} color={focused ? '#FF5733' : '#CCD1D1'} />
-              <Text style={{color: focused ? '#FF5733' : '#CCD1D1'}}>Home</Text>
+              <Text style={{ color: focused ? '#FF5733' : '#CCD1D1' }}>Home</Text>
             </View>
           ),
         }}
@@ -118,7 +119,7 @@ const TabNavigator = () => {
           name="Create"
           component={CreateJobStack}
           options={{
-            tabBarIcon: ({focused}) => <FontAwesomeIcon name="plus" size={35} color={focused ? '#FFF' : '#FFF'} />,
+            tabBarIcon: ({ focused }) => <FontAwesomeIcon name="plus" size={35} color={focused ? '#FFF' : '#FFF'} />,
             tabBarButton: props => <CustomTabBarButton {...props} />,
           }}
         />
@@ -144,7 +145,7 @@ const TabNavigator = () => {
         name="Profile"
         component={ProfileScreenStack}
         options={{
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({ focused }) => (
             <View
               style={{
                 alignItems: 'center',
@@ -152,7 +153,7 @@ const TabNavigator = () => {
               }}
             >
               <FontAwesomeIcon name="user" size={20} color={focused ? '#FF5733' : '#CCD1D1'} />
-              <Text style={{color: focused ? '#FF5733' : '#CCD1D1'}}>Profile</Text>
+              <Text style={{ color: focused ? '#FF5733' : '#CCD1D1' }}>Profile</Text>
             </View>
           ),
         }}
@@ -288,7 +289,7 @@ function App() {
     },
   };
 
-  const signIn = async ({userId, token}) => {
+  const signIn = async ({ userId, token }) => {
     // setUserToken('lmn');
     // setLoading(false);
     // console.log('App.js', foundUser);
@@ -323,9 +324,11 @@ function App() {
   };
 
   const signOut = async () => {
-    await AsyncStorage.removeItem('userToken');
+    await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('userName');
     await AsyncStorage.removeItem('userType');
+    await AsyncStorage.removeItem('userId');
+    await SignOut();
     setState({
       userName: null,
       userToken: null,
@@ -458,7 +461,7 @@ function App() {
   }, []);
   if (state.isLoading) {
     return (
-      <View style={[{flex: 1, justifyContent: 'center', alignItems: 'center'}]}>
+      <View style={[{ flex: 1, justifyContent: 'center', alignItems: 'center' }]}>
         <ActivityIndicator size="large" color="grey" />
       </View>
     );
