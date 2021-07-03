@@ -17,27 +17,27 @@ import JobDetail from '../components/JobDetail';
 import Job from '../components/Job';
 import { fetchJobs } from '../components/db-functions';
 import { AuthContext } from '../components/context';
-import ViewApplicantDetails from './ViewApplicantDetails';
-import HomeApplicants from '../components/HomeApplicants';
+import ViewApplicantDetails from '../screens/ViewApplicantDetails';
+import ApplicantsList from '../components/ApplicantsList';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { fetchUsers } from './db-functions';
 
-const Home = createStackNavigator();
-const jobsStack = createStackNavigator();
-const applicantStack = createStackNavigator();
-
-const HomeScreen = ({ navigation }) => {
-  const [jobList, setJobList] = useState([]);
+export default function HomeApplicants({ navigation }) {
+//   const [userList, setuserList] = useState([]);
   const [list, setList] = useState([]);
+//   const [refreshing, setRefreshing] = React.useState(false);
+//   const [loading, setLoading] = useState(false);
+  const [input, setInput] = useState('');
+  const [userList, setUserList] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
   const [loading, setLoading] = useState(false);
-  const [input, setInput] = useState('');
 
   const fetchData = async () => {
     setLoading(true);
 
-    const fetchedJobs = await fetchJobs();
-    setJobList(fetchedJobs);
-    setList(fetchedJobs);
+    const fetchedUsers = await fetchUsers();
+    setUserList(fetchedUsers);
+    setList(fetchedUsers);
     setLoading(false);
   };
   const onRefresh = React.useCallback(() => {
@@ -51,19 +51,23 @@ const HomeScreen = ({ navigation }) => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+console.log(userList)
   const SearchResult = t => {
     if (t === 'demo') {
-      setList(jobList);
+      setList(userList);
       setInput('');
       return;
     }
-    const data = jobList.filter(
-      f =>
-        f.companyName.toLowerCase().includes(input) ||
-        f.jobTitle.toLowerCase().includes(input) ||
-        input.toLowerCase().includes(f.companyName) ||
-        input.toLowerCase().includes(f.jobTitle),
+    setList(data);
+
+    const data = userList.filter(
+      f => 
+        f.firstName === null ||
+        f.lastName === null ||
+        f.firstName.toLowerCase().includes(input) ||
+        f.lastName.toLowerCase().includes(input) ||
+        input.toLowerCase().includes(f.firstName) ||
+        input.toLowerCase().includes(f.lastName)
     );
     setList(data);
   };
@@ -117,8 +121,8 @@ const HomeScreen = ({ navigation }) => {
               marginBottom: 60,
             }}
             data={list}
-            renderItem={({ item }) => <Job navigation={navigation} item={item} />}
-            keyExtractor={item => item.jobId}
+            renderItem={({item}) => <ApplicantsList navigation={navigation} item={item} />}
+            keyExtractor={item => item.userId}
             refreshing={refreshing}
             onRefresh={onRefresh}
             numColumns={numColumns}
@@ -126,68 +130,6 @@ const HomeScreen = ({ navigation }) => {
         </View>
       )}
     </View>
-  );
-};
-
-const HomeScreenStack = ({ navigation }) => {
-  const { user } = React.useContext(AuthContext);
-
-  return (
-    <Home.Navigator
-    // screenOptions={{
-    //   headerShown: false,
-    // }}
-    >
-    {user.userType === 'applicant' ? (
-    <> 
-      <jobsStack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          headerShown: false,
-          // headerLeft: () => (
-          //   <Icon
-          //     name="ios-menu"
-          //     size={35}
-          //     backgroundColor={theme.primary}
-          //     color={theme.textLight}
-          //     onPress={() => navigation.openDrawer()}
-          //     style={{marginLeft: 10}}
-          //   />
-          // ),
-        }}
-      />
-      <jobsStack.Screen
-        name="Job Details"
-        component={JobDetail}
-        options={{
-          headerStyle: {
-            backgroundColor: theme.primary,
-          },
-          headerTintColor: theme.textLight,
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
-      />
-      </>
-    ) : (
-      <>
-      <applicantStack.Screen name="HomeApplicants" component={HomeApplicants} 
-      options={{
-          headerShown: false,
-        }}/>
-      <applicantStack.Screen
-        name="Applicant Details"
-        component={ViewApplicantDetails}
-        // options={{
-        //   headerShown: false,
-        // }}
-      />
-      </>
-    )
-  }
-  </Home.Navigator>
   );
 };
 
@@ -231,4 +173,3 @@ const styles = StyleSheet.create({
     marginBottom: -3,
   },
 });
-export default HomeScreenStack;

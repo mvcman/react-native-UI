@@ -22,7 +22,7 @@ export default function JobDetail({ route, navigation }) {
         style={{ width: '100%', height: 200, borderRadius: 2, resizeMode: 'contain' }}
       />
       <View style={styles.content}>
-        <View style={{ marginBottom: 10 }}>
+        <View style={{ marginBottom: 10, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Text style={styles.heading}>{companyName}</Text>
           <Text style={styles.sub}>{jobDescription}</Text>
           <Divider orientation="horizontal" height={1} />

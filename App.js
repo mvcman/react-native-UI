@@ -32,6 +32,7 @@ import ProfileScreenStack from './screens/Profile';
 import { theme } from './components/ThemeColor';
 import { fetchSingleUser } from './components/db-functions';
 import { SignOut } from './components/aws-functions';
+import PushNotification from 'react-native-push-notification';
 
 const Tab = createBottomTabNavigator();
 // const Drawer = createDrawerNavigator();
@@ -437,6 +438,13 @@ function App() {
   //   }),
   //   [],
   // );
+  const createChannel = () => {
+    PushNotification.cancelAllLocalNotifications();
+    PushNotification.createChannel({
+      channelId: 'demoApp',
+      channelName: 'Recruit',
+    });
+  };
   React.useEffect(() => {
     console.log('Executing useEffect!');
     setTimeout(() => {
@@ -457,6 +465,7 @@ function App() {
         }
       };
       getToken1();
+      createChannel();
     }, 1000);
   }, []);
   if (state.isLoading) {

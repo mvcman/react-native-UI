@@ -1,14 +1,40 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { theme } from './ThemeColor';
+import PushNotification from 'react-native-push-notification';
 
 export default function Job({ item, navigation }) {
+  const sendNotification = data => {
+    // PushNotification.checkPermissions();
+    // PushNotification.cancelAllLocalNotifications();
+    PushNotification.localNotification({
+      channelId: 'demoApp',
+      title: data.title,
+      message: data.message,
+      color: theme.primary,
+    });
+    // PushNotification.localNotificationSchedule({
+    //   channelId: 'demoApp',
+    //   title: data.title,
+    //   message: data.message,
+    //   date: new Date(Date.now() + 10 * 1000),
+    //   allowWhileIdle: true,
+    // });
+  };
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('Job Details', { data: item })}>
+    <TouchableOpacity
+      onPress={() => {
+        sendNotification({
+          title: item.jobTitle,
+          message: `You are viewing ${item.companyName} details`,
+        });
+        navigation.navigate('Job Details', { data: item });
+      }}
+    >
       <View style={[styles.listItem, styles.shadow]}>
         <Image
           source={[{ uri: `https://logo.clearbit.com/${item.companyName}.com` }]}
-          style={{ position: 'absolute', top: 5, width: 60, height: 60, borderRadius: 50, zIndex: 99 }}
+          style={{ position: 'absolute', top: 25, width: 60, height: 60, borderRadius: 50, zIndex: 99 }}
         />
         <View style={styles.content}>
           <Text style={{ fontWeight: 'bold', fontSize: 18, color: theme.primary }}>{item.companyName}</Text>
@@ -53,6 +79,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#EAEDED',
     width: '100%',
-    height: '80%',
+    height: '60%',
   },
 });

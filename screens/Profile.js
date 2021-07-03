@@ -4,11 +4,19 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { theme } from '../components/ThemeColor';
 import { AuthContext } from '../components/context';
+import PushNotification from 'react-native-push-notification';
 
 const Stack = createStackNavigator();
 
 const Profile = ({ navigation }) => {
   const { user, signOut } = React.useContext(AuthContext);
+  const sendNotification = data => {
+    PushNotification.localNotification({
+      channelId: 'demoApp',
+      title: data.title,
+      message: data.message,
+    });
+  };
   return (
     <SafeAreaView>
       <StatusBar barStyle={'light-content'} />
@@ -32,6 +40,29 @@ const Profile = ({ navigation }) => {
             }}
           >
             <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold' }}>Sign Out</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            sendNotification({
+              title: 'demo',
+              message: 'Notification sent!',
+            })
+          }
+        >
+          <View
+            style={{
+              backgroundColor: theme.primary,
+              width: '90%',
+              height: 40,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textAlign: 'center',
+              borderRadius: 10,
+            }}
+          >
+            <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold' }}>Send Notification</Text>
           </View>
         </TouchableOpacity>
       </View>
