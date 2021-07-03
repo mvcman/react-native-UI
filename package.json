@@ -11,7 +11,9 @@
     "lint:fix": "eslint **/*.js --fix"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.20",
     "@react-native-async-storage/async-storage": "^1.15.5",
+    "@react-native-community/datetimepicker": "^3.5.2",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/netinfo": "^6.0.0",
     "@react-navigation/bottom-tabs": "^5.11.11",
@@ -36,7 +38,9 @@
     "react-native-reanimated": "^2.2.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.4.0",
-    "react-native-vector-icons": "^8.1.0"
+    "react-native-uuid": "^2.0.1",
+    "react-native-vector-icons": "^8.1.0",
+    "subscriptions-transport-ws": "^0.9.19"
   },
   "devDependencies": {
     "@babel/core": "7.14.6",
