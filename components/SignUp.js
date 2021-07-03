@@ -11,17 +11,17 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import {ButtonGroup} from 'react-native-elements';
+import { ButtonGroup } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import * as Animatable from 'react-native-animatable';
-import {theme} from './ThemeColor';
-import {SignUp as AWS_SignUp} from './aws-functions';
-import {createUser} from './db-functions';
-import {AuthContext} from './context';
+import { theme } from './ThemeColor';
+import { SignUp as AWS_SignUp } from './aws-functions';
+import { createUser } from './db-functions';
+import { AuthContext } from './context';
 
-export default function SignUp({navigation}) {
+export default function SignUp({ navigation }) {
   const [data, setData] = React.useState({
     username: '',
     password: '',
@@ -37,7 +37,7 @@ export default function SignUp({navigation}) {
 
   const userType = ['Employer', 'Applicant'];
 
-  const {setUserId} = React.useContext(AuthContext);
+  const { setUserId } = React.useContext(AuthContext);
 
   const textInputChange = value => {
     if (value.trim().length === 10) {
@@ -139,8 +139,8 @@ export default function SignUp({navigation}) {
     }
     const user = await AWS_SignUp('+91' + data.username, data.password);
     console.log('gettting aws cognito user ', user);
-    if (user.error) {
-      Alert.alert(user.error.code, user.error.message);
+    if (user.Error) {
+      Alert.alert(user.Error.code, user.Error.message);
       return;
     }
     console.log('userId', user.userSub);
@@ -189,7 +189,7 @@ export default function SignUp({navigation}) {
               <Text style={styles2.errorMsg}>Mobile number must be 10 characters long.</Text>
             </Animatable.View>
           )}
-          <Text style={[styles2.text_footer, {marginTop: 35}]}>Password</Text>
+          <Text style={[styles2.text_footer, { marginTop: 35 }]}>Password</Text>
           <View style={styles2.action}>
             <Feather name="lock" color="#05375a" size={20} />
             <TextInput
@@ -210,7 +210,7 @@ export default function SignUp({navigation}) {
               <Text style={styles2.errorMsg}>Password must be 8 characters long.</Text>
             </Animatable.View>
           )}
-          <Text style={[styles2.text_footer, {marginTop: 35}]}>Confirm Password</Text>
+          <Text style={[styles2.text_footer, { marginTop: 35 }]}>Confirm Password</Text>
           <View style={styles2.action}>
             <Feather name="lock" color="#05375a" size={20} />
             <TextInput
@@ -231,28 +231,28 @@ export default function SignUp({navigation}) {
               <Text style={styles2.errorMsg}>Confirm Password must be 8 characters long.</Text>
             </Animatable.View>
           )}
-          <Text style={[styles2.text_footer, {marginTop: 35}]}>Select your role</Text>
+          <Text style={[styles2.text_footer, { marginTop: 35 }]}>Select your role</Text>
           <View style={styles2.action}>
             <ButtonGroup
-              onPress={i => setData({...data, index: i})}
+              onPress={i => setData({ ...data, index: i })}
               selectedIndex={data.index}
               buttons={userType}
-              containerStyle={{height: 40, width: '80%', borderRadius: 10}}
-              selectedButtonStyle={{backgroundColor: theme.primary}}
-              selectedTextStyle={{color: '#fff', fontWeight: 'bold', fontSize: 16}}
+              containerStyle={{ height: 40, width: '80%', borderRadius: 10 }}
+              selectedButtonStyle={{ backgroundColor: theme.primary }}
+              selectedTextStyle={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}
             />
           </View>
           <View style={styles2.button}>
-            <LinearGradient colors={[theme.primary, theme.light]} style={styles2.signIn}>
-              <Text
-                style={[styles2.textSign, {color: '#fff'}]}
-                onPress={() => {
-                  handleSignUp(navigation);
-                }}
-              >
-                Sign Up
-              </Text>
-            </LinearGradient>
+            <TouchableOpacity
+              style={{ width: '100%' }}
+              onPress={() => {
+                handleSignUp(navigation);
+              }}
+            >
+              <LinearGradient colors={[theme.primary, theme.light]} style={styles2.signIn}>
+                <Text style={[styles2.textSign, { color: '#fff' }]}>Sign Up</Text>
+              </LinearGradient>
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate('SignInScreen')}
               style={[
@@ -264,7 +264,7 @@ export default function SignUp({navigation}) {
                 },
               ]}
             >
-              <Text style={[styles2.textSign, {color: theme.primary}]}>Sign In</Text>
+              <Text style={[styles2.textSign, { color: theme.primary }]}>Sign In</Text>
             </TouchableOpacity>
           </View>
         </Animatable.View>
@@ -273,7 +273,7 @@ export default function SignUp({navigation}) {
   );
 }
 
-const {height} = Dimensions.get('screen');
+const { height } = Dimensions.get('screen');
 const height_logo = height * 0.28;
 
 const styles2 = StyleSheet.create({

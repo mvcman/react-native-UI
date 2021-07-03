@@ -77,7 +77,7 @@ export default function VerifyOTP({ navigation }) {
     <View style={styles2.container}>
       <StatusBar backgroundColor={theme.primary} barStyle="light-content" />
       <View style={styles2.header}>
-        <Text style={styles2.text_header}>Verify OTP!</Text>
+        <Text style={styles2.text_header}>Change Password</Text>
       </View>
       <Animatable.View style={styles2.footer} animation="fadeInUpBig">
         <Text style={styles2.text_footer}>OTP</Text>

@@ -55,7 +55,7 @@ const TabNavigator = () => {
             width: 70,
             height: 70,
             borderRadius: 35,
-            backgroundColor: '#FF5733',
+            backgroundColor: theme.primary,
             color: '#fff',
           }}
         >
@@ -91,8 +91,8 @@ const TabNavigator = () => {
                 justifyContent: 'center',
               }}
             >
-              <FontAwesomeIcon name="home" size={20} color={focused ? '#FF5733' : '#CCD1D1'} />
-              <Text style={{ color: focused ? '#FF5733' : '#CCD1D1' }}>Home</Text>
+              <FontAwesomeIcon name="home" size={20} color={focused ? theme.primary : theme.secondary} />
+              <Text style={{ color: focused ? theme.primary : theme.secondary }}>Home</Text>
             </View>
           ),
         }}
@@ -152,8 +152,8 @@ const TabNavigator = () => {
                 justifyContent: 'center',
               }}
             >
-              <FontAwesomeIcon name="user" size={20} color={focused ? '#FF5733' : '#CCD1D1'} />
-              <Text style={{ color: focused ? '#FF5733' : '#CCD1D1' }}>Profile</Text>
+              <FontAwesomeIcon name="user" size={20} color={focused ? theme.primary : theme.secondary} />
+              <Text style={{ color: focused ? theme.primary : theme.secondary }}>Profile</Text>
             </View>
           ),
         }}
@@ -263,6 +263,7 @@ function App() {
     userToken: null,
     userType: null,
     userId: null,
+    isLogedIn: false,
   });
   // const initialState = {
   //   isLoading: true,

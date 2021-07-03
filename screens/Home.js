@@ -46,9 +46,16 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   const SearchResult = t => {
-    const data = jobList.filter(f => f.companyName.toLowerCase().includes(input));
+    const data = jobList.filter(
+      f =>
+        f.companyName.toLowerCase().includes(input) ||
+        f.jobTitle.toLowerCase().includes(input) ||
+        input.toLowerCase().includes(f.companyName) ||
+        input.toLowerCase().includes(f.jobTitle),
+    );
     setList(data);
   };
+  const numColumns = 2;
   return (
     <View style={styles.container}>
       {loading ? (
@@ -67,26 +74,36 @@ const HomeScreen = ({ navigation }) => {
               justifyContent: 'center',
               alignItems: 'center',
               zIndex: 9999,
+              paddingHorizontal: 10,
             }}
           >
             <View style={styles.action}>
               <Feather name="search" color="grey" size={24} />
               <TextInput
-                placeholder="Search by Company"
+                placeholder="Search"
                 style={styles.textInput}
                 autoCapitalize="none"
-                onChangeText={text => setInput(text)}
+                onChangeText={text => {
+                  setInput(text);
+                  SearchResult(input);
+                }}
                 onEndEditing={t => SearchResult(t)}
               />
             </View>
           </View>
           <FlatList
-            style={{ flex: 1, paddingVertical: 50, paddingHorizontal: 10 }}
+            style={{
+              flex: 1,
+              padding: 10,
+              paddingTop: 65,
+              marginBottom: 60,
+            }}
             data={list}
             renderItem={({ item }) => <Job navigation={navigation} item={item} />}
             keyExtractor={item => item.jobId}
             refreshing={refreshing}
             onRefresh={onRefresh}
+            numColumns={numColumns}
           />
         </View>
       )}
@@ -156,8 +173,8 @@ const styles = StyleSheet.create({
   action: {
     flexDirection: 'row',
     backgroundColor: '#fff',
-    width: '90%',
-    borderRadius: 20,
+    width: '100%',
+    borderRadius: 5,
     paddingHorizontal: 20,
     height: 40,
     margin: 'auto',

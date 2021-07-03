@@ -1,14 +1,14 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, View, Text, Button, TouchableOpacity} from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { SafeAreaView, StatusBar, View, Text, Button, TouchableOpacity } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {theme} from '../components/ThemeColor';
-import {AuthContext} from '../components/context';
+import { theme } from '../components/ThemeColor';
+import { AuthContext } from '../components/context';
 
 const Stack = createStackNavigator();
 
-const Profile = ({navigation}) => {
-  const {user, signOut} = React.useContext(AuthContext);
+const Profile = ({ navigation }) => {
+  const { user, signOut } = React.useContext(AuthContext);
   return (
     <SafeAreaView>
       <StatusBar barStyle={'light-content'} />
@@ -27,11 +27,11 @@ const Profile = ({navigation}) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              textAlign: 'center',
               borderRadius: 10,
-              marginHorizontal: 'auto',
             }}
           >
-            <Text style={{color: '#fff', fontSize: 22, fontWeight: 'bold'}}>Sign Out</Text>
+            <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold' }}>Sign Out</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -39,7 +39,7 @@ const Profile = ({navigation}) => {
   );
 };
 
-const ProfileScreenStack = ({navigation}) => {
+const ProfileScreenStack = ({ navigation }) => {
   return (
     <Stack.Navigator
       screenOptions={{
