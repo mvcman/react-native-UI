@@ -125,6 +125,8 @@ import { useSubscription } from '@apollo/client';
 import { gql } from '@apollo/client';
 import EditProfileScreen from './EditProfile';
 import ViewPostedJobs from './ViewPostedJob';
+import ViewAppliedJobs from './ViewAppliedJobs';
+import SingleApplicationDetails from '../components/SingleApplicationDetails';
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
 
@@ -238,7 +240,7 @@ const Profile = ({ navigation }) => {
                   <View style={styles.statsBox}>
                     <Text
                       style={[styles.text, { fontSize: 24, color: theme.primary }]}
-                      onPress={() => navigation.navigate('appliedJobs')}
+                      onPress={() => navigation.navigate('viewApplications')}
                     >
                       {data.User_by_pk.Applications.length}
                     </Text>
@@ -248,7 +250,7 @@ const Profile = ({ navigation }) => {
                   <View style={styles.statsBox}>
                     <Text
                       style={[styles.text, { fontSize: 24, color: theme.primary }]}
-                      onPress={() => navigation.navigate('appliedJobs')}
+                      onPress={() => navigation.navigate('viewAppliedJobs')}
                     >
                       {data.User_by_pk.Applications.length}
                     </Text>
@@ -314,6 +316,8 @@ const ProfileScreenStack = ({ navigation }) => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="editProfile" component={EditProfileScreen} />
       <Stack.Screen name="viewPostedJobs" component={ViewPostedJobs} />
+      <Stack.Screen name="viewAppliedJobs" component={ViewAppliedJobs} />
+      <Stack.Screen name="singleApplicationDetails" component={SingleApplicationDetails} />
     </Stack.Navigator>
   );
 };
