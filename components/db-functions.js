@@ -1,10 +1,10 @@
 const url = 'https://team-c.hasura.app/v1/graphql';
 
-async function createUser({userId, password, username, role}) {
+async function createUser({ userId, password, username, role, firstName, lastName }) {
   try {
     const query = {
       query: `mutation {
-        insert_User(objects: {userId: "${userId}", password: "${password}", contactNumber: "${username}", role: "${role}"}) {
+        insert_User(objects: {firstName: "${firstName}", lastName: "${lastName}", userId: "${userId}", password: "${password}", contactNumber: "${username}", role: "${role}"}) {
             returning {
                 contactNumber
                 userId
@@ -26,7 +26,7 @@ async function createUser({userId, password, username, role}) {
     return jsondata;
   } catch (err) {
     console.log('Error is ', err);
-    return {Error: err};
+    return { Error: err };
   }
 }
 
@@ -55,7 +55,7 @@ async function fetchSingleUser(userId) {
     return jsondata.data.User_by_pk;
   } catch (err) {
     console.log('Error is ', err);
-    return {Error: err};
+    return { Error: err };
   }
 }
 
@@ -89,7 +89,7 @@ async function fetchJobs() {
     return jsondata.data.Job;
   } catch (err) {
     console.log('Error is ', err);
-    return {Error: err};
+    return { Error: err };
   }
 }
-export {createUser, fetchSingleUser, fetchJobs};
+export { createUser, fetchSingleUser, fetchJobs };
