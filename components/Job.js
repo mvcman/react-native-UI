@@ -6,7 +6,7 @@ import PushNotification from 'react-native-push-notification';
 export default function Job({ item, navigation }) {
   const sendNotification = data => {
     // PushNotification.checkPermissions();
-    PushNotification.cancelAllLocalNotifications();
+    // PushNotification.cancelAllLocalNotifications();
     PushNotification.localNotification({
       channelId: 'demoApp',
       title: data.title,
@@ -34,7 +34,7 @@ export default function Job({ item, navigation }) {
       <View style={[styles.listItem, styles.shadow]}>
         <Image
           source={[{ uri: `https://logo.clearbit.com/${item.companyName}.com` }]}
-          style={{ position: 'absolute', top: 5, width: 60, height: 60, borderRadius: 50, zIndex: 99 }}
+          style={{ position: 'absolute', top: 25, width: 60, height: 60, borderRadius: 50, zIndex: 99 }}
         />
         <View style={styles.content}>
           <Text style={{ fontWeight: 'bold', fontSize: 18, color: theme.primary }}>{item.companyName}</Text>
@@ -79,6 +79,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#EAEDED',
     width: '100%',
-    height: '80%',
+    height: '60%',
   },
 });

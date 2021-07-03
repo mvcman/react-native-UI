@@ -441,11 +441,10 @@ function App() {
   //   [],
   // );
   const createChannel = () => {
+    PushNotification.cancelAllLocalNotifications();
     PushNotification.createChannel({
       channelId: 'demoApp',
       channelName: 'Recruit',
-      playSound: false,
-      vibrate: false,
     });
   };
   React.useEffect(() => {

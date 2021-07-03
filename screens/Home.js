@@ -37,6 +37,7 @@ const HomeScreen = ({ navigation }) => {
   };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    setInput('');
     fetchData();
     setRefreshing(false);
   }, []);
@@ -96,9 +97,11 @@ const HomeScreen = ({ navigation }) => {
                 }}
                 onEndEditing={t => SearchResult(t)}
               />
-              <TouchableOpacity onPress={() => SearchResult('demo')}>
-                <Feather name="x" color="grey" size={16} />
-              </TouchableOpacity>
+              {input === '' || input === 'demo' ? null : (
+                <TouchableOpacity onPress={() => SearchResult('demo')}>
+                  <Feather name="x" color="grey" size={16} />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
           <FlatList
