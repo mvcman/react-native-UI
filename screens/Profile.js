@@ -1,109 +1,3 @@
-// import React from 'react';
-// import { SafeAreaView, StatusBar, View, Text, Button, TouchableOpacity } from 'react-native';
-// import { createStackNavigator } from '@react-navigation/stack';
-// import Icon from 'react-native-vector-icons/Ionicons';
-// import { theme } from '../components/ThemeColor';
-// import { AuthContext } from '../components/context';
-// import PushNotification from 'react-native-push-notification';
-
-// const Stack = createStackNavigator();
-
-// const Profile = ({ navigation }) => {
-//   const { user, signOut } = React.useContext(AuthContext);
-//   const sendNotification = data => {
-//     PushNotification.localNotification({
-//       channelId: 'demoApp',
-//       title: data.title,
-//       message: data.message,
-//     });
-//   };
-//   return (
-//     <SafeAreaView>
-//       <StatusBar barStyle={'light-content'} />
-//       <View>
-//         <Text>Profile Screen</Text>
-//         <Button title="Go to View details" onPress={() => navigation.navigate('Jobs')} />
-//         <Text>Welcome, {user.userName}</Text>
-//         <Text>{user.userType}</Text>
-//         <Text>{user.userToken}</Text>
-//         <TouchableOpacity onPress={() => signOut()}>
-//           <View
-//             style={{
-//               backgroundColor: theme.primary,
-//               width: '90%',
-//               height: 40,
-//               display: 'flex',
-//               alignItems: 'center',
-//               justifyContent: 'center',
-//               textAlign: 'center',
-//               borderRadius: 10,
-//             }}
-//           >
-//             <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold' }}>Sign Out</Text>
-//           </View>
-//         </TouchableOpacity>
-//         <TouchableOpacity
-//           onPress={() =>
-//             sendNotification({
-//               title: 'demo',
-//               message: 'Notification sent!',
-//             })
-//           }
-//         >
-//           <View
-//             style={{
-//               backgroundColor: theme.primary,
-//               width: '90%',
-//               height: 40,
-//               display: 'flex',
-//               alignItems: 'center',
-//               justifyContent: 'center',
-//               textAlign: 'center',
-//               borderRadius: 10,
-//             }}
-//           >
-//             <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold' }}>Send Notification</Text>
-//           </View>
-//         </TouchableOpacity>
-//       </View>
-//     </SafeAreaView>
-//   );
-// };
-
-// const ProfileScreenStack = ({ navigation }) => {
-//   return (
-//     <Stack.Navigator
-//       screenOptions={{
-//         headerStyle: {
-//           backgroundColor: theme.primary,
-//         },
-//         headerTintColor: theme.textLight,
-//         headerTitleStyle: {
-//           fontWeight: 'bold',
-//         },
-//       }}
-//     >
-//       <Stack.Screen
-//         name="Profile"
-//         component={Profile}
-//         // options={{
-//         //   headerLeft: () => (
-//         //     <Icon
-//         //       name="ios-menu"
-//         //       size={35}
-//         //       backgroundColor={theme.primary}
-//         //       color={theme.textLight}
-//         //       onPress={() => navigation.openDrawer()}
-//         //       style={{marginLeft: 10}}
-//         //     />
-//         //   ),
-//         // }}
-//       />
-//     </Stack.Navigator>
-//   );
-// };
-
-// export default ProfileScreenStack;
 import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
@@ -120,7 +14,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome/';
 import { theme } from '../components/ThemeColor';
 import { AuthContext } from '../components/context';
-import ChipComponent from '../components/chip';
+import ChipComponent from '../components/Chip';
+import JobDetail from '../components/JobDetail';
 import { useSubscription } from '@apollo/client';
 import { gql } from '@apollo/client';
 import EditProfileScreen from './EditProfile';
@@ -318,6 +213,7 @@ const ProfileScreenStack = ({ navigation }) => {
       <Stack.Screen name="viewPostedJobs" component={ViewPostedJobs} />
       <Stack.Screen name="viewAppliedJobs" component={ViewAppliedJobs} />
       <Stack.Screen name="singleApplicationDetails" component={SingleApplicationDetails} />
+      <Stack.Screen name="Job Details" component={JobDetail} />
     </Stack.Navigator>
   );
 };

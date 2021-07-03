@@ -135,50 +135,52 @@ const HomeScreenStack = ({ navigation }) => {
 
   return (
     <Home.Navigator
-    // screenOptions={{
-    //   headerShown: false,
-    // }}
+      screenOptions={{
+        headerShown: false,
+      }}
     >
-    {user.userType === 'applicant' ? (
-    <> 
-      <jobsStack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <jobsStack.Screen
-        name="Job Details"
-        component={JobDetail}
-        options={{
-          headerStyle: {
-            backgroundColor: theme.primary,
-          },
-          headerTintColor: theme.textLight,
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
-      />
-      </>
-    ) : (
-      <>
-      <applicantStack.Screen name="HomeApplicants" component={HomeApplicants} 
-      options={{
-          headerShown: false,
-        }}/>
-      <applicantStack.Screen
-        name="Applicant Details"
-        component={ViewApplicantDetails}
-        // options={{
-        //   headerShown: false,
-        // }}
-      />
-      </>
-    )
-  }
-  </Home.Navigator>
+      {user.userType === 'applicant' ? (
+        <>
+          <jobsStack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <jobsStack.Screen
+            name="Job Details"
+            component={JobDetail}
+            options={{
+              headerStyle: {
+                backgroundColor: theme.primary,
+              },
+              headerTintColor: theme.textLight,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+          />
+        </>
+      ) : (
+        <>
+          <applicantStack.Screen
+            name="HomeApplicants"
+            component={HomeApplicants}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <applicantStack.Screen
+            name="Applicant Details"
+            component={ViewApplicantDetails}
+            // options={{
+            //   headerShown: false,
+            // }}
+          />
+        </>
+      )}
+    </Home.Navigator>
   );
 };
 
