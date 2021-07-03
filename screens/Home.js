@@ -16,8 +16,13 @@ import { theme } from '../components/ThemeColor';
 import JobDetail from '../components/JobDetail';
 import Job from '../components/Job';
 import { fetchJobs } from '../components/db-functions';
+import { AuthContext } from '../components/context';
+import ViewApplicantDetails from './ViewApplicantDetails';
+import ApplicantsList from '../components/ApplicantsList';
 
-const Stack = createStackNavigator();
+const Home = createStackNavigator();
+const jobsStack = createStackNavigator();
+const applicantStack = createStackNavigator();
 
 const HomeScreen = ({ navigation }) => {
   const [jobList, setJobList] = useState([]);
@@ -112,13 +117,17 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const HomeScreenStack = ({ navigation }) => {
+  const { user } = React.useContext(AuthContext);
+
   return (
-    <Stack.Navigator
+    <Home.Navigator
     // screenOptions={{
     //   headerShown: false,
     // }}
     >
-      <Stack.Screen
+    {user.userType === 'applicant' ? (
+    <> 
+      <jobsStack.Screen
         name="Home"
         component={HomeScreen}
         options={{
@@ -135,7 +144,7 @@ const HomeScreenStack = ({ navigation }) => {
           // ),
         }}
       />
-      <Stack.Screen
+      <jobsStack.Screen
         name="Job Details"
         component={JobDetail}
         options={{
@@ -148,7 +157,24 @@ const HomeScreenStack = ({ navigation }) => {
           },
         }}
       />
-    </Stack.Navigator>
+      </>
+    ) : (
+      <>
+      <applicantStack.Screen name="ApplicantsList" component={ApplicantsList} 
+      options={{
+          headerShown: false,
+        }}/>
+      <applicantStack.Screen
+        name="viewApplicantDetails"
+        component={ViewApplicantDetails}
+        options={{
+          headerShown: false,
+        }}
+      />
+      </>
+    )
+  }
+  </Home.Navigator>
   );
 };
 

@@ -92,4 +92,37 @@ async function fetchJobs() {
     return {Error: err};
   }
 }
-export {createUser, fetchSingleUser, fetchJobs};
+
+async function fetchUsers() {
+  try {
+    const query = {
+      query: `{
+        User (where: {role: {_eq: "applicant"}}){
+            firstName
+            contactNumber
+            lastName
+            preferences
+            userId
+            role
+          }
+        }
+        `,
+    };
+    const data = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-hasura-admin-secret':
+          'PcEURINYV1b1OVT8z0l0jsAvMb8Wkt67rJHtTPt8oKcTaLFeLwPAKPIJfe0S7V6g',
+      },
+      body: JSON.stringify(query),
+    });
+    const jsonData = await data.json();
+    return jsonData.data.User;
+  } catch (err) {
+    console.log(err);
+    return {error: err};
+  }
+}
+
+export {createUser, fetchSingleUser, fetchJobs, fetchUsers};

@@ -16,7 +16,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import {Title, Caption, TouchableRipple, Drawer as Drawer1, useTheme} from 'react-native-paper';
 import Main from './screens/Main';
 import { AuthContext } from './components/context';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Provider as PaperProvider,
   DarkTheme as PaperDarkTheme,
@@ -27,7 +27,6 @@ import {
 import HomeScreenStack from './screens/Home';
 import JobScreenStack from './screens/Jobs';
 import CreateJobStack from './screens/CreateJob';
-import ApplicationStack from './screens/Applications';
 import ProfileScreenStack from './screens/Profile';
 // import NotificationScreenStack from './screens/Notifications';
 import { theme } from './components/ThemeColor';
