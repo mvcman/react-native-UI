@@ -1,10 +1,35 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { theme } from './ThemeColor';
+import PushNotification from 'react-native-push-notification';
 
 export default function Job({ item, navigation }) {
+  const sendNotification = data => {
+    // PushNotification.checkPermissions();
+    PushNotification.cancelAllLocalNotifications();
+    PushNotification.localNotification({
+      channelId: 'demoApp',
+      title: data.title,
+      message: data.message,
+    });
+    // PushNotification.localNotificationSchedule({
+    //   channelId: 'demoApp',
+    //   title: data.title,
+    //   message: data.message,
+    //   date: new Date(Date.now() + 10 * 1000),
+    //   allowWhileIdle: true,
+    // });
+  };
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('Job Details', { data: item })}>
+    <TouchableOpacity
+      onPress={() => {
+        sendNotification({
+          title: item.jobTitle,
+          message: `You are viewing ${item.companyName} details`,
+        });
+        navigation.navigate('Job Details', { data: item });
+      }}
+    >
       <View style={[styles.listItem, styles.shadow]}>
         <Image
           source={[{ uri: `https://logo.clearbit.com/${item.companyName}.com` }]}
