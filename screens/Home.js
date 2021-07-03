@@ -17,10 +17,12 @@ import JobDetail from '../components/JobDetail';
 import Job from '../components/Job';
 import { fetchJobs } from '../components/db-functions';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { AuthContext } from '../components/context';
 
 const Stack = createStackNavigator();
 
 const HomeScreen = ({ navigation }) => {
+  const { user } = React.useContext(AuthContext);
   const [jobList, setJobList] = useState([]);
   const [list, setList] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -30,7 +32,7 @@ const HomeScreen = ({ navigation }) => {
   const fetchData = async () => {
     setLoading(true);
 
-    const fetchedJobs = await fetchJobs();
+    const fetchedJobs = await fetchJobs(user.userId);
     setJobList(fetchedJobs);
     setList(fetchedJobs);
     setLoading(false);
@@ -76,7 +78,6 @@ const HomeScreen = ({ navigation }) => {
               position: 'absolute',
               height: 60,
               width: '100%',
-              backgroundColor: theme.primary,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
@@ -85,9 +86,10 @@ const HomeScreen = ({ navigation }) => {
             }}
           >
             <View style={styles.action}>
-              <Feather name="search" color="grey" size={24} />
+              <Feather name="search" color="black" size={24} />
               <TextInput
                 placeholder="Search"
+                placeholderTextColor="black"
                 style={styles.textInput}
                 autoCapitalize="none"
                 value={input}
@@ -127,25 +129,15 @@ const HomeScreen = ({ navigation }) => {
 const HomeScreenStack = ({ navigation }) => {
   return (
     <Stack.Navigator
-    // screenOptions={{
-    //   headerShown: false,
-    // }}
+      screenOptions={{
+        headerShown: false,
+      }}
     >
       <Stack.Screen
         name="Home"
         component={HomeScreen}
         options={{
           headerShown: false,
-          // headerLeft: () => (
-          //   <Icon
-          //     name="ios-menu"
-          //     size={35}
-          //     backgroundColor={theme.primary}
-          //     color={theme.textLight}
-          //     onPress={() => navigation.openDrawer()}
-          //     style={{marginLeft: 10}}
-          //   />
-          // ),
         }}
       />
       <Stack.Screen
@@ -169,7 +161,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F3F3F3',
-    // padding: 10,
   },
   loading: {
     flex: 1,
@@ -200,7 +191,7 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     paddingLeft: 10,
-    color: 'grey',
+    color: 'black',
     fontSize: 18,
     marginBottom: -3,
   },

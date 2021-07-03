@@ -9,11 +9,29 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { theme } from './ThemeColor';
+import { AuthContext } from './context';
+import { applyJobMutation } from './db-functions';
 
 export default function JobDetail({ route, navigation }) {
+  const { user } = React.useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = async () => {
+    setLoading(true);
+    const data = await applyJobMutation(route.params.data.jobId, user.userId);
+    if (data.insert_Application.affected_rows === 1) {
+      setLoading(false);
+      ToastAndroid.show('Application sent successfully', ToastAndroid.SHORT);
+      navigation.navigate('Home');
+    } else {
+      setLoading(false);
+      ToastAndroid.show('Please try again', ToastAndroid.SHORT);
+    }
+  };
+
   const { companyName, jobDescription, jobTitle, preferencesType, salary, startDate } = route.params.data;
   return (
     <ScrollView style={styles.container}>
@@ -50,7 +68,21 @@ export default function JobDetail({ route, navigation }) {
             </Text>
           ))}
         </View>
+        {user.userType === 'employer' ? (
+          <Text />
+        ) : (
+          <View style={{ marginLeft: '70%' }}>
+            <TouchableOpacity style={styles.applyButton} onPress={() => handleSubmit()}>
+              <Text style={styles.applyButtonText}>Apply</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
+      {loading && (
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" color="blue" />
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -59,6 +91,20 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     marginBottom: 80,
+    backgroundColor: 'white',
+  },
+  applyButton: {
+    height: 50,
+    width: 100,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 30,
+    backgroundColor: 'blue',
+  },
+  applyButtonText: {
+    color: '#FFFFFF',
+    fontSize: 20,
   },
   listItem: {
     margin: 10,

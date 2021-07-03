@@ -194,5 +194,43 @@ const addJobMutation = async (
     return { error: err };
   }
 };
+const applyJobMutation = async (jobId, userId) => {
+  try {
+    const date = new Date().toString().split(' ').slice(1, 4).join(' ');
+    const applicationId = uuid.v4();
+    console.log(date, applicationId, jobId);
+    const query = {
+      query: `mutation {
+        insert_Application(objects: {applicationId: "${applicationId}", dateOfApplication: "${date}", jobId: "${jobId}", status: "applied", userId: "${userId}"}) {
+          affected_rows
+        }
+      }
 
-export { createUser, fetchSingleUser, fetchJobs, updateUserDetails, fetchPostedJobsByUser, addJobMutation };
+      `,
+    };
+    console.log(query);
+    const data = await fetch('https://team-c.hasura.app/v1/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-hasura-admin-secret': 'PcEURINYV1b1OVT8z0l0jsAvMb8Wkt67rJHtTPt8oKcTaLFeLwPAKPIJfe0S7V6g',
+      },
+      body: JSON.stringify(query),
+    });
+    const jsonData = await data.json();
+    console.log(jsonData);
+    return jsonData.data;
+  } catch (err) {
+    console.log(err);
+    return { error: err };
+  }
+};
+export {
+  createUser,
+  fetchSingleUser,
+  fetchJobs,
+  updateUserDetails,
+  fetchPostedJobsByUser,
+  addJobMutation,
+  applyJobMutation,
+};
