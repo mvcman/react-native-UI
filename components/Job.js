@@ -11,6 +11,7 @@ export default function Job({ item, navigation }) {
       channelId: 'demoApp',
       title: data.title,
       message: data.message,
+      color: theme.primary,
     });
     // PushNotification.localNotificationSchedule({
     //   channelId: 'demoApp',

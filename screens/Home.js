@@ -16,6 +16,7 @@ import { theme } from '../components/ThemeColor';
 import JobDetail from '../components/JobDetail';
 import Job from '../components/Job';
 import { fetchJobs } from '../components/db-functions';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 
@@ -46,6 +47,11 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   const SearchResult = t => {
+    if (t === 'demo') {
+      setList(jobList);
+      setInput('');
+      return;
+    }
     const data = jobList.filter(
       f =>
         f.companyName.toLowerCase().includes(input) ||
@@ -83,12 +89,16 @@ const HomeScreen = ({ navigation }) => {
                 placeholder="Search"
                 style={styles.textInput}
                 autoCapitalize="none"
+                value={input}
                 onChangeText={text => {
                   setInput(text);
                   SearchResult(input);
                 }}
                 onEndEditing={t => SearchResult(t)}
               />
+              <TouchableOpacity onPress={() => SearchResult('demo')}>
+                <Feather name="x" color="grey" size={16} />
+              </TouchableOpacity>
             </View>
           </View>
           <FlatList

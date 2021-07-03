@@ -444,6 +444,8 @@ function App() {
     PushNotification.createChannel({
       channelId: 'demoApp',
       channelName: 'Recruit',
+      playSound: false,
+      vibrate: false,
     });
   };
   React.useEffect(() => {
