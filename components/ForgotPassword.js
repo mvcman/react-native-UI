@@ -1,37 +1,100 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Platform, Dimensions, TextInput, StatusBar} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  Dimensions,
+  TextInput,
+  StatusBar,
+  Alert,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
 import * as Animatable from 'react-native-animatable';
-import {theme} from './ThemeColor';
+import { theme } from './ThemeColor';
 
-export default function ForgotPassword({navigation}) {
+export default function ForgotPassword({ navigation }) {
+  const [data, setData] = React.useState({
+    username: '',
+    check_textInputChange: false,
+    isValidUser: true,
+  });
+  const textInputChange = value => {
+    if (value.trim().length === 10) {
+      setData({
+        ...data,
+        username: value,
+        check_textInputChange: true,
+        isValidUser: true,
+      });
+    } else {
+      setData({
+        ...data,
+        check_textInputChange: false,
+        isValidUser: false,
+      });
+    }
+  };
+
+  const handleValidUser = val => {
+    if (val.trim().length === 10) {
+      setData({
+        ...data,
+        isValidUser: true,
+      });
+    } else {
+      setData({
+        ...data,
+        isValidUser: false,
+      });
+    }
+  };
+
+  const forgotPassword = () => {
+    if (data.username.length === 0) {
+      Alert.alert('Wrong Input!', 'Username field cannot be empty!');
+      return;
+    }
+    Alert.alert('Successful!', 'OTP sent to your respective mobile number please verify your account!');
+    navigation.navigate('ForgotPasswordSubmit');
+  };
   return (
     <View style={styles2.container}>
-      <StatusBar backgroundColor={theme.light} barStyle="light-content" />
+      <StatusBar backgroundColor={theme.primary} barStyle="light-content" />
       <View style={styles2.header}>
         <Text style={styles2.text_header}>Forgot Password!</Text>
       </View>
       <Animatable.View style={styles2.footer} animation="fadeInUpBig">
-        <Text style={styles2.text_footer}>Email</Text>
+        <Text style={styles2.text_footer}>Username</Text>
         <View style={styles2.action}>
           <FontAwesome name="user-o" color="#05375a" size={20} />
           <TextInput
-            placeholder="Your email"
+            placeholder="Enter your mobile number"
             style={styles2.textInput}
             autoCapitalize="none"
             onChangeText={text => textInputChange(text)}
+            onEndEditing={e => handleValidUser(e.nativeEvent.text)}
           />
-          {/* {data.check_textInputChange ? (
+          {data.check_textInputChange ? (
             <Animatable.View animation="bounceIn">
               <Feather name="check-circle" color="green" size={20} />
             </Animatable.View>
-          ) : null} */}
+          ) : null}
         </View>
+        {data.isValidUser ? null : (
+          <Animatable.View animation="fadeInLeft" duration={500}>
+            <Text style={styles2.errorMsg}>Username must be 10 characters long.</Text>
+          </Animatable.View>
+        )}
         <View style={styles2.button}>
-          <LinearGradient colors={[theme.primary, theme.light]} style={styles2.signIn}>
-            <Text style={[styles2.textSign, {color: '#fff'}]}>Update</Text>
-          </LinearGradient>
+          <TouchableOpacity onPress={() => forgotPassword()} style={{ width: '100%' }}>
+            <LinearGradient colors={[theme.primary, theme.light]} style={styles2.signIn}>
+              <Text style={[styles2.textSign, { color: '#fff' }]}>Update</Text>
+            </LinearGradient>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={[
@@ -43,7 +106,7 @@ export default function ForgotPassword({navigation}) {
               },
             ]}
           >
-            <Text style={[styles2.textSign, {color: theme.primary}]}>Back</Text>
+            <Text style={[styles2.textSign, { color: theme.primary }]}>Back</Text>
           </TouchableOpacity>
         </View>
       </Animatable.View>
@@ -51,7 +114,7 @@ export default function ForgotPassword({navigation}) {
   );
 }
 
-const {height} = Dimensions.get('screen');
+const { height } = Dimensions.get('screen');
 const height_logo = height * 0.28;
 
 const styles2 = StyleSheet.create({

@@ -10,7 +10,7 @@ async function SignUp(username, password) {
     console.log('Sign up user ', user);
     return user;
   } catch (err) {
-    console.log({ error: err });
+    console.log(err);
     return { Error: err };
   }
 }
@@ -42,6 +42,7 @@ async function ResendConfirmationCode(username) {
     console.log('code resent successfully');
   } catch (err) {
     console.log('error resending code: ', err);
+    return { Error: err };
   }
 }
 

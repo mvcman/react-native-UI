@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,39 +10,39 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
-import {Divider} from 'react-native-elements';
-import {theme} from './ThemeColor';
+import { Divider } from 'react-native-elements';
+import { theme } from './ThemeColor';
 
-export default function JobDetail({route, navigation}) {
-  const {companyName, jobDescription, jobTitle, preferencesType, salary, startDate} = route.params.data;
+export default function JobDetail({ route, navigation }) {
+  const { companyName, jobDescription, jobTitle, preferencesType, salary, startDate } = route.params.data;
   return (
     <ScrollView style={styles.container}>
       <Image
-        source={[{uri: `https://logo.clearbit.com/${companyName}.com`}]}
-        style={{width: '100%', height: 200, borderRadius: 2, resizeMode: 'contain'}}
+        source={[{ uri: `https://logo.clearbit.com/${companyName}.com` }]}
+        style={{ width: '100%', height: 200, borderRadius: 2, resizeMode: 'contain' }}
       />
       <View style={styles.content}>
-        <View style={{marginBottom: 10}}>
+        <View style={{ marginBottom: 10 }}>
           <Text style={styles.heading}>{companyName}</Text>
           <Text style={styles.sub}>{jobDescription}</Text>
           <Divider orientation="horizontal" height={1} />
         </View>
-        <View style={{marginBottom: 10}}>
+        <View style={{ marginBottom: 10 }}>
           <Text style={styles.label}>Job Title:- </Text>
           <Text style={styles.title}>{jobTitle}</Text>
         </View>
         <Divider orientation="horizontal" height={1} />
-        <View style={{marginBottom: 10, display: 'flex'}}>
+        <View style={{ marginBottom: 10, display: 'flex' }}>
           <Text style={styles.label}>Start Date:-</Text>
           <Text style={styles.title}>{startDate}</Text>
         </View>
         <Divider orientation="horizontal" height={1} />
-        <View style={{marginBottom: 10, display: 'flex'}}>
+        <View style={{ marginBottom: 10, display: 'flex' }}>
           <Text style={styles.label}>Salary:-</Text>
           <Text style={styles.title}>Rs {salary}</Text>
         </View>
         <Divider orientation="horizontal" height={1} />
-        <View style={{marginBottom: 10}}>
+        <View style={{ marginBottom: 10 }}>
           <Text style={styles.label}>Preference Type:-</Text>
           {preferencesType.map((p, i) => (
             <Text key={i} style={styles.title}>
@@ -103,13 +103,13 @@ const styles = StyleSheet.create({
   },
   label: {
     color: theme.secondary,
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 2,
   },
   title: {
     color: theme.primary,
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 2,
   },

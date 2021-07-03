@@ -1,40 +1,39 @@
 import React from 'react';
-import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
-import {theme} from './ThemeColor';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { theme } from './ThemeColor';
 
-export default function Job({item, navigation}) {
+export default function Job({ item, navigation }) {
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('Job Details', {data: item})}>
+    <TouchableOpacity onPress={() => navigation.navigate('Job Details', { data: item })}>
       <View style={[styles.listItem, styles.shadow]}>
         <Image
-          source={[{uri: `https://logo.clearbit.com/${item.companyName}.com`}]}
-          style={{width: 60, height: 60, borderRadius: 50}}
+          source={[{ uri: `https://logo.clearbit.com/${item.companyName}.com` }]}
+          style={{ position: 'absolute', top: 5, width: 60, height: 60, borderRadius: 50, zIndex: 99 }}
         />
-        <View style={{padding: 10, flex: 1}}>
-          <Text style={{fontWeight: 'bold', fontSize: 22, color: theme.primary}}>{item.companyName}</Text>
-          <Text style={{fontWeight: 'normal', fontSize: 18, color: theme.secondary}}>{item.jobTitle}</Text>
+        <View style={styles.content}>
+          <Text style={{ fontWeight: 'bold', fontSize: 18, color: theme.primary }}>{item.companyName}</Text>
+          <Text style={{ fontWeight: 'normal', fontSize: 14, color: theme.textDark }}>{item.jobTitle}</Text>
         </View>
-        <TouchableOpacity
-          style={{
-            height: 50,
-            width: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        ></TouchableOpacity>
       </View>
     </TouchableOpacity>
   );
 }
 
+const { width } = Dimensions.get('screen');
 const styles = StyleSheet.create({
   listItem: {
+    position: 'relative',
+    width: width / 2 - 14,
+    flex: 1,
+    height: 150,
     display: 'flex',
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    marginTop: 5,
-    marginBottom: 5,
-    padding: 10,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    backgroundColor: '#ffffff',
+    margin: 2,
+    padding: 5,
+    borderRadius: 3,
   },
   shadow: {
     shadowColor: '#7f5df0',
@@ -45,5 +44,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.5,
     elevation: 2,
+  },
+  content: {
+    padding: 10,
+    paddingTop: 20,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#EAEDED',
+    width: '100%',
+    height: '80%',
   },
 });

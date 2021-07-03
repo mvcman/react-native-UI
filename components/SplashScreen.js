@@ -1,11 +1,20 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Dimensions, StatusBar} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as Animatable from 'react-native-animatable';
-import {theme} from './ThemeColor';
+import { theme } from './ThemeColor';
+import { useEffect } from 'react';
+import LoadingComponent from './LoadingComponent';
 
-export default function SplashScreen({navigation}) {
+export default function SplashScreen({ navigation }) {
+  const [loading, setLoading] = React.useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 10000);
+  }, []);
+  if (loading) return <LoadingComponent />;
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={theme.primary} barStyle="light-content" />
@@ -38,7 +47,7 @@ export default function SplashScreen({navigation}) {
   );
 }
 
-const {height} = Dimensions.get('screen');
+const { height } = Dimensions.get('screen');
 const height_logo = height * 0.28;
 
 const styles = StyleSheet.create({
