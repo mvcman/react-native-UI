@@ -258,6 +258,62 @@ async function fetchUsers() {
   }
 }
 
+const acceptClick = async (aid) => {
+  console.log(aid);
+  try{
+  const query = {
+    query: `mutation MyMutation {
+      update_Application(_set: {status: "Accepted"}, where: {applicationId: {_eq: "${aid}"}}) {
+        affected_rows
+      }
+    }`
+  };
+  const data = await fetch('https://team-c.hasura.app/v1/graphql', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-hasura-admin-secret':
+      'PcEURINYV1b1OVT8z0l0jsAvMb8Wkt67rJHtTPt8oKcTaLFeLwPAKPIJfe0S7V6g',
+  },
+  body: JSON.stringify(query),
+  });
+  const jsonData = data.json();
+  return jsonData;
+  }
+  catch(err){
+    return {Error:err}
+  }
+}
+
+const rejectclick = async (rid) => {
+  //const rid = route.params.data;
+  console.log('rid on db',rid);
+  try{
+  const query = {
+    query: `mutation MyMutation {
+        update_Application(_set: {status: "Rejected"}, where: {applicationId: {_eq: "${rid}"}}) {
+        affected_rows
+      }
+    }`
+  };
+  const data = await fetch('https://team-c.hasura.app/v1/graphql', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-hasura-admin-secret':
+      'PcEURINYV1b1OVT8z0l0jsAvMb8Wkt67rJHtTPt8oKcTaLFeLwPAKPIJfe0S7V6g',
+  },
+  body: JSON.stringify(query),
+  });
+  const jsonData = data.json();
+  //console.log('jsondata', jsonData.data);
+  return jsonData;
+  }
+  catch(err){
+    return {Error:err}
+  }
+}
+
 export {
   createUser,
   fetchSingleUser,
@@ -267,4 +323,6 @@ export {
   addJobMutation,
   applyJobMutation,
   fetchUsers,
+  acceptClick,
+  rejectclick,
 };

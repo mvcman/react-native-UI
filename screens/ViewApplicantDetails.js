@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { theme } from '../components/ThemeColor';
-import ChipComponent from '../components/Chip';
+import ChipComponent from '../components/chip';
 import SendSMS from 'react-native-sms';
 
 export default function ViewApplicantDetails({ route, navigation }) {

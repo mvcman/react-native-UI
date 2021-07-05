@@ -14,13 +14,16 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome/';
 import { theme } from '../components/ThemeColor';
 import { AuthContext } from '../components/context';
-import ChipComponent from '../components/Chip';
+import ChipComponent from '../components/chip';
 import JobDetail from '../components/JobDetail';
 import { useSubscription } from '@apollo/client';
 import { gql } from '@apollo/client';
 import EditProfileScreen from './EditProfile';
 import ViewPostedJobs from './ViewPostedJob';
 import ViewAppliedJobs from './ViewAppliedJobs';
+import ApplicantScreen from './application';
+import ViewApplicationScreen from './viewApplicationScreen';
+import ViewApplicantScreen from './viewApplicant';
 import SingleApplicationDetails from '../components/SingleApplicationDetails';
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
@@ -214,6 +217,9 @@ const ProfileScreenStack = ({ navigation }) => {
       <Stack.Screen name="viewAppliedJobs" component={ViewAppliedJobs} />
       <Stack.Screen name="singleApplicationDetails" component={SingleApplicationDetails} />
       <Stack.Screen name="Job Details" component={JobDetail} />
+      <Stack.Screen name="viewApplications" component={ApplicantScreen} />
+      <Stack.Screen name="Applications" component={ViewApplicationScreen} />
+      <Stack.Screen name="Applicant" component={ViewApplicantScreen} />
     </Stack.Navigator>
   );
 };
