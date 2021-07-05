@@ -92,19 +92,31 @@ const Profile = ({ navigation }) => {
               />
               {/* </TouchableOpacity> */}
               <Modal animationType="fade" transparent={true} visible={open} onRequestClose={() => setOpen(false)}>
-                <TouchableOpacity style={styles.modal} onPress={() => setOpen(false)}>
-                  <View style={styles.modalView}>
-                    <TouchableOpacity
-                      style={styles.btnClose}
-                      onPress={() => {
-                        setOpen(false);
-                        signOut();
-                      }}
-                    >
-                      <Text style={styles.textStyle}>LogOut</Text>
-                    </TouchableOpacity>
-                  </View>
-                </TouchableOpacity>
+                {/* <Pressable style={styles.modal} onPress={() => setOpen(false)}> */}
+                <View style={styles.modalView}>
+                  <Pressable
+                    style={styles.btnClose}
+                    onPress={() => {
+                      setOpen(false);
+                      signOut();
+                    }}
+                  >
+                    <Text style={styles.textStyle}>
+                      <Icon name="sign-out" size={25} color={theme.secondary} /> LogOut
+                    </Text>
+                  </Pressable>
+                  <Pressable
+                    style={styles.btnClose}
+                    onPress={() => {
+                      setOpen(false);
+                    }}
+                  >
+                    <Text style={styles.textStyle}>
+                      <Icon name="close" size={25} color={theme.secondary} /> Cancel
+                    </Text>
+                  </Pressable>
+                </View>
+                {/* </Pressable> */}
               </Modal>
               <View style={styles.profileImage}>
                 <Image source={require('../assets/profilePicture.jpg')} style={styles.image} resizeMode="center" />
@@ -154,44 +166,44 @@ const Profile = ({ navigation }) => {
                 )}
                 <Text style={[styles.text, styles.subText]}>Interests</Text>
               </View>
-              <View style={styles.statsBox}>
-                {data ? (
-                  data.User_by_pk.role === 'employer' ? (
-                    <View style={styles.statsBox}>
-                      <Text
-                        style={[styles.text, { fontSize: 24, color: theme.primary }]}
-                        onPress={() => navigation.navigate('viewApplications')}
-                      >
-                        {data.User_by_pk.Applications.length}
-                      </Text>
-                      <Text style={[styles.text, styles.subText, { color: theme.primary }]}>Applications</Text>
-                    </View>
-                  ) : (
-                    <View style={styles.statsBox}>
-                      <Text
-                        style={[styles.text, { fontSize: 24, color: theme.primary }]}
-                        onPress={() => navigation.navigate('viewAppliedJobs')}
-                      >
-                        {data.User_by_pk.Applications.length}
-                      </Text>
-
-                      <Text style={[styles.text, styles.subText, { color: theme.primary }]}>Applied</Text>
-                    </View>
-                  )
+              {/* <View style={styles.statsBox}> */}
+              {data ? (
+                data.User_by_pk.role === 'employer' ? (
+                  <View style={styles.statsBox}>
+                    <Text
+                      style={[styles.text, { fontSize: 24, color: theme.primary }]}
+                      onPress={() => navigation.navigate('viewApplications')}
+                    >
+                      {data.User_by_pk.Applications.length}
+                    </Text>
+                    <Text style={[styles.text, styles.subText, { color: theme.primary }]}>Applications</Text>
+                  </View>
                 ) : (
-                  <Text Text style={[styles.text, styles.subText]}>
-                    loading
-                  </Text>
-                )}
-              </View>
+                  <View style={styles.statsBox}>
+                    <Text
+                      style={[styles.text, { fontSize: 24, color: theme.primary }]}
+                      onPress={() => navigation.navigate('viewAppliedJobs')}
+                    >
+                      {data.User_by_pk.Applications.length}
+                    </Text>
+
+                    <Text style={[styles.text, styles.subText, { color: theme.primary }]}>Applied</Text>
+                  </View>
+                )
+              ) : (
+                <Text Text style={[styles.text, styles.subText]}>
+                  loading
+                </Text>
+              )}
+              {/* </View> */}
             </View>
             <View>
               <Text
                 style={[
                   styles.text,
                   {
-                    color: 'black',
-                    fontSize: 20,
+                    color: theme.secondary,
+                    fontSize: 18,
                     left: '3%',
                     top: '10%',
                   },
@@ -212,7 +224,7 @@ const Profile = ({ navigation }) => {
                 {data ? (
                   <ChipComponent title={data.User_by_pk.preferences} />
                 ) : (
-                  <View style={{ flex: 1 }}>
+                  <View style={{ flex: 1, padding: 10 }}>
                     <View style={styles.loading}>
                       <ActivityIndicator size="large" color="blue" />
                     </View>
@@ -235,14 +247,118 @@ const ProfileScreenStack = ({ navigation }) => {
       }}
     >
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="editProfile" component={EditProfileScreen} />
-      <Stack.Screen name="viewPostedJobs" component={ViewPostedJobs} />
-      <Stack.Screen name="viewAppliedJobs" component={ViewAppliedJobs} />
-      <Stack.Screen name="singleApplicationDetails" component={SingleApplicationDetails} />
-      <Stack.Screen name="Job Details" component={JobDetail} />
-      <Stack.Screen name="viewApplications" component={ApplicantScreen} />
-      <Stack.Screen name="Applications" component={ViewApplicationScreen} />
-      <Stack.Screen name="Applicant" component={ViewApplicantScreen} />
+      <Stack.Screen
+        name="editProfile"
+        component={EditProfileScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="viewPostedJobs"
+        component={ViewPostedJobs}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="viewAppliedJobs"
+        component={ViewAppliedJobs}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="singleApplicationDetails"
+        component={SingleApplicationDetails}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Job Details"
+        component={JobDetail}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="viewApplications"
+        component={ApplicantScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Applications"
+        component={ViewApplicationScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Applicant"
+        component={ViewApplicantScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -305,19 +421,23 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   statsContainer: {
+    height: 70,
     flexDirection: 'row',
     alignSelf: 'center',
     marginTop: 10,
-    // shadowColor: '#7f5df0',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 10,
-    // },
-    // shadowOpacity: 0.05,
-    // shadowRadius: 1.5,
+    borderWidth: 1,
+    borderColor: theme.primary,
+    shadowColor: '#7f5df0',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 1.5,
     // elevation: 5,
-    // borderRadius: 5,
-    // alignItems: 'center',
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   statsBox: {
     alignItems: 'center',
@@ -344,19 +464,19 @@ const styles = StyleSheet.create({
     shadowRadius: 3.5,
     elevation: 5,
   },
-  modal: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#000',
-    opacity: 0.9,
-  },
+  // modal: {
+  //   width: '100%',
+  //   height: '100%',
+  //   backgroundColor: '#000',
+  //   opacity: 0.9,
+  // },
   modalView: {
     position: 'absolute',
     top: '10%',
     left: '70%',
     backgroundColor: '#fff',
-    width: 100,
-    height: 40,
+    // width: 100,
+    // height: 40,
     borderRadius: 5,
     shadowColor: '#7f5df0',
     shadowOffset: {
@@ -366,6 +486,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.5,
     elevation: 5,
+    paddingHorizontal: 10,
   },
   btnClose: {
     height: 40,
