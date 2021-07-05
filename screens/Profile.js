@@ -23,6 +23,9 @@ import { gql } from '@apollo/client';
 import EditProfileScreen from './EditProfile';
 import ViewPostedJobs from './ViewPostedJob';
 import ViewAppliedJobs from './ViewAppliedJobs';
+import ApplicantScreen from './application';
+import ViewApplicationScreen from './viewApplicationScreen';
+import ViewApplicantScreen from './viewApplicant';
 import SingleApplicationDetails from '../components/SingleApplicationDetails';
 import * as Animatable from 'react-native-animatable';
 import { LogBox } from 'react-native';
@@ -237,6 +240,9 @@ const ProfileScreenStack = ({ navigation }) => {
       <Stack.Screen name="viewAppliedJobs" component={ViewAppliedJobs} />
       <Stack.Screen name="singleApplicationDetails" component={SingleApplicationDetails} />
       <Stack.Screen name="Job Details" component={JobDetail} />
+      <Stack.Screen name="viewApplications" component={ApplicantScreen} />
+      <Stack.Screen name="Applications" component={ViewApplicationScreen} />
+      <Stack.Screen name="Applicant" component={ViewApplicantScreen} />
     </Stack.Navigator>
   );
 };
