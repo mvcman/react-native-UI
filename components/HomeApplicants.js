@@ -51,7 +51,7 @@ export default function HomeApplicants({ navigation }) {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(userList);
+  // console.log(userList);
   const SearchResult = t => {
     if (t === 'demo') {
       setList(userList);

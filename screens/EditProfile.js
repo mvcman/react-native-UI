@@ -44,7 +44,7 @@ const EditProfileScreen = props => {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 26, marginTop: 20, marginBottom: 20 }}>Enter details to update</Text>
+      {/* <Text style={{ fontSize: 26, marginTop: 20, marginBottom: 20 }}>Enter details to update</Text> */}
       <View style={{ justifyContent: 'center' }}>
         <Text style={{ color: 'red', fontSize: 15 }}>{error}</Text>
       </View>

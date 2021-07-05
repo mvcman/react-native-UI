@@ -36,6 +36,7 @@ const Stack = createStackNavigator();
 
 const Profile = ({ navigation }) => {
   const { user, signOut } = React.useContext(AuthContext);
+  let applicationsCount = 0;
   const [open, setOpen] = React.useState(false);
   const fetchUserProfile = gql`
   subscription MySubscription {
@@ -56,6 +57,11 @@ const Profile = ({ navigation }) => {
         preferencesType
         companyDetail
         companyName
+        Applications_aggregate {
+          aggregate {
+            count
+          }
+        }
       }
       Applications {
         applicationId
@@ -68,7 +74,12 @@ const Profile = ({ navigation }) => {
   }
 `;
   const { loading, error, data } = useSubscription(fetchUserProfile);
-
+  if (data) {
+    data.User_by_pk.Jobs.forEach(element => {
+      applicationsCount = applicationsCount + element.Applications_aggregate.aggregate.count;
+    });
+    console.log(applicationsCount);
+  }
   if (error) {
     return <Text>Error! ${error.message}</Text>;
   }
@@ -174,7 +185,7 @@ const Profile = ({ navigation }) => {
                       style={[styles.text, { fontSize: 24, color: theme.primary }]}
                       onPress={() => navigation.navigate('viewApplications')}
                     >
-                      {data.User_by_pk.Applications.length}
+                      {applicationsCount}
                     </Text>
                     <Text style={[styles.text, styles.subText, { color: theme.primary }]}>Applications</Text>
                   </View>

@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     opacity: 0.5,
-    backgroundColor: 'black',
+    // backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
   },
