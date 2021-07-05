@@ -28,7 +28,7 @@ export default function SignIn({ navigation }) {
     isValidUser: true,
     isValidPassword: true,
   });
-  const { signIn } = React.useContext(AuthContext);
+  const { user, signIn } = React.useContext(AuthContext);
   const textInputChange = value => {
     if (value.trim().length === 10) {
       setData({

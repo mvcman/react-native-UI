@@ -16,7 +16,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import {Title, Caption, TouchableRipple, Drawer as Drawer1, useTheme} from 'react-native-paper';
 import Main from './screens/Main';
 import { AuthContext } from './components/context';
-// import AsyncStorage from '@react-native-community/async-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Provider as PaperProvider,
@@ -28,17 +27,32 @@ import {
 import HomeScreenStack from './screens/Home';
 import JobScreenStack from './screens/Jobs';
 import CreateJobStack from './screens/CreateJob';
-import ApplicationStack from './screens/Applications';
 import ProfileScreenStack from './screens/Profile';
 // import NotificationScreenStack from './screens/Notifications';
 import { theme } from './components/ThemeColor';
 import { fetchSingleUser } from './components/db-functions';
 import { SignOut } from './components/aws-functions';
 import PushNotification from 'react-native-push-notification';
-
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { WebSocketLink } from '@apollo/client/link/ws';
 const Tab = createBottomTabNavigator();
 // const Drawer = createDrawerNavigator();
-
+const wsLink = new WebSocketLink({
+  uri: 'wss://team-c.hasura.app/v1/graphql',
+  options: {
+    reconnect: true,
+    connectionParams: {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-hasura-admin-secret': 'PcEURINYV1b1OVT8z0l0jsAvMb8Wkt67rJHtTPt8oKcTaLFeLwPAKPIJfe0S7V6g',
+      },
+    },
+  },
+});
+const client = new ApolloClient({
+  link: wsLink,
+  cache: new InMemoryCache(),
+});
 const TabNavigator = () => {
   const { user } = React.useContext(AuthContext);
   const CustomTabBarButton = ({ children, onPress }) => {
@@ -478,20 +492,21 @@ function App() {
     );
   }
   return (
-    <AuthContext.Provider
-      value={{
-        user: state,
-        signIn: signIn,
-        signUp: signUp,
-        signOut: signOut,
-        getToken: getToken,
-        setUserId: setUserId,
-      }}
-    >
-      <PaperProvider theme={theme}>
-        <NavigationContainer theme={theme}>
-          {state.userToken === null ? <Main /> : <TabNavigator />}
-          {/* {loginState.userToken === null ? (
+    <ApolloProvider client={client}>
+      <AuthContext.Provider
+        value={{
+          user: state,
+          signIn: signIn,
+          signUp: signUp,
+          signOut: signOut,
+          getToken: getToken,
+          setUserId: setUserId,
+        }}
+      >
+        <PaperProvider theme={theme}>
+          <NavigationContainer theme={theme}>
+            {state.userToken === null ? <Main /> : <TabNavigator />}
+            {/* {loginState.userToken === null ? (
             <Main />
           ) : loginState.userType === 'employee' ? (
             <Drawer.Navigator initialRouteName="HomeDrawer" drawerContent={props => <DrawerContent {...props} />}>
@@ -504,9 +519,10 @@ function App() {
               <Drawer.Screen name="Notification" component={NotificationScreenStack} />
             </Drawer.Navigator>
           )} */}
-        </NavigationContainer>
-      </PaperProvider>
-    </AuthContext.Provider>
+          </NavigationContainer>
+        </PaperProvider>
+      </AuthContext.Provider>
+    </ApolloProvider>
   );
 }
 
