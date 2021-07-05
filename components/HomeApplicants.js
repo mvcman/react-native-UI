@@ -90,6 +90,7 @@ export default function HomeApplicants({ navigation }) {
               alignItems: 'center',
               zIndex: 9999,
               paddingHorizontal: 10,
+              backgroundColor: theme.primary,
             }}
           >
             <View style={styles.action}>

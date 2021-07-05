@@ -15,8 +15,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import * as Animatable from 'react-native-animatable';
 import { theme } from './ThemeColor';
+import { AuthContext } from './context';
+import { ForgotPassword as ForgotPass } from './aws-functions';
 
 export default function ForgotPassword({ navigation }) {
+  const { setUserId } = React.useContext(AuthContext);
   const [data, setData] = React.useState({
     username: '',
     check_textInputChange: false,
@@ -53,11 +56,13 @@ export default function ForgotPassword({ navigation }) {
     }
   };
 
-  const forgotPassword = () => {
+  const forgotPassword = async () => {
     if (data.username.length === 0) {
       Alert.alert('Wrong Input!', 'Username field cannot be empty!');
       return;
     }
+    await setUserId(data.username);
+    await ForgotPass(data.username);
     Alert.alert('Successful!', 'OTP sent to your respective mobile number please verify your account!');
     navigation.navigate('ForgotPasswordSubmit');
   };
@@ -68,7 +73,7 @@ export default function ForgotPassword({ navigation }) {
         <Text style={styles2.text_header}>Forgot Password!</Text>
       </View>
       <Animatable.View style={styles2.footer} animation="fadeInUpBig">
-        <Text style={styles2.text_footer}>Username</Text>
+        <Text style={styles2.text_footer}>Mobile Number</Text>
         <View style={styles2.action}>
           <FontAwesome name="user-o" color="#05375a" size={20} />
           <TextInput

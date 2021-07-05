@@ -1,11 +1,11 @@
 const url = 'https://team-c.hasura.app/v1/graphql';
 import uuid from 'react-native-uuid';
 
-async function createUser({ userId, password, username, role }) {
+async function createUser({ userId, password, username, role, firstName, lastName }) {
   try {
     const query = {
       query: `mutation {
-        insert_User(objects: {userId: "${userId}", password: "${password}", contactNumber: "${username}", role: "${role}"}) {
+        insert_User(objects: {firstName: "${firstName}", lastName: "${lastName}", userId: "${userId}", password: "${password}", contactNumber: "${username}", role: "${role}"}) {
             returning {
                 contactNumber
                 userId
@@ -245,8 +245,7 @@ async function fetchUsers() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-hasura-admin-secret':
-          'PcEURINYV1b1OVT8z0l0jsAvMb8Wkt67rJHtTPt8oKcTaLFeLwPAKPIJfe0S7V6g',
+        'x-hasura-admin-secret': 'PcEURINYV1b1OVT8z0l0jsAvMb8Wkt67rJHtTPt8oKcTaLFeLwPAKPIJfe0S7V6g',
       },
       body: JSON.stringify(query),
     });
@@ -254,7 +253,7 @@ async function fetchUsers() {
     return jsonData.data.User;
   } catch (err) {
     console.log(err);
-    return {error: err};
+    return { error: err };
   }
 }
 

@@ -87,6 +87,7 @@ const HomeScreen = ({ navigation }) => {
               alignItems: 'center',
               zIndex: 9999,
               paddingHorizontal: 10,
+              backgroundColor: theme.primary,
             }}
           >
             <View style={styles.action}>
@@ -152,6 +153,7 @@ const HomeScreenStack = ({ navigation }) => {
             name="Job Details"
             component={JobDetail}
             options={{
+              headerShown: true,
               headerStyle: {
                 backgroundColor: theme.primary,
               },
@@ -174,6 +176,16 @@ const HomeScreenStack = ({ navigation }) => {
           <applicantStack.Screen
             name="Applicant Details"
             component={ViewApplicantDetails}
+            options={{
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: theme.primary,
+              },
+              headerTintColor: theme.textLight,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
             // options={{
             //   headerShown: false,
             // }}
