@@ -33,26 +33,8 @@ import { theme } from './components/ThemeColor';
 import { fetchSingleUser } from './components/db-functions';
 import { SignOut } from './components/aws-functions';
 import PushNotification from 'react-native-push-notification';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { WebSocketLink } from '@apollo/client/link/ws';
+
 const Tab = createBottomTabNavigator();
-// const Drawer = createDrawerNavigator();
-const wsLink = new WebSocketLink({
-  uri: 'wss://team-c.hasura.app/v1/graphql',
-  options: {
-    reconnect: true,
-    connectionParams: {
-      headers: {
-        'Content-Type': 'application/json',
-        'x-hasura-admin-secret': 'PcEURINYV1b1OVT8z0l0jsAvMb8Wkt67rJHtTPt8oKcTaLFeLwPAKPIJfe0S7V6g',
-      },
-    },
-  },
-});
-const client = new ApolloClient({
-  link: wsLink,
-  cache: new InMemoryCache(),
-});
 const TabNavigator = () => {
   const { user } = React.useContext(AuthContext);
   const CustomTabBarButton = ({ children, onPress }) => {
@@ -493,21 +475,20 @@ function App() {
     );
   }
   return (
-    <ApolloProvider client={client}>
-      <AuthContext.Provider
-        value={{
-          user: state,
-          signIn: signIn,
-          signUp: signUp,
-          signOut: signOut,
-          getToken: getToken,
-          setUserId: setUserId,
-        }}
-      >
-        <PaperProvider theme={theme}>
-          <NavigationContainer theme={theme}>
-            {state.userToken === null ? <Main /> : <TabNavigator />}
-            {/* {loginState.userToken === null ? (
+    <AuthContext.Provider
+      value={{
+        user: state,
+        signIn: signIn,
+        signUp: signUp,
+        signOut: signOut,
+        getToken: getToken,
+        setUserId: setUserId,
+      }}
+    >
+      <PaperProvider theme={theme}>
+        <NavigationContainer theme={theme}>
+          {state.userToken === null ? <Main /> : <TabNavigator />}
+          {/* {loginState.userToken === null ? (
             <Main />
           ) : loginState.userType === 'employee' ? (
             <Drawer.Navigator initialRouteName="HomeDrawer" drawerContent={props => <DrawerContent {...props} />}>
@@ -520,10 +501,9 @@ function App() {
               <Drawer.Screen name="Notification" component={NotificationScreenStack} />
             </Drawer.Navigator>
           )} */}
-          </NavigationContainer>
-        </PaperProvider>
-      </AuthContext.Provider>
-    </ApolloProvider>
+        </NavigationContainer>
+      </PaperProvider>
+    </AuthContext.Provider>
   );
 }
 

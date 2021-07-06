@@ -4,23 +4,23 @@ import { theme } from './ThemeColor';
 import PushNotification from 'react-native-push-notification';
 
 export default function ApplicantsList({ item, navigation }) {
-//   const sendNotification = data => {
-//     // PushNotification.checkPermissions();
-//     // PushNotification.cancelAllLocalNotifications();
-//     PushNotification.localNotification({
-//       channelId: 'demoApp',
-//       title: data.title,
-//       message: data.message,
-//       color: theme.primary,
-//     });
-//     // PushNotification.localNotificationSchedule({
-//     //   channelId: 'demoApp',
-//     //   title: data.title,
-//     //   message: data.message,
-//     //   date: new Date(Date.now() + 10 * 1000),
-//     //   allowWhileIdle: true,
-//     // });
-//   };
+  //   const sendNotification = data => {
+  //     // PushNotification.checkPermissions();
+  //     // PushNotification.cancelAllLocalNotifications();
+  //     PushNotification.localNotification({
+  //       channelId: 'demoApp',
+  //       title: data.title,
+  //       message: data.message,
+  //       color: theme.primary,
+  //     });
+  //     // PushNotification.localNotificationSchedule({
+  //     //   channelId: 'demoApp',
+  //     //   title: data.title,
+  //     //   message: data.message,
+  //     //   date: new Date(Date.now() + 10 * 1000),
+  //     //   allowWhileIdle: true,
+  //     // });
+  //   };
   return (
     <TouchableOpacity
       onPress={() => {
@@ -33,12 +33,14 @@ export default function ApplicantsList({ item, navigation }) {
     >
       <View style={[styles.listItem, styles.shadow]}>
         <Image
-            source={require('../assets/profile.png')}
-            style={{ position: 'absolute', top: 25, width: 60, height: 60, borderRadius: 50, zIndex: 99 }}
-            resizeMode="center"
-            />
+          source={require('../assets/profile.png')}
+          style={{ position: 'absolute', top: 25, width: 60, height: 60, borderRadius: 50, zIndex: 99 }}
+          resizeMode="center"
+        />
         <View style={styles.content}>
-          <Text style={{ fontWeight: 'bold', fontSize: 18, color: theme.primary }}>{item.firstName} {item.lastName}</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 18, color: theme.primary }}>
+            {item.firstName} {item.lastName}
+          </Text>
           <Text style={{ fontWeight: 'normal', fontSize: 14, color: theme.textDark }}>{item.contactNumber}</Text>
         </View>
       </View>

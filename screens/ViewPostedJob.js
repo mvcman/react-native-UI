@@ -50,7 +50,7 @@ const ViewPostedJobs = ({ navigation }) => {
         </View>
       ) : (
         <View style={{ flex: 1, marginBottom: '25%' }}>
-          <Text style={{ fontSize: 26, paddingLeft: '22%', paddingBottom: '5%' }}>Your Posted Jobs</Text>
+          {/* <Text style={{ fontSize: 26, paddingLeft: '22%', paddingBottom: '5%' }}>Your Posted Jobs</Text> */}
 
           <FlatList
             style={{ flex: 1, paddingHorizontal: 10 }}

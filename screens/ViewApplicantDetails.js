@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { theme } from '../components/ThemeColor';
@@ -83,13 +84,13 @@ export default function ViewApplicantDetails({ route, navigation }) {
           <View
             style={{
               backgroundColor: theme.primary,
-              width: '40%',
-              height: 40,
+              width: '90%',
+              height: 50,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               textAlign: 'center',
-              borderRadius: 10,
+              borderRadius: 5,
             }}
           >
             <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold' }}>Contact</Text>
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
     // borderWidth: 2,
   },
   heading: {
-    color: theme.secondary,
+    color: theme.primary,
     fontSize: 26,
     fontWeight: 'bold',
     marginBottom: 5,
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
   },
   label: {
     color: theme.secondary,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 2,
   },

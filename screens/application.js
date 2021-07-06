@@ -4,11 +4,10 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import JobFromEmployer from '../components/applicationQuery';
 
-export default function ApplicantScreen({navigation}) {
+
+export default function ApplicantScreen({navigation}) {  
     return(
-    
           <JobFromEmployer 
           navigation={navigation}/> 
-          
       )
 }

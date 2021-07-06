@@ -9,9 +9,11 @@ import {
   ImageBackground,
   ActivityIndicator,
   RefreshControl,
+  Modal,
+  Pressable,
 } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Icon from 'react-native-vector-icons/FontAwesome/';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { theme } from '../components/ThemeColor';
 import { AuthContext } from '../components/context';
 import ChipComponent from '../components/chip';
@@ -25,13 +27,19 @@ import ApplicantScreen from './application';
 import ViewApplicationScreen from './viewApplicationScreen';
 import ViewApplicantScreen from './viewApplicant';
 import SingleApplicationDetails from '../components/SingleApplicationDetails';
+import * as Animatable from 'react-native-animatable';
 import { LogBox } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import LoadingComponent from '../components/LoadingComponent';
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
 
 const Stack = createStackNavigator();
 
 const Profile = ({ navigation }) => {
   const { user, signOut } = React.useContext(AuthContext);
+  let applicationsCount = 0;
+  const [open, setOpen] = React.useState(false);
+  const [logedout, setLogedout] = React.useState(false);
   const fetchUserProfile = gql`
   subscription MySubscription {
     User_by_pk(userId: "${user.userId}") {
@@ -51,6 +59,11 @@ const Profile = ({ navigation }) => {
         preferencesType
         companyDetail
         companyName
+        Applications_aggregate {
+          aggregate {
+            count
+          }
+        }
       }
       Applications {
         applicationId
@@ -63,30 +76,63 @@ const Profile = ({ navigation }) => {
   }
 `;
   const { loading, error, data } = useSubscription(fetchUserProfile);
-
+  if (data) {
+    data.User_by_pk.Jobs.forEach(element => {
+      applicationsCount = applicationsCount + element.Applications_aggregate.aggregate.count;
+    });
+    console.log(applicationsCount);
+  }
   if (error) {
     return <Text>Error! ${error.message}</Text>;
+  }
+  if (logedout) {
+    return <LoadingComponent message="Logging Out!" />;
   }
   return (
     <SafeAreaView style={styles.container}>
       {loading ? (
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" color="blue" />
-        </View>
+        <LoadingComponent message="Fetching Profile details" />
       ) : (
         <View style={styles.container}>
           <View style={styles.backgroundImageParent}>
             <ImageBackground style={styles.backgroundImage} source={require('../assets/profileBackgroundWhite.jpg')}>
+              {/* <TouchableOpacity> */}
               <Icon
-                name="power-off"
+                name="ellipsis-v"
                 size={35}
-                color="black"
+                color={theme.primary}
                 style={styles.logout}
-                onPress={() => {
-                  signOut();
-                }}
+                onPress={() => setOpen(!open)}
               />
-
+              {/* </TouchableOpacity> */}
+              <Modal animationType="fade" transparent={true} visible={open} onRequestClose={() => setOpen(false)}>
+                {/* <Pressable style={styles.modal} onPress={() => setOpen(false)}> */}
+                <View style={styles.modalView}>
+                  <Pressable
+                    style={styles.btnClose}
+                    onPress={() => {
+                      setOpen(false);
+                      signOut();
+                      setLogedout(true);
+                    }}
+                  >
+                    <Text style={styles.textStyle}>
+                      <Icon name="sign-out" size={25} color={theme.secondary} /> LogOut
+                    </Text>
+                  </Pressable>
+                  <Pressable
+                    style={styles.btnClose}
+                    onPress={() => {
+                      setOpen(false);
+                    }}
+                  >
+                    <Text style={styles.textStyle}>
+                      <Icon name="close" size={25} color={theme.secondary} /> Cancel
+                    </Text>
+                  </Pressable>
+                </View>
+                {/* </Pressable> */}
+              </Modal>
               <View style={styles.profileImage}>
                 <Image source={require('../assets/profilePicture.jpg')} style={styles.image} resizeMode="center" />
                 <View style={styles.add}>
@@ -100,39 +146,42 @@ const Profile = ({ navigation }) => {
               </View>
             </ImageBackground>
           </View>
-          <View style={styles.infoContainer}>
-            <Text style={[styles.text, { fontWeight: '200', fontSize: 30 }]}>
-              {data.User_by_pk.firstName ? data.User_by_pk.firstName : 'Firstname'}{' '}
-              {data.User_by_pk.lastName ? data.User_by_pk.lastName : 'LastName'}
-            </Text>
-            <Text style={[styles.text, { color: 'black', fontSize: 14 }]}>{data ? data.User_by_pk.role : 'role'}</Text>
-            <Text style={[styles.text, { color: 'black', fontSize: 14 }]}>
-              {data ? data.User_by_pk.contactNumber : 'number'}
-            </Text>
-          </View>
-          <View style={styles.statsContainer}>
-            {user.userType === 'employer' ? (
-              <View style={styles.statsBox}>
-                <Text
-                  style={[styles.text, { fontSize: 24, color: theme.primary }]}
-                  onPress={() => navigation.navigate('Posted Jobs')}
-                >
-                  {data.User_by_pk.Jobs.length}
-                </Text>
-                <Text style={[styles.text, styles.subText, { color: theme.primary }]}>Jobs posted</Text>
-              </View>
-            ) : (
-              <Text />
-            )}
-            <View style={[styles.statsBox, { borderColor: '#DFD8C8', borderLeftWidth: 1, borderRightWidth: 1 }]}>
-              {data.User_by_pk.preferences ? (
-                <Text style={[styles.text, { fontSize: 24 }]}>{data.User_by_pk.preferences.length}</Text>
-              ) : (
-                <Text style={[styles.text, { fontSize: 24 }]}>0</Text>
-              )}
-              <Text style={[styles.text, styles.subText]}>Interests</Text>
+          <Animatable.View animation="fadeInUpBig">
+            <View style={styles.infoContainer}>
+              <Text style={[styles.text, { fontWeight: '200', fontSize: 30 }]}>
+                {data.User_by_pk.firstName ? data.User_by_pk.firstName : 'Firstname'}{' '}
+                {data.User_by_pk.lastName ? data.User_by_pk.lastName : 'LastName'}
+              </Text>
+              <Text style={[styles.text, { color: 'black', fontSize: 14, margin: 5 }]}>
+                {data ? data.User_by_pk.role : 'role'}
+              </Text>
+              <Text style={[styles.text, { color: theme.secondary, fontSize: 18 }]}>
+                {data ? data.User_by_pk.contactNumber : 'number'}
+              </Text>
             </View>
-            <View style={styles.statsBox}>
+            <View style={styles.statsContainer}>
+              {user.userType === 'employer' ? (
+                <View style={styles.statsBox}>
+                  <Text
+                    style={[styles.text, { fontSize: 24, color: theme.primary }]}
+                    onPress={() => navigation.navigate('Posted Jobs')}
+                  >
+                    {data.User_by_pk.Jobs.length}
+                  </Text>
+                  <Text style={[styles.text, styles.subText, { color: theme.primary }]}>Jobs posted</Text>
+                </View>
+              ) : (
+                <Text />
+              )}
+              <View style={[styles.statsBox, { borderColor: '#DFD8C8', borderLeftWidth: 1, borderRightWidth: 1 }]}>
+                {data.User_by_pk.preferences ? (
+                  <Text style={[styles.text, { fontSize: 24 }]}>{data.User_by_pk.preferences.length}</Text>
+                ) : (
+                  <Text style={[styles.text, { fontSize: 24 }]}>0</Text>
+                )}
+                <Text style={[styles.text, styles.subText]}>Interests</Text>
+              </View>
+              {/* <View style={styles.statsBox}> */}
               {data ? (
                 data.User_by_pk.role === 'employer' ? (
                   <View style={styles.statsBox}>
@@ -140,7 +189,7 @@ const Profile = ({ navigation }) => {
                       style={[styles.text, { fontSize: 24, color: theme.primary }]}
                       onPress={() => navigation.navigate('View Jobs')}
                     >
-                      {data.User_by_pk.Applications.length}
+                      {applicationsCount}
                     </Text>
                     <Text style={[styles.text, styles.subText, { color: theme.primary }]}>Applications</Text>
                   </View>
@@ -161,43 +210,42 @@ const Profile = ({ navigation }) => {
                   loading
                 </Text>
               )}
+              {/* </View> */}
             </View>
-          </View>
-          <View>
-            <Text
-              style={[
-                styles.text,
-                {
-                  color: 'black',
-                  fontSize: 20,
-                  left: '3%',
-                  top: '10%',
-                },
-              ]}
-            >
-              Your Interests are as follows:
-            </Text>
-            <View
-              style={{
-                height: 'auto',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                justifyContent: 'space-around',
-                alignContent: 'space-around',
-                padding: 15,
-              }}
-            >
-              {data ? (
-                <ChipComponent title={data.User_by_pk.preferences} />
-              ) : (
-                <View style={{ flex: 1 }}>
-                  <View style={styles.loading}>
-                    <ActivityIndicator size="large" color="blue" />
+            <View style={{ padding: 10 }}>
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: theme.secondary,
+                    fontSize: 18,
+                    left: '3%',
+                    top: '10%',
+                  },
+                ]}
+              >
+                Your Interests are as follows:
+              </Text>
+              <View
+                style={{
+                  height: 'auto',
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  padding: 15,
+                }}
+              >
+                {data ? (
+                  <ChipComponent title={data.User_by_pk.preferences} />
+                ) : (
+                  <View style={{ flex: 1, padding: 10 }}>
+                    <View style={styles.loading}>
+                      <ActivityIndicator size="large" color="blue" />
+                    </View>
                   </View>
-                </View>
-              )}
+                )}
+              </View>
             </View>
-          </View>
+          </Animatable.View>
         </View>
       )}
     </SafeAreaView>
@@ -230,7 +278,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'HelveticaNeue',
-    color: '#52575D',
+    // color: '#52575D',
+    color: theme.primary,
   },
   image: {
     flex: 1,
@@ -248,9 +297,8 @@ const styles = StyleSheet.create({
   },
   logout: {
     top: '10%',
-    left: '85%',
+    left: '90%',
   },
-
   subText: {
     fontSize: 12,
     color: '#AEB5BC',
@@ -282,9 +330,23 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   statsContainer: {
+    height: 70,
     flexDirection: 'row',
     alignSelf: 'center',
     marginTop: 10,
+    borderWidth: 1,
+    borderColor: theme.primary,
+    shadowColor: '#7f5df0',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 1.5,
+    // elevation: 5,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   statsBox: {
     alignItems: 'center',
@@ -297,9 +359,53 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     opacity: 0.5,
-    backgroundColor: 'black',
+    backgroundColor: theme.secondary,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  shadow: {
+    shadowColor: '#7f5df0',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  // modal: {
+  //   width: '100%',
+  //   height: '100%',
+  //   backgroundColor: '#000',
+  //   opacity: 0.9,
+  // },
+  modalView: {
+    position: 'absolute',
+    top: '10%',
+    left: '70%',
+    backgroundColor: '#fff',
+    // width: 100,
+    // height: 40,
+    borderRadius: 5,
+    shadowColor: '#7f5df0',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+    paddingHorizontal: 10,
+  },
+  btnClose: {
+    height: 40,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textStyle: {
+    color: '#000',
+    fontSize: 18,
   },
 });
 export default ProfileScreenStack;

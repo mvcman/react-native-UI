@@ -1,31 +1,28 @@
 import React from 'react';
 import { View, Text, StyleSheet, MaskedViewComponent, Animated } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import { ActivityIndicator } from 'react-native-paper';
+import { theme } from './ThemeColor';
 
-export default function LoadingComponent() {
-  const ColorLayer = () => <View style={[StyleSheet.absoluteFill, { backgroundColor: '#7f2309' }]} />;
+export default function LoadingComponent({ message }) {
   return (
     <View style={{ flex: 1 }}>
-      <ColorLayer />
-      <MaskedViewComponent
-        style={{ flex: 1 }}
-        maskElement={
-          <View style={styles.centered}>
-            <Animated.Image source={{ uri: '' }} style={{ width: 1000 }} resizeMode="contain"></Animated.Image>
-          </View>
-        }
-      >
-        <Animated.View style={styles.centered}>
-          <Text>Your App goes here!</Text>
-        </Animated.View>
-      </MaskedViewComponent>
+      <LinearGradient colors={[theme.primary, '#B0D6FC']} style={styles.container}>
+        <ActivityIndicator />
+        <Text style={styles.text}>{message}</Text>
+      </LinearGradient>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  centered: {
+  container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  text: {
+    fontSize: 18,
+    color: '#fff',
   },
 });

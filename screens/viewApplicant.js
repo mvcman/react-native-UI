@@ -13,7 +13,7 @@ export default function ViewApplicantScreen({route,navigation}) {
             Alert.alert('Error', resp.Error.message);
             return;
         }
-        console.log('response', resp.data.update_Application.returning[0].status);
+        console.log('response', resp);
         console.log(route.params.data.item.status);
         //Alert.alert('Success', 'Application accepted');
         ToastAndroid.show('Application approved', ToastAndroid.LONG);

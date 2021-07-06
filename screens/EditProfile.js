@@ -17,13 +17,33 @@ const EditProfileScreen = props => {
   const [lastName, setLastName] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [data, setData] = useState({
+    isFName: false,
+    isLName: false,
+    isPreference: false,
+  });
 
   const handleSubmit = async () => {
     if (firstName === '') {
+      setData({
+        isFName: true,
+        isLName: false,
+        isPreference: false,
+      });
       setError('Firstname cannot be empty');
     } else if (lastName === '') {
+      setData({
+        isFName: false,
+        isLName: true,
+        isPreference: false,
+      });
       setError('Lastname cannot be empty');
     } else if (preferences === '') {
+      setData({
+        isFName: false,
+        isLName: false,
+        isPreference: true,
+      });
       setError('Preferences cannot be empty');
     } else {
       setLoading(true);
@@ -36,7 +56,18 @@ const EditProfileScreen = props => {
         setPreferences('');
         setLoading(false);
         props.navigation.navigate('Profile');
+        setData({
+          isFName: false,
+          isLName: false,
+          isPreference: false,
+        });
+        setError('');
       } else {
+        setData({
+          isFName: false,
+          isLName: false,
+          isPreference: true,
+        });
         setError('set preferences separated by "," for example aws,sql,react');
       }
     }
@@ -44,59 +75,75 @@ const EditProfileScreen = props => {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 26, marginTop: 20, marginBottom: 20 }}>Enter details to update</Text>
-      <View style={{ justifyContent: 'center' }}>
-        <Text style={{ color: 'red', fontSize: 15 }}>{error}</Text>
+      {/* <Text style={{ fontSize: 26, marginTop: 20, marginBottom: 20 }}>Enter details to update</Text> */}
+
+      <View style={styles.witherror}>
+        <View style={styles.action}>
+          <FontAwesome name="user-o" color={colors.text} size={20} />
+          <TextInput
+            placeholder="First Name"
+            placeholderTextColor="grey"
+            autoCorrect={false}
+            value={firstName}
+            style={[
+              styles.textInput,
+              {
+                color: colors.text,
+              },
+            ]}
+            onChangeText={setFirstName}
+          />
+        </View>
+        {data.isFName ? (
+          <Text style={{ color: 'red', fontSize: 14, marginBottom: 5, marginLeft: 20 }}>{error}</Text>
+        ) : null}
       </View>
-      <View style={styles.action}>
-        <FontAwesome name="user-o" color={colors.text} size={20} />
-        <TextInput
-          placeholder="First Name"
-          placeholderTextColor="grey"
-          autoCorrect={false}
-          value={firstName}
-          style={[
-            styles.textInput,
-            {
-              color: colors.text,
-            },
-          ]}
-          onChangeText={setFirstName}
-        />
+
+      <View style={styles.witherror}>
+        <View style={styles.action}>
+          <FontAwesome name="user-o" color={colors.text} size={20} />
+          <TextInput
+            placeholder="Last Name"
+            value={lastName}
+            placeholderTextColor="grey"
+            autoCorrect={false}
+            style={[
+              styles.textInput,
+              {
+                color: colors.text,
+              },
+            ]}
+            onChangeText={setLastName}
+          />
+        </View>
+        {data.isLName ? (
+          <Text style={{ color: 'red', fontSize: 14, marginBottom: 5, marginLeft: 20 }}>{error}</Text>
+        ) : null}
       </View>
-      <View style={styles.action}>
-        <FontAwesome name="user-o" color={colors.text} size={20} />
-        <TextInput
-          placeholder="Last Name"
-          value={lastName}
-          placeholderTextColor="grey"
-          autoCorrect={false}
-          style={[
-            styles.textInput,
-            {
-              color: colors.text,
-            },
-          ]}
-          onChangeText={setLastName}
-        />
+
+      <View style={styles.witherror}>
+        <View style={styles.action}>
+          <FontAwesome name="star" color={colors.text} size={20} />
+          <TextInput
+            placeholder='Enter preferences separated by " , "'
+            placeholderTextColor="#666666"
+            autoCorrect={false}
+            value={preferences}
+            style={[
+              styles.textInput,
+              {
+                color: colors.text,
+              },
+            ]}
+            onChangeText={setPreferences}
+          />
+        </View>
+        {data.isPreference ? (
+          <Text style={{ color: 'red', fontSize: 14, marginBottom: 5, marginLeft: 20 }}>{error}</Text>
+        ) : null}
       </View>
-      <View style={styles.action}>
-        <FontAwesome name="star" color={colors.text} size={20} />
-        <TextInput
-          placeholder='Enter preferences separated by " , "'
-          placeholderTextColor="#666666"
-          autoCorrect={false}
-          value={preferences}
-          style={[
-            styles.textInput,
-            {
-              color: colors.text,
-            },
-          ]}
-          onChangeText={setPreferences}
-        />
-      </View>
-      <View style={styles.action}>
+
+      <View style={styles.action2}>
         <FontAwesome name="user-o" color={colors.text} size={20} />
         <TextInput
           value={user.userType}
@@ -111,7 +158,7 @@ const EditProfileScreen = props => {
           ]}
         />
       </View>
-      <View style={styles.action}>
+      <View style={styles.action2}>
         <Feather name="phone" color={colors.text} size={20} />
         <TextInput
           placeholder={user.userName}
@@ -147,16 +194,30 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     alignItems: 'center',
+    padding: 20,
   },
   commandButton: {
-    padding: 15,
-    borderRadius: 10,
-    backgroundColor: 'blue',
+    // padding: 15,
+    // borderRadius: 10,
+    // backgroundColor: 'blue',
+    // alignItems: 'center',
+    // marginTop: 10,
+    backgroundColor: theme.primary,
+    width: '100%',
+    height: 50,
+    display: 'flex',
     alignItems: 'center',
-    marginTop: 10,
+    justifyContent: 'center',
+    textAlign: 'center',
+    borderRadius: 5,
   },
   panelHeader: {
     alignItems: 'center',
+  },
+  witherror: {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingHorizontal: 10,
   },
   panelHandle: {
     width: 40,
@@ -173,19 +234,28 @@ const styles = StyleSheet.create({
     marginVertical: 7,
   },
   panelButtonTitle: {
-    fontSize: 17,
+    color: '#fff',
+    fontSize: 22,
     fontWeight: 'bold',
-    color: 'white',
   },
   action: {
-    left: '1%',
-    width: '90%',
+    width: '100%',
     flexDirection: 'row',
     marginTop: 20,
     marginBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#f2f2f2',
     paddingBottom: 5,
+  },
+  action2: {
+    width: '100%',
+    flexDirection: 'row',
+    marginTop: 20,
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f2f2f2',
+    paddingBottom: 5,
+    paddingHorizontal: 10,
   },
   actionError: {
     flexDirection: 'row',

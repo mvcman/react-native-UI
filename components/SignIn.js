@@ -18,6 +18,8 @@ import { AuthContext } from './context';
 import { Users } from './users';
 import { theme } from './ThemeColor';
 import { SignIn as AWS_SignIn } from './aws-functions';
+import { ActivityIndicator } from 'react-native-paper';
+import LoadingComponent from './LoadingComponent';
 
 export default function SignIn({ navigation }) {
   const [data, setData] = React.useState({
@@ -28,7 +30,8 @@ export default function SignIn({ navigation }) {
     isValidUser: true,
     isValidPassword: true,
   });
-  const { signIn } = React.useContext(AuthContext);
+  const [loading, setLoading] = React.useState(false);
+  const { user, signIn } = React.useContext(AuthContext);
   const textInputChange = value => {
     if (value.trim().length === 10) {
       setData({
@@ -83,12 +86,14 @@ export default function SignIn({ navigation }) {
   };
 
   const handleLogin = async (user, pass) => {
+    setLoading(true);
     const foundUser = Users.filter(item => {
       return user === item.username && pass === item.password;
     });
     console.log(foundUser);
     if (data.username.length === 0 || data.password.length === 0) {
       Alert.alert('Wrong Input!', 'Username or Password field cannot be empty.');
+      setLoading(false);
       return;
     }
     // if (foundUser.length === 0) {
@@ -98,6 +103,7 @@ export default function SignIn({ navigation }) {
     const authenticated_user = await AWS_SignIn('+91' + data.username, data.password);
     if (authenticated_user.Error) {
       Alert.alert(authenticated_user.Error.name, authenticated_user.Error.message);
+      setLoading(false);
       return;
     }
     signIn({
@@ -105,6 +111,9 @@ export default function SignIn({ navigation }) {
       token: authenticated_user.signInUserSession.accessToken.jwtToken,
     });
   };
+  if (loading) {
+    return <LoadingComponent message="Please wait we are fetching your details!" />;
+  }
   return (
     <View style={styles2.container}>
       <StatusBar backgroundColor={theme.primary} barStyle="light-content" />
@@ -112,7 +121,7 @@ export default function SignIn({ navigation }) {
         <Text style={styles2.text_header}>Welcome!</Text>
       </View>
       <Animatable.View style={styles2.footer} animation="fadeInUpBig">
-        <Text style={styles2.text_footer}>Username</Text>
+        <Text style={styles2.text_footer}>Mobile Number</Text>
         <View style={styles2.action}>
           <FontAwesome name="user-o" color="#05375a" size={20} />
           <TextInput
