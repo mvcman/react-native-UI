@@ -22,13 +22,13 @@ export default function SplashScreen({ navigation }) {
         <Animatable.Image
           animation="bounceIn"
           duration={1500}
-          source={require('../assets/logo.png')}
+          source={require('../assets/onerecruit.png')}
           style={styles.logo}
           resizeMode="stretch"
         />
       </View>
       <Animatable.View animation="fadeInUpBig" style={styles.footer}>
-        <Text style={styles.title}>Stay Connected with everyone...</Text>
+        <Text style={styles.title}>Finding jobs made easy. for everyone.</Text>
         <Text style={styles.text}>Sign In with account</Text>
         <View style={styles.button}>
           <TouchableOpacity

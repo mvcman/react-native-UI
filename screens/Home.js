@@ -20,6 +20,8 @@ import { AuthContext } from '../components/context';
 import ViewApplicantDetails from './ViewApplicantDetails';
 import HomeApplicants from '../components/HomeApplicants';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import LoadingComponent from '../components/LoadingComponent';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Home = createStackNavigator();
 const jobsStack = createStackNavigator();
@@ -53,6 +55,12 @@ const HomeScreen = ({ navigation }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, []),
+  );
+
   const SearchResult = t => {
     if (t === 'demo') {
       setList(jobList);
@@ -72,9 +80,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" color="blue" />
-        </View>
+        <LoadingComponent message="Fething Job details" />
       ) : (
         <View style={{ flex: 1, position: 'relative' }}>
           <View
@@ -167,7 +173,7 @@ const HomeScreenStack = ({ navigation }) => {
       ) : (
         <>
           <applicantStack.Screen
-            name="HomeApplicants"
+            name="Applicants"
             component={HomeApplicants}
             options={{
               headerShown: false,
@@ -187,7 +193,7 @@ const HomeScreenStack = ({ navigation }) => {
               },
             }}
             // options={{
-            //   headerShown: false,
+            //   headerShown: true,
             // }}
           />
         </>

@@ -27,6 +27,7 @@ subscription MySubscription {
        applicationId
        dateOfApplication
        jobId
+       status
        User {
          userId
          firstName
