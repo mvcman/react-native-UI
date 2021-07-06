@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
   content: {
     paddingTop: 10,
     paddingBottom: 10,
+    paddingHorizontal: 20,
     // borderColor: theme.primary,
     // borderRadius: 5,
     // borderWidth: 2,

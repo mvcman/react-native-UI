@@ -9,6 +9,7 @@ import {
   Text,
   StyleSheet,
   Button,
+  Dimensions,
 } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Feather from 'react-native-vector-icons/Feather';
@@ -33,6 +34,7 @@ export default function HomeApplicants({ navigation }) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [loading, setLoading] = useState(false);
 
+  const { height } = Dimensions.get('screen');
   const fetchData = async () => {
     setLoading(true);
 
@@ -78,7 +80,7 @@ export default function HomeApplicants({ navigation }) {
       {loading ? (
         <LoadingComponent message="Fetching applicantions" />
       ) : (
-        <View style={{ flex: 1, position: 'relative' }}>
+        <View style={{ flex: 1, position: 'relative', paddingBottom: 30 }}>
           <View
             style={{
               position: 'absolute',
@@ -118,7 +120,7 @@ export default function HomeApplicants({ navigation }) {
               flex: 1,
               padding: 10,
               paddingTop: 65,
-              marginBottom: 60,
+              marginBottom: 50,
             }}
             data={list}
             renderItem={({ item }) => <ApplicantsList navigation={navigation} item={item} />}
