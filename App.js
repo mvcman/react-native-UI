@@ -17,6 +17,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Main from './screens/Main';
 import { AuthContext } from './components/context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import messaging from '@react-native-firebase/messaging';
 import {
   Provider as PaperProvider,
   DarkTheme as PaperDarkTheme,
@@ -32,7 +33,6 @@ import ProfileScreenStack from './screens/Profile';
 import { theme } from './components/ThemeColor';
 import { fetchSingleUser } from './components/db-functions';
 import { SignOut } from './components/aws-functions';
-import PushNotification from 'react-native-push-notification';
 
 const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
@@ -299,6 +299,17 @@ function App() {
       await AsyncStorage.setItem('userType', getUser.role || 'applicant');
       await AsyncStorage.setItem('userName', getUser.contactNumber || '8945738478');
       await AsyncStorage.setItem('userId', userId);
+      const userTypeLogin = await AsyncStorage.getItem('userType');
+      if (userTypeLogin === 'applicant') {
+        messaging()
+          .subscribeToTopic('applicant')
+          .then(() => console.log('Subscribed to applicant topic!'));
+      }
+      if (userTypeLogin === 'employer') {
+        messaging()
+          .subscribeToTopic('employer')
+          .then(() => console.log('Subscribed to employer topic!'));
+      }
       // dispatch({type: 'LOGIN', id: username, token: userToken, userType: userType});
       setState({
         userName: getUser.contactNumber,
@@ -323,6 +334,17 @@ function App() {
   };
 
   const signOut = async () => {
+    const userTypeLogin = await AsyncStorage.getItem('userType');
+    if (userTypeLogin === 'applicant') {
+      await messaging()
+        .unsubscribeFromTopic('applicant')
+        .then(() => console.log('Unsubscribed from applicant the topic!'));
+    }
+    if (userTypeLogin === 'employer') {
+      await messaging()
+        .unsubscribeFromTopic('employer')
+        .then(() => console.log('Unsubscribed from employer the topic!'));
+    }
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('userName');
     await AsyncStorage.removeItem('userType');
@@ -436,13 +458,7 @@ function App() {
   //   }),
   //   [],
   // );
-  const createChannel = () => {
-    PushNotification.cancelAllLocalNotifications();
-    PushNotification.createChannel({
-      channelId: 'demoApp',
-      channelName: 'Recruit',
-    });
-  };
+
   React.useEffect(() => {
     console.log('Executing useEffect!');
     setTimeout(() => {
@@ -458,12 +474,21 @@ function App() {
             userName: userName,
             userId: userId,
           });
+          if (userType === 'applicant') {
+            messaging()
+              .subscribeToTopic('applicant')
+              .then(() => console.log('Subscribed to applicant topic!'));
+          }
+          if (userType === 'employer') {
+            messaging()
+              .subscribeToTopic('employer')
+              .then(() => console.log('Subscribed to applicant topic!'));
+          }
         } catch (err) {
           console.log(err);
         }
       };
       getToken1();
-      createChannel();
     }, 1000);
   }, []);
   if (state.isLoading) {
