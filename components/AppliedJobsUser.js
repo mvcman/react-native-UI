@@ -7,7 +7,7 @@ export default function AppliedJobsUser({ item, navigation }) {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('singleApplicationDetails', { data: item.Job });
+        navigation.navigate('Application Details', { data: item.Job });
       }}
     >
       <View style={[styles.listItem, styles.shadow]}>

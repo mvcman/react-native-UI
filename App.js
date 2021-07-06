@@ -118,7 +118,8 @@ const TabNavigator = () => {
           component={CreateJobStack}
           options={{
             tabBarIcon: ({ focused }) => <FontAwesomeIcon name="plus" size={35} color={focused ? '#FFF' : '#FFF'} />,
-            tabBarButton: props => <CustomTabBarButton {...props} />,
+            tabBarButton: props => <CustomTabBarButton {...props} 
+            />,
           }}
         />
       ) : null}
