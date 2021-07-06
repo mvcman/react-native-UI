@@ -1,20 +1,22 @@
 import React from 'react'
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Alert} from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Alert, ToastAndroid} from 'react-native'
 import { Divider } from 'react-native-elements';
 import { theme } from '../components/ThemeColor';
 import ChipComponent from '../components/chip';
 import { rejectclick, acceptClick } from '../components/db-functions';
-
+let resp;
 export default function ViewApplicantScreen({route,navigation}) {
 
     const handleAccept = async (a_id) => {
-        const resp = await acceptClick(a_id);
+        resp = await acceptClick(a_id);
         if(resp.Error){
             Alert.alert('Error', resp.Error.message);
             return;
         }
-        console.log('response', resp);
-        Alert.alert('Success', 'Application accepted');
+        console.log('response', resp.data.update_Application.returning[0].status);
+        console.log(route.params.data.item.status);
+        //Alert.alert('Success', 'Application accepted');
+        ToastAndroid.show('Application approved', ToastAndroid.LONG);
     }
 
     const handleReject = async (r_id) => {
@@ -24,7 +26,8 @@ export default function ViewApplicantScreen({route,navigation}) {
             return;
         }
         console.log('response', resp);
-        Alert.alert('Success', 'Application rejected');
+        //Alert.alert('Success', 'Application rejected');
+        ToastAndroid.show('Application rejected', ToastAndroid.LONG);
     }
 
     return (
@@ -42,7 +45,7 @@ export default function ViewApplicantScreen({route,navigation}) {
                       <Divider orientation="horizontal" height={1} />
                    </View>
                   {/* <View>
-                  <Text style={styles.role}>{route.params.data.item.applicationId}</Text>
+                  <Text style={styles.role}>{route.params.data.item.status}</Text>
                   </View> */}
                   <View style={{ marginBottom: 10 }}>
                     <Text style={styles.role}>{route.params.data.item.User.role}</Text>
@@ -58,10 +61,13 @@ export default function ViewApplicantScreen({route,navigation}) {
                       )}
                     </Text>
                   </View>
-                    <View style={{padding: 15, top: '5%', flex:1, flexDirection:'row', justifyContent:'center'}}>
+                  {
+                    route.params.data.item.status === 'applied' || route.params.data.item.status === 'Applied' ?
+                      <View>
+                      <View style={{padding: 15, top: '5%', flex:1, flexDirection:'row', justifyContent:'center'}}>
                         <TouchableOpacity style={styles.acceptButton} onPress={ () => handleAccept(route.params.data.item.applicationId)}>
                             <View>
-                            <Text style={styles.buttonText}>Accept</Text>
+                            <Text style={styles.buttonText}>Approve</Text>
                             </View>
                         </TouchableOpacity>
                         <Text>{'     '}</Text>
@@ -71,6 +77,32 @@ export default function ViewApplicantScreen({route,navigation}) {
                             </View>
                         </TouchableOpacity>
                     </View>
+                    </View>
+                    : (
+                      <View></View>
+                    )
+                  }
+
+                  {
+                    route.params.data.item.status === 'Accepted' ?
+                      <View style={{padding: 15, top: '5%', flex:1, flexDirection:'row', justifyContent:'center'}}>
+                        <Text style={styles.role}>This application is already approved</Text>
+                    </View>
+                    : (
+                      <View></View>
+                    )
+                  }
+
+                  {
+                    route.params.data.item.status === 'Rejected' ?
+                      <View style={{padding: 15, top: '5%', flex:1, flexDirection:'row', justifyContent:'center'}}>
+                        <Text style={styles.role}>This application is already rejected</Text>
+                    </View>
+                    : (
+                      <View></View>
+                    )
+                  }
+                    
                 </View>
             </ScrollView>
         </View>

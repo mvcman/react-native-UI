@@ -94,7 +94,7 @@ const Profile = ({ navigation }) => {
                     name="edit"
                     size={25}
                     color="white"
-                    onPress={() => navigation.navigate('editProfile', { navigation: { navigation } })}
+                    onPress={() => navigation.navigate('Edit Profile', { navigation: { navigation } })}
                   />
                 </View>
               </View>
@@ -115,7 +115,7 @@ const Profile = ({ navigation }) => {
               <View style={styles.statsBox}>
                 <Text
                   style={[styles.text, { fontSize: 24, color: theme.primary }]}
-                  onPress={() => navigation.navigate('viewPostedJobs')}
+                  onPress={() => navigation.navigate('Posted Jobs')}
                 >
                   {data.User_by_pk.Jobs.length}
                 </Text>
@@ -138,7 +138,7 @@ const Profile = ({ navigation }) => {
                   <View style={styles.statsBox}>
                     <Text
                       style={[styles.text, { fontSize: 24, color: theme.primary }]}
-                      onPress={() => navigation.navigate('viewApplications')}
+                      onPress={() => navigation.navigate('View Jobs')}
                     >
                       {data.User_by_pk.Applications.length}
                     </Text>
@@ -148,7 +148,7 @@ const Profile = ({ navigation }) => {
                   <View style={styles.statsBox}>
                     <Text
                       style={[styles.text, { fontSize: 24, color: theme.primary }]}
-                      onPress={() => navigation.navigate('viewAppliedJobs')}
+                      onPress={() => navigation.navigate('Applied Jobs')}
                     >
                       {data.User_by_pk.Applications.length}
                     </Text>
@@ -212,12 +212,12 @@ const ProfileScreenStack = ({ navigation }) => {
       }}
     >
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="editProfile" component={EditProfileScreen} />
-      <Stack.Screen name="viewPostedJobs" component={ViewPostedJobs} />
-      <Stack.Screen name="viewAppliedJobs" component={ViewAppliedJobs} />
-      <Stack.Screen name="singleApplicationDetails" component={SingleApplicationDetails} />
+      <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
+      <Stack.Screen name="Posted Jobs" component={ViewPostedJobs} />
+      <Stack.Screen name="Applied Jobs" component={ViewAppliedJobs} />
+      <Stack.Screen name="Application Details" component={SingleApplicationDetails} />
       <Stack.Screen name="Job Details" component={JobDetail} />
-      <Stack.Screen name="viewApplications" component={ApplicantScreen} />
+      <Stack.Screen name="View Jobs" component={ApplicantScreen} />
       <Stack.Screen name="Applications" component={ViewApplicationScreen} />
       <Stack.Screen name="Applicant" component={ViewApplicantScreen} />
     </Stack.Navigator>

@@ -165,7 +165,7 @@ const HomeScreenStack = ({ navigation }) => {
       ) : (
         <>
           <applicantStack.Screen
-            name="HomeApplicants"
+            name="Applicants"
             component={HomeApplicants}
             options={{
               headerShown: false,
@@ -175,7 +175,7 @@ const HomeScreenStack = ({ navigation }) => {
             name="Applicant Details"
             component={ViewApplicantDetails}
             // options={{
-            //   headerShown: false,
+            //   headerShown: true,
             // }}
           />
         </>

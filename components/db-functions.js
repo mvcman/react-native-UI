@@ -264,7 +264,10 @@ const acceptClick = async (aid) => {
   const query = {
     query: `mutation MyMutation {
       update_Application(_set: {status: "Accepted"}, where: {applicationId: {_eq: "${aid}"}}) {
-        affected_rows
+        returning {
+          applicationId
+          status
+        }
       }
     }`
   };
@@ -278,6 +281,7 @@ const acceptClick = async (aid) => {
   body: JSON.stringify(query),
   });
   const jsonData = data.json();
+  console.log('returned jsondata', jsonData);
   return jsonData;
   }
   catch(err){

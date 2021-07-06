@@ -91,7 +91,7 @@ const CreateJob = ({ navigation }) => {
         setCompanyDescription('');
         ToastAndroid.show('Job has been posted successfully', ToastAndroid.SHORT);
         setError('');
-        navigation.navigate('viewPostedJobs');
+        navigation.navigate('Posted Jobs');
       } else {
         setError('unable to update please try again');
       }
@@ -321,7 +321,7 @@ const CreateJobStack = ({ navigation }) => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="CreateJob" component={CreateJob} />
+      <Stack.Screen name="Create Job" component={CreateJob} />
     </Stack.Navigator>
   );
 };
