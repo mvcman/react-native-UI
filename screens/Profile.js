@@ -98,41 +98,16 @@ const Profile = ({ navigation }) => {
             <ImageBackground style={styles.backgroundImage} source={require('../assets/profileBackgroundWhite.jpg')}>
               {/* <TouchableOpacity> */}
               <Icon
-                name="ellipsis-v"
+                name="power-off"
                 size={35}
                 color={theme.primary}
                 style={styles.logout}
-                onPress={() => setOpen(!open)}
+                onPress={() => {
+                  signOut();
+                  setLogedout(true);
+                }}
               />
               {/* </TouchableOpacity> */}
-              <Modal animationType="fade" transparent={true} visible={open} onRequestClose={() => setOpen(false)}>
-                {/* <Pressable style={styles.modal} onPress={() => setOpen(false)}> */}
-                <View style={styles.modalView}>
-                  <Pressable
-                    style={styles.btnClose}
-                    onPress={() => {
-                      setOpen(false);
-                      signOut();
-                      setLogedout(true);
-                    }}
-                  >
-                    <Text style={styles.textStyle}>
-                      <Icon name="sign-out" size={25} color={theme.secondary} /> LogOut
-                    </Text>
-                  </Pressable>
-                  <Pressable
-                    style={styles.btnClose}
-                    onPress={() => {
-                      setOpen(false);
-                    }}
-                  >
-                    <Text style={styles.textStyle}>
-                      <Icon name="close" size={25} color={theme.secondary} /> Cancel
-                    </Text>
-                  </Pressable>
-                </View>
-                {/* </Pressable> */}
-              </Modal>
               <View style={styles.profileImage}>
                 <Image source={require('../assets/profilePicture.jpg')} style={styles.image} resizeMode="center" />
                 <View style={styles.add}>
@@ -162,15 +137,17 @@ const Profile = ({ navigation }) => {
             <View style={styles.statsContainer}>
               {user.userType === 'employer' ? (
                 <View style={styles.statsBox}>
-                  <Text
-                    style={[styles.text, { fontSize: 24, color: theme.primary }]}
-                    onPress={() => navigation.navigate('Posted Jobs')}
-                  >
-                    {data.User_by_pk.Jobs.length}
-                  </Text>
-                  <Text style={[styles.text, styles.subText, { color: theme.primary }]}>Jobs posted</Text>
+                  <TouchableOpacity onPress={() => navigation.navigate('Posted Jobs')}>
+                    <Text style={[styles.text, { fontSize: 24, color: theme.primary }]}>
+                      {data.User_by_pk.Jobs.length}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.navigate('Posted Jobs')}>
+                    <Text style={[styles.text, styles.subText, { color: theme.primary }]}>Jobs posted</Text>
+                  </TouchableOpacity>
                 </View>
               ) : (
+                // </TouchableOpacity>
                 <Text />
               )}
               <View style={[styles.statsBox, { borderColor: '#DFD8C8', borderLeftWidth: 1, borderRightWidth: 1 }]}>
@@ -185,24 +162,24 @@ const Profile = ({ navigation }) => {
               {data ? (
                 data.User_by_pk.role === 'employer' ? (
                   <View style={styles.statsBox}>
-                    <Text
-                      style={[styles.text, { fontSize: 24, color: theme.primary }]}
-                      onPress={() => navigation.navigate('View Jobs')}
-                    >
-                      {applicationsCount}
-                    </Text>
-                    <Text style={[styles.text, styles.subText, { color: theme.primary }]}>Applications</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('View Jobs')}>
+                      <Text style={[styles.text, { fontSize: 24, color: theme.primary }]}>{applicationsCount}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('View Jobs')}>
+                      <Text style={[styles.text, styles.subText, { color: theme.primary }]}>Applications</Text>
+                    </TouchableOpacity>
                   </View>
                 ) : (
                   <View style={styles.statsBox}>
-                    <Text
-                      style={[styles.text, { fontSize: 24, color: theme.primary }]}
-                      onPress={() => navigation.navigate('Applied Jobs')}
-                    >
-                      {data.User_by_pk.Applications.length}
-                    </Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Applied Jobs')}>
+                      <Text style={[styles.text, { fontSize: 24, color: theme.primary }]}>
+                        {data.User_by_pk.Applications.length}
+                      </Text>
+                    </TouchableOpacity>
 
-                    <Text style={[styles.text, styles.subText, { color: theme.primary }]}>Applied</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Applied Jobs')}>
+                      <Text style={[styles.text, styles.subText, { color: theme.primary }]}>Applied</Text>
+                    </TouchableOpacity>
                   </View>
                 )
               ) : (
@@ -255,98 +232,122 @@ const Profile = ({ navigation }) => {
 const ProfileScreenStack = ({ navigation }) => {
   return (
     <Stack.Navigator
-      // screenOptions={{
-      //   headerShown: false,
-      // }}
+    // screenOptions={{
+    //   headerShown: false,
+    // }}
     >
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Edit Profile" component={EditProfileScreen}  options={{
-              headerShown: true,
-              headerStyle: {
-                backgroundColor: theme.primary,
-              },
-              headerTintColor: theme.textLight,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-            }}
+      <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="Edit Profile"
+        component={EditProfileScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       />
-      <Stack.Screen name="Posted Jobs" component={ViewPostedJobs}  options={{
-              headerShown: true,
-              headerStyle: {
-                backgroundColor: theme.primary,
-              },
-              headerTintColor: theme.textLight,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-            }}
+      <Stack.Screen
+        name="Posted Jobs"
+        component={ViewPostedJobs}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       />
-      <Stack.Screen name="Applied Jobs" component={ViewAppliedJobs}  options={{
-              headerShown: true,
-              headerStyle: {
-                backgroundColor: theme.primary,
-              },
-              headerTintColor: theme.textLight,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-            }}
+      <Stack.Screen
+        name="Applied Jobs"
+        component={ViewAppliedJobs}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       />
-      <Stack.Screen name="Application Details" component={SingleApplicationDetails}  options={{
-              headerShown: true,
-              headerStyle: {
-                backgroundColor: theme.primary,
-              },
-              headerTintColor: theme.textLight,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-            }}
+      <Stack.Screen
+        name="Application Details"
+        component={SingleApplicationDetails}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       />
-      <Stack.Screen name="Job Details" component={JobDetail}  options={{
-              headerShown: true,
-              headerStyle: {
-                backgroundColor: theme.primary,
-              },
-              headerTintColor: theme.textLight,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-            }}
+      <Stack.Screen
+        name="Job Details"
+        component={JobDetail}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       />
-      <Stack.Screen name="View Jobs" component={ApplicantScreen}  options={{
-              headerShown: true,
-              headerStyle: {
-                backgroundColor: theme.primary,
-              },
-              headerTintColor: theme.textLight,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-            }}
+      <Stack.Screen
+        name="View Jobs"
+        component={ApplicantScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       />
-      <Stack.Screen name="Applications" component={ViewApplicationScreen}  options={{
-              headerShown: true,
-              headerStyle: {
-                backgroundColor: theme.primary,
-              },
-              headerTintColor: theme.textLight,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-            }}
+      <Stack.Screen
+        name="Applications"
+        component={ViewApplicationScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       />
-      <Stack.Screen name="Applicant" component={ViewApplicantScreen}  options={{
-              headerShown: true,
-              headerStyle: {
-                backgroundColor: theme.primary,
-              },
-              headerTintColor: theme.textLight,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-            }}
+      <Stack.Screen
+        name="Applicant"
+        component={ViewApplicantScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.primary,
+          },
+          headerTintColor: theme.textLight,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       />
     </Stack.Navigator>
   );
@@ -377,7 +378,7 @@ const styles = StyleSheet.create({
   },
   logout: {
     top: '10%',
-    left: '90%',
+    left: '85%',
   },
   subText: {
     fontSize: 12,
@@ -414,8 +415,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     marginTop: 10,
-    borderWidth: 1,
-    borderColor: theme.primary,
+    // borderWidth: 1,
+    // borderColor: theme.primary,
     shadowColor: '#7f5df0',
     shadowOffset: {
       width: 0,
@@ -423,7 +424,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.05,
     shadowRadius: 1.5,
-    // elevation: 5,
+    elevation: 5,
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
