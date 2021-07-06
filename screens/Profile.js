@@ -255,19 +255,99 @@ const Profile = ({ navigation }) => {
 const ProfileScreenStack = ({ navigation }) => {
   return (
     <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
+      // screenOptions={{
+      //   headerShown: false,
+      // }}
     >
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
-      <Stack.Screen name="Posted Jobs" component={ViewPostedJobs} />
-      <Stack.Screen name="Applied Jobs" component={ViewAppliedJobs} />
-      <Stack.Screen name="Application Details" component={SingleApplicationDetails} />
-      <Stack.Screen name="Job Details" component={JobDetail} />
-      <Stack.Screen name="View Jobs" component={ApplicantScreen} />
-      <Stack.Screen name="Applications" component={ViewApplicationScreen} />
-      <Stack.Screen name="Applicant" component={ViewApplicantScreen} />
+      <Stack.Screen name="Edit Profile" component={EditProfileScreen}  options={{
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: theme.primary,
+              },
+              headerTintColor: theme.textLight,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+      />
+      <Stack.Screen name="Posted Jobs" component={ViewPostedJobs}  options={{
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: theme.primary,
+              },
+              headerTintColor: theme.textLight,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+      />
+      <Stack.Screen name="Applied Jobs" component={ViewAppliedJobs}  options={{
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: theme.primary,
+              },
+              headerTintColor: theme.textLight,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+      />
+      <Stack.Screen name="Application Details" component={SingleApplicationDetails}  options={{
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: theme.primary,
+              },
+              headerTintColor: theme.textLight,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+      />
+      <Stack.Screen name="Job Details" component={JobDetail}  options={{
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: theme.primary,
+              },
+              headerTintColor: theme.textLight,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+      />
+      <Stack.Screen name="View Jobs" component={ApplicantScreen}  options={{
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: theme.primary,
+              },
+              headerTintColor: theme.textLight,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+      />
+      <Stack.Screen name="Applications" component={ViewApplicationScreen}  options={{
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: theme.primary,
+              },
+              headerTintColor: theme.textLight,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+      />
+      <Stack.Screen name="Applicant" component={ViewApplicantScreen}  options={{
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: theme.primary,
+              },
+              headerTintColor: theme.textLight,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+      />
     </Stack.Navigator>
   );
 };

@@ -21,6 +21,7 @@ import ViewApplicantDetails from './ViewApplicantDetails';
 import HomeApplicants from '../components/HomeApplicants';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LoadingComponent from '../components/LoadingComponent';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Home = createStackNavigator();
 const jobsStack = createStackNavigator();
@@ -53,6 +54,12 @@ const HomeScreen = ({ navigation }) => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, []),
+  );
 
   const SearchResult = t => {
     if (t === 'demo') {
