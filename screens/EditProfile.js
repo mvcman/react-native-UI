@@ -44,7 +44,7 @@ const EditProfileScreen = props => {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 26, marginTop: 20, marginBottom: 20 }}>Enter details to update</Text>
+      {/* <Text style={{ fontSize: 26, marginTop: 20, marginBottom: 20 }}>Enter details to update</Text> */}
       <View style={{ justifyContent: 'center' }}>
         <Text style={{ color: 'red', fontSize: 15 }}>{error}</Text>
       </View>
@@ -149,11 +149,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   commandButton: {
-    padding: 15,
-    borderRadius: 10,
-    backgroundColor: 'blue',
+    // padding: 15,
+    // borderRadius: 10,
+    // backgroundColor: 'blue',
+    // alignItems: 'center',
+    // marginTop: 10,
+    backgroundColor: theme.primary,
+    width: '90%',
+    height: 50,
+    display: 'flex',
     alignItems: 'center',
-    marginTop: 10,
+    justifyContent: 'center',
+    textAlign: 'center',
+    borderRadius: 5,
   },
   panelHeader: {
     alignItems: 'center',
@@ -173,9 +181,9 @@ const styles = StyleSheet.create({
     marginVertical: 7,
   },
   panelButtonTitle: {
-    fontSize: 17,
+    color: '#fff',
+    fontSize: 22,
     fontWeight: 'bold',
-    color: 'white',
   },
   action: {
     left: '1%',

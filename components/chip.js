@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { Chip } from 'react-native-elements';
 
 export default function ChipComponent(props) {
@@ -10,26 +10,33 @@ export default function ChipComponent(props) {
       {props.title ? (
         <>
           {props.title.map(i => (
-            <View style={{ padding: 5, margin: 5 }} key={i}>
-              <Chip title={i} key={i} />
+            <View style={{ margin: 3 }} key={i}>
+              <Chip title={i} key={i} type="outline" />
+              {/* <Text>Deo</Text> */}
             </View>
           ))}
         </>
       ) : (
-        <View style={{ margin: '10%' }}>
-          <Chip title="no preferences, update preferences from edit profile" />
+        <View>
+          <Chip title="no preferences" type="outline" />
         </View>
       )}
     </View>
   );
 }
 
+const { width } = Dimensions.get('screen');
 const styles = StyleSheet.create({
   main: {
-    flex: 1,
+    width: width,
+    // flex: 1,
+    // backgroundColor: 'black',
+    // display: 'flex',
+    // flexWrap: 'wrap',
+    // justifyContent: 'space-around',
+    // alignItems: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    alignContent: 'space-around',
+    flexGrow: 1,
   },
 });

@@ -23,10 +23,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { fetchUsers } from './db-functions';
 
 export default function HomeApplicants({ navigation }) {
-//   const [userList, setuserList] = useState([]);
+  //   const [userList, setuserList] = useState([]);
   const [list, setList] = useState([]);
-//   const [refreshing, setRefreshing] = React.useState(false);
-//   const [loading, setLoading] = useState(false);
+  //   const [refreshing, setRefreshing] = React.useState(false);
+  //   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState('');
   const [userList, setUserList] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -51,7 +51,7 @@ export default function HomeApplicants({ navigation }) {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-console.log(userList)
+  // console.log(userList);
   const SearchResult = t => {
     if (t === 'demo') {
       setList(userList);
@@ -61,13 +61,13 @@ console.log(userList)
     setList(data);
 
     const data = userList.filter(
-      f => 
+      f =>
         f.firstName === null ||
         f.lastName === null ||
         f.firstName.toLowerCase().includes(input) ||
         f.lastName.toLowerCase().includes(input) ||
         input.toLowerCase().includes(f.firstName) ||
-        input.toLowerCase().includes(f.lastName)
+        input.toLowerCase().includes(f.lastName),
     );
     setList(data);
   };
@@ -85,18 +85,19 @@ console.log(userList)
               position: 'absolute',
               height: 60,
               width: '100%',
-              backgroundColor: theme.primary,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
               zIndex: 9999,
               paddingHorizontal: 10,
+              backgroundColor: theme.primary,
             }}
           >
             <View style={styles.action}>
               <Feather name="search" color="grey" size={24} />
               <TextInput
                 placeholder="Search"
+                placeholderTextColor="black"
                 style={styles.textInput}
                 autoCapitalize="none"
                 value={input}
@@ -121,7 +122,7 @@ console.log(userList)
               marginBottom: 60,
             }}
             data={list}
-            renderItem={({item}) => <ApplicantsList navigation={navigation} item={item} />}
+            renderItem={({ item }) => <ApplicantsList navigation={navigation} item={item} />}
             keyExtractor={item => item.userId}
             refreshing={refreshing}
             onRefresh={onRefresh}
@@ -131,7 +132,7 @@ console.log(userList)
       )}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {

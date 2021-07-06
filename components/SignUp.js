@@ -23,6 +23,8 @@ import { AuthContext } from './context';
 
 export default function SignUp({ navigation }) {
   const [data, setData] = React.useState({
+    firstName: '',
+    lastName: '',
     username: '',
     password: '',
     cpassword: '',
@@ -128,13 +130,37 @@ export default function SignUp({ navigation }) {
       });
     }
   };
+
+  const handleFirstName = val => {
+    if (val === '') {
+      Alert.alert('Wrong Input!', 'First Name field cannot be empty.');
+      return;
+    }
+    setData({
+      ...data,
+      firstName: val,
+    });
+  };
+
+  const handleLastName = val => {
+    if (val === '') {
+      Alert.alert('Wrong Input!', 'Last Name field cannot be empty.');
+      return;
+    }
+    setData({
+      ...data,
+      lastName: val,
+    });
+  };
+
   const handleSignUp = async navigation => {
+    console.log(data);
     if (data.username.length === 0 || data.password.length === 0 || data.cpassword.length === 0) {
-      Alert.alert('Wrong Input!', 'Username or Password field cannot be empty.');
+      Alert.alert('Wrong Input!', 'Username or Password field cannot be empty');
       return;
     }
     if (data.password !== data.cpassword) {
-      Alert.alert('Password Mismatch!', 'Password and Confirm Password should be same.');
+      Alert.alert('Password Mismatch!', 'Password and Confirm Password should be same');
       return;
     }
     const user = await AWS_SignUp('+91' + data.username, data.password);
@@ -146,6 +172,8 @@ export default function SignUp({ navigation }) {
     console.log('userId', user.userSub);
     await setUserId(user.userSub);
     const createuser = await createUser({
+      firstName: data.firstName,
+      lastName: data.lastName,
       username: data.username,
       password: data.password,
       userId: user.userSub,
@@ -168,7 +196,29 @@ export default function SignUp({ navigation }) {
       </View>
       <ScrollView>
         <Animatable.View style={styles2.footer} animation="fadeInUpBig">
-          <Text style={styles2.text_footer}>Username</Text>
+          <Text style={styles2.text_footer}>First Name</Text>
+          <View style={styles2.actionName}>
+            <FontAwesome name="address-book-o" color="#05375a" size={20} />
+            <TextInput
+              placeholder="First Name"
+              style={styles2.textInput}
+              autoCapitalize="none"
+              // onChangeText={text => textInputChange(text)}
+              onEndEditing={e => handleFirstName(e.nativeEvent.text)}
+            />
+          </View>
+          <Text style={styles2.text_footer}>Last Name</Text>
+          <View style={styles2.actionName}>
+            <FontAwesome name="address-book-o" color="#05375a" size={20} />
+            <TextInput
+              placeholder="First Name"
+              style={styles2.textInput}
+              autoCapitalize="none"
+              // onChangeText={text => textInputChange(text)}
+              onEndEditing={e => handleLastName(e.nativeEvent.text)}
+            />
+          </View>
+          <Text style={styles2.text_footer}>Mobile Number</Text>
           <View style={styles2.action}>
             <FontAwesome name="user-o" color="#05375a" size={20} />
             <TextInput
@@ -310,6 +360,14 @@ const styles2 = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#f2f2f2',
     paddingBottom: 5,
+  },
+  actionName: {
+    flexDirection: 'row',
+    marginTop: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f2f2f2',
+    paddingBottom: 5,
+    marginBottom: 15,
   },
   actionError: {
     flexDirection: 'row',

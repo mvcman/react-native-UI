@@ -9,12 +9,15 @@ import {
   StyleSheet,
   ActivityIndicator,
   Platform,
+  ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { createStackNavigator } from '@react-navigation/stack';
 import { addJobMutation } from '../components/db-functions';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { AuthContext } from '../components/context';
+import { theme } from '../components/ThemeColor';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +37,7 @@ const CreateJob = ({ navigation }) => {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [focus, setFocus] = useState(false);
   const { user } = React.useContext(AuthContext);
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -99,17 +103,22 @@ const CreateJob = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={{ fontSize: 26, marginTop: 20, marginBottom: 20 }}>Enter Job details to post</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'android' ? 'position' : 'height'}
+      style={styles.container}
+      enabled={focus}
+    >
+      {/* <Text style={{ fontSize: 26, marginTop: 20, marginBottom: 20 }}>Enter Job details to post</Text> */}
       <View style={{ justifyContent: 'center' }}>
         <Text style={{ color: 'red', fontSize: 15 }}>{error}</Text>
       </View>
       <View style={styles.action}>
-        <FontAwesome name="info-circle" color={colors.text} size={20} />
+        <FontAwesome name="file" color={theme.secondary} size={20} />
         <TextInput
           placeholder="Job name"
           placeholderTextColor="grey"
           autoCorrect={false}
+          onFocus={() => setFocus(false)}
           value={jobName}
           style={[
             styles.textInput,
@@ -121,11 +130,12 @@ const CreateJob = ({ navigation }) => {
         />
       </View>
       <View style={styles.action}>
-        <FontAwesome name="info-circle" color={colors.text} size={20} />
+        <FontAwesome name="comment" color={theme.secondary} size={20} />
         <TextInput
           placeholder="Job Description"
           placeholderTextColor="grey"
           autoCorrect={false}
+          onFocus={() => setFocus(false)}
           value={jobDescription}
           style={[
             styles.textInput,
@@ -137,12 +147,13 @@ const CreateJob = ({ navigation }) => {
         />
       </View>
       <View style={styles.action}>
-        <FontAwesome name="star" color={colors.text} size={20} />
+        <FontAwesome name="star" color={theme.secondary} size={20} />
         <TextInput
           placeholder='Enter preferences separated by " , "'
           placeholderTextColor="#666666"
           value={preferences}
           autoCorrect={false}
+          onFocus={() => setFocus(false)}
           style={[
             styles.textInput,
             {
@@ -153,7 +164,7 @@ const CreateJob = ({ navigation }) => {
         />
       </View>
       <View style={styles.action}>
-        <FontAwesome name="calendar" color={colors.text} size={20} style={{ bottom: 12 }} />
+        <FontAwesome name="calendar" color={theme.secondary} size={20} style={{ bottom: 12 }} />
         <TouchableOpacity onPress={showDatepicker}>
           <Text style={styles.textInput}>{date.toLocaleDateString()}</Text>
         </TouchableOpacity>
@@ -162,12 +173,13 @@ const CreateJob = ({ navigation }) => {
         )}
       </View>
       <View style={styles.action}>
-        <FontAwesome name="money" color={colors.text} size={20} />
+        <FontAwesome name="money" color={theme.secondary} size={20} />
         <TextInput
           placeholder="Salary"
           placeholderTextColor="grey"
           keyboardType="numeric"
           autoCorrect={false}
+          onFocus={() => setFocus(true)}
           value={salary}
           style={[
             styles.textInput,
@@ -179,12 +191,13 @@ const CreateJob = ({ navigation }) => {
         />
       </View>
       <View style={styles.action}>
-        <FontAwesome name="info-circle" color={colors.text} size={20} />
+        <FontAwesome name="info-circle" color={theme.secondary} size={20} />
         <TextInput
           placeholder="Company Name"
           placeholderTextColor="grey"
           autoCorrect={false}
           value={companyName}
+          onFocus={() => setFocus(true)}
           style={[
             styles.textInput,
             {
@@ -195,12 +208,13 @@ const CreateJob = ({ navigation }) => {
         />
       </View>
       <View style={styles.action}>
-        <FontAwesome name="info-circle" color={colors.text} size={20} />
+        <FontAwesome name="info-circle" color={theme.secondary} size={20} />
         <TextInput
           placeholder="Company Details"
           value={companyDescription}
           placeholderTextColor="grey"
           autoCorrect={false}
+          onFocus={() => setFocus(true)}
           style={[
             styles.textInput,
             {
@@ -219,7 +233,7 @@ const CreateJob = ({ navigation }) => {
           <ActivityIndicator size="large" color="blue" />
         </View>
       )}
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -227,12 +241,19 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
-    alignItems: 'center',
+    paddingHorizontal: 20,
+    display: 'flex',
+    flexDirection: 'column',
+    // alignItems: 'center',
+    // textAlign: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   commandButton: {
+    width: '100%',
     padding: 15,
     borderRadius: 10,
-    backgroundColor: 'blue',
+    backgroundColor: theme.primary,
     alignItems: 'center',
     marginTop: 10,
   },
@@ -294,7 +315,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // eslint-disable-next-line no-undef
     marginTop: Platform.OS === 'ios' ? 0 : -12,
-    paddingLeft: 10,
+    paddingLeft: 15,
     color: '#05375a',
   },
   dateButton: {
@@ -308,7 +329,7 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     opacity: 0.5,
-    backgroundColor: 'black',
+    // backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -318,10 +339,17 @@ const CreateJobStack = ({ navigation }) => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: theme.primary,
+        },
+        headerTintColor: theme.textLight,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
       }}
     >
-      <Stack.Screen name="CreateJob" component={CreateJob} />
+      <Stack.Screen name="Enter JobDetails To Post" component={CreateJob} />
     </Stack.Navigator>
   );
 };

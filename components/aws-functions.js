@@ -55,4 +55,20 @@ async function SignOut() {
   }
 }
 
-export { SignUp, ConfirmSignUp, SignIn, ResendConfirmationCode, SignOut };
+async function ForgotPassword(username) {
+  try {
+    await Auth.forgotPassword(username);
+  } catch (err) {
+    return { error: err };
+  }
+}
+
+async function ForgotPasswordSubmit(username, code, new_password) {
+  try {
+    const data = await Auth.forgotPasswordSubmit(username, code, new_password);
+    return data;
+  } catch (err) {
+    return { error: err };
+  }
+}
+export { SignUp, ConfirmSignUp, SignIn, ResendConfirmationCode, SignOut, ForgotPassword, ForgotPasswordSubmit };

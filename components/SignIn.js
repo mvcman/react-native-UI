@@ -28,7 +28,7 @@ export default function SignIn({ navigation }) {
     isValidUser: true,
     isValidPassword: true,
   });
-  const { signIn } = React.useContext(AuthContext);
+  const { user, signIn } = React.useContext(AuthContext);
   const textInputChange = value => {
     if (value.trim().length === 10) {
       setData({
@@ -112,7 +112,7 @@ export default function SignIn({ navigation }) {
         <Text style={styles2.text_header}>Welcome!</Text>
       </View>
       <Animatable.View style={styles2.footer} animation="fadeInUpBig">
-        <Text style={styles2.text_footer}>Username</Text>
+        <Text style={styles2.text_footer}>Mobile Number</Text>
         <View style={styles2.action}>
           <FontAwesome name="user-o" color="#05375a" size={20} />
           <TextInput
