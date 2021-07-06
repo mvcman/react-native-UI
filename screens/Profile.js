@@ -30,6 +30,7 @@ import SingleApplicationDetails from '../components/SingleApplicationDetails';
 import * as Animatable from 'react-native-animatable';
 import { LogBox } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import LoadingComponent from '../components/LoadingComponent';
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
 
 const Stack = createStackNavigator();
@@ -38,6 +39,7 @@ const Profile = ({ navigation }) => {
   const { user, signOut } = React.useContext(AuthContext);
   let applicationsCount = 0;
   const [open, setOpen] = React.useState(false);
+  const [logedout, setLogedout] = React.useState(false);
   const fetchUserProfile = gql`
   subscription MySubscription {
     User_by_pk(userId: "${user.userId}") {
@@ -83,12 +85,13 @@ const Profile = ({ navigation }) => {
   if (error) {
     return <Text>Error! ${error.message}</Text>;
   }
+  if (logedout) {
+    return <LoadingComponent message="Logging Out!" />;
+  }
   return (
     <SafeAreaView style={styles.container}>
       {loading ? (
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" color="blue" />
-        </View>
+        <LoadingComponent message="Fetching Profile details" />
       ) : (
         <View style={styles.container}>
           <View style={styles.backgroundImageParent}>
@@ -110,6 +113,7 @@ const Profile = ({ navigation }) => {
                     onPress={() => {
                       setOpen(false);
                       signOut();
+                      setLogedout(true);
                     }}
                   >
                     <Text style={styles.textStyle}>
@@ -208,7 +212,7 @@ const Profile = ({ navigation }) => {
               )}
               {/* </View> */}
             </View>
-            <View>
+            <View style={{ padding: 10 }}>
               <Text
                 style={[
                   styles.text,
@@ -227,8 +231,6 @@ const Profile = ({ navigation }) => {
                   height: 'auto',
                   flexDirection: 'row',
                   flexWrap: 'wrap',
-                  justifyContent: 'space-around',
-                  alignContent: 'space-around',
                   padding: 15,
                 }}
               >

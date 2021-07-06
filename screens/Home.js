@@ -20,6 +20,7 @@ import { AuthContext } from '../components/context';
 import ViewApplicantDetails from './ViewApplicantDetails';
 import HomeApplicants from '../components/HomeApplicants';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import LoadingComponent from '../components/LoadingComponent';
 
 const Home = createStackNavigator();
 const jobsStack = createStackNavigator();
@@ -72,9 +73,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" color="blue" />
-        </View>
+        <LoadingComponent message="Fething Job details" />
       ) : (
         <View style={{ flex: 1, position: 'relative' }}>
           <View

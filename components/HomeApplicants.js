@@ -21,6 +21,7 @@ import ViewApplicantDetails from '../screens/ViewApplicantDetails';
 import ApplicantsList from '../components/ApplicantsList';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { fetchUsers } from './db-functions';
+import LoadingComponent from './LoadingComponent';
 
 export default function HomeApplicants({ navigation }) {
   //   const [userList, setuserList] = useState([]);
@@ -75,9 +76,7 @@ export default function HomeApplicants({ navigation }) {
   return (
     <View style={styles.container}>
       {loading ? (
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" color="blue" />
-        </View>
+        <LoadingComponent message="Fetching applicantions" />
       ) : (
         <View style={{ flex: 1, position: 'relative' }}>
           <View
