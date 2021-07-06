@@ -8,18 +8,14 @@ import App from './App';
 import { name as appName } from './app.json';
 import Amplify from 'aws-amplify';
 import config from './aws-config.json';
-import PushNotification from 'react-native-push-notification';
-// import SendJobNotification from './components/SendJobNotification';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { WebSocketLink } from '@apollo/client/link/ws';
+import messaging from '@react-native-firebase/messaging';
 
-// Must be outside of any component LifeCycle (such as `componentDidMount`).
-PushNotification.configure({
-  onNotification: function (notification) {
-    console.log('NOTIFICATION:', notification);
-  },
-  requestPermissions: Platform.OS === 'android',
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('Message handled in the background!', remoteMessage.notification);
 });
+
 Amplify.configure({
   Auth: {
     mandatorySignId: true,
@@ -49,9 +45,7 @@ const appToRender = () => {
   return (
     <ApolloProvider client={client}>
       <App />
-      {/* <SendJobNotification /> */}
     </ApolloProvider>
   );
 };
-// AppRegistry.registerComponent(appName, () => App);
 AppRegistry.registerComponent(appName, () => appToRender);

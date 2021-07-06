@@ -7,12 +7,12 @@ export default function Job({ item, navigation }) {
   const sendNotification = data => {
     // PushNotification.checkPermissions();
     // PushNotification.cancelAllLocalNotifications();
-    PushNotification.localNotification({
-      channelId: 'demoApp',
-      title: data.title,
-      message: data.message,
-      color: theme.primary,
-    });
+    // PushNotification.localNotification({
+    //   channelId: 'demoApp',
+    //   title: data.title,
+    //   message: data.message,
+    //   color: theme.primary,
+    // });
     // PushNotification.localNotificationSchedule({
     //   channelId: 'demoApp',
     //   title: data.title,
