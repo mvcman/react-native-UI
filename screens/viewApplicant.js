@@ -5,6 +5,7 @@ import { theme } from '../components/ThemeColor';
 import ChipComponent from '../components/chip';
 import { rejectclick, acceptClick } from '../components/db-functions';
 let resp;
+
 export default function ViewApplicantScreen({ route, navigation }) {
   const handleAccept = async a_id => {
     resp = await acceptClick(a_id);
