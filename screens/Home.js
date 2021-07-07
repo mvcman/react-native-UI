@@ -116,7 +116,7 @@ const HomeScreen = ({ navigation }) => {
         </View>
         {loading ? (
           <View style={styles.loading}>
-            <ActivityIndicator size="large" color="blue" />
+            <ActivityIndicator size="large" color={theme.primary} />
           </View>
         ) : (
           <FlatList
@@ -167,7 +167,7 @@ const HomeScreenStack = ({ navigation }) => {
               },
               headerTintColor: theme.textLight,
               headerTitleStyle: {
-                fontWeight: 'bold',
+                fontFamily: 'Roboto-Bold',
               },
             }}
           />
@@ -191,7 +191,8 @@ const HomeScreenStack = ({ navigation }) => {
               },
               headerTintColor: theme.textLight,
               headerTitleStyle: {
-                fontWeight: 'bold',
+                // fontWeight: 'bold',
+                fontFamily: 'Roboto-Bold',
               },
             }}
             // options={{

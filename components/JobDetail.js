@@ -71,11 +71,9 @@ export default function JobDetail({ route, navigation }) {
         {user.userType === 'employer' ? (
           <Text />
         ) : (
-          <View style={{ marginLeft: '70%' }}>
-            <TouchableOpacity style={styles.applyButton} onPress={() => handleSubmit()}>
-              <Text style={styles.applyButtonText}>Apply</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity style={styles.applyButton} onPress={() => handleSubmit()}>
+            <Text style={styles.applyButtonText}>Apply</Text>
+          </TouchableOpacity>
         )}
       </View>
       {loading && (
@@ -95,16 +93,16 @@ const styles = StyleSheet.create({
   },
   applyButton: {
     height: 50,
-    width: 100,
-    flexDirection: 'row',
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 30,
-    backgroundColor: 'blue',
+    borderRadius: 5,
+    backgroundColor: theme.primary,
   },
   applyButtonText: {
     color: '#FFFFFF',
-    fontSize: 20,
+    fontSize: 22,
+    fontWeight: 'bold',
   },
   listItem: {
     margin: 10,
@@ -138,25 +136,25 @@ const styles = StyleSheet.create({
   heading: {
     color: theme.secondary,
     fontSize: 26,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
     marginBottom: 5,
   },
   sub: {
     color: theme.secondary,
     fontSize: 18,
-    fontWeight: 'normal',
+    fontFamily: 'Roboto-Regular',
     marginBottom: 2,
   },
   label: {
     color: theme.secondary,
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Regular',
     marginBottom: 2,
   },
   title: {
     color: theme.primary,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
     marginBottom: 2,
   },
 });

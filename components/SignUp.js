@@ -287,9 +287,10 @@ export default function SignUp({ navigation }) {
               onPress={i => setData({ ...data, index: i })}
               selectedIndex={data.index}
               buttons={userType}
-              containerStyle={{ height: 40, width: '80%', borderRadius: 10 }}
+              containerStyle={{ height: 40, width: '80%', borderRadius: 10, fontFamily: 'Roboto-Bold' }}
               selectedButtonStyle={{ backgroundColor: theme.primary }}
-              selectedTextStyle={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}
+              textStyle={{ fontFamily: 'Roboto-Bold', fontSize: 16 }}
+              selectedTextStyle={{ color: '#fff', fontFamily: 'Roboto-Bold', fontSize: 16 }}
             />
           </View>
           <View style={styles2.button}>
@@ -336,6 +337,7 @@ const styles2 = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 50,
     height: 200,
+    fontFamily: 'Roboto-Bold',
   },
   footer: {
     flex: 3,
@@ -344,15 +346,19 @@ const styles2 = StyleSheet.create({
     borderTopRightRadius: 30,
     paddingHorizontal: 20,
     paddingVertical: 30,
+    fontFamily: 'Roboto-Regular',
   },
   text_header: {
     color: theme.textLight,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     fontSize: 30,
+    fontFamily: 'Opticons',
+    fontFamily: 'Roboto-Bold',
   },
   text_footer: {
     color: '#05375a',
     fontSize: 18,
+    fontFamily: 'Roboto-Regular',
   },
   action: {
     flexDirection: 'row',
@@ -381,14 +387,17 @@ const styles2 = StyleSheet.create({
     marginTop: Platform.OS === 'ios' ? 0 : -12,
     paddingLeft: 10,
     color: '#05375a',
+    fontFamily: 'Roboto-Regular',
   },
   errorMsg: {
     color: '#FF0000',
     fontSize: 14,
+    fontFamily: 'Roboto-Regular',
   },
   button: {
     alignItems: 'center',
     marginTop: 50,
+    fontFamily: 'Roboto-Regular',
   },
   signIn: {
     width: '100%',
@@ -399,10 +408,12 @@ const styles2 = StyleSheet.create({
   },
   textSign: {
     fontSize: 18,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
   },
   errorMsg: {
     color: 'red',
     fontSize: 14,
+    fontFamily: 'Roboto-Regular',
   },
 });

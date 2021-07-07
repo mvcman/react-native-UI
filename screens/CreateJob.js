@@ -472,7 +472,8 @@ const CreateJobStack = ({ navigation }) => {
         },
         headerTintColor: theme.textLight,
         headerTitleStyle: {
-          fontWeight: 'bold',
+          // fontWeight: 'bold',
+          fontFamily: 'Roboto-Bold',
         },
       }}
     >

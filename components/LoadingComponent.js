@@ -8,7 +8,7 @@ export default function LoadingComponent({ message }) {
   return (
     <View style={styles.container}>
       {/* <LinearGradient colors={[theme.primary, '#B0D6FC']} style={styles.container}> */}
-      <ActivityIndicator />
+      <ActivityIndicator color={theme.primary} />
       {/* <Text style={styles.text}>{message}</Text> */}
       {/* </LinearGradient> */}
     </View>

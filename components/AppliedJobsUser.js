@@ -15,8 +15,8 @@ export default function AppliedJobsUser({ item, navigation }) {
           style={{ position: 'absolute', top: 25, width: 60, height: 60, borderRadius: 50, zIndex: 99 }}
         />
         <View style={styles.content}>
-          <Text style={{ fontWeight: 'bold', fontSize: 18, color: theme.primary }}>{item.Job.companyName}</Text>
-          <Text style={{ fontWeight: 'normal', fontSize: 14, color: theme.textDark }}>{item.Job.jobTitle}</Text>
+          <Text style={{ fontFamily: 'Roboto-Bold', fontSize: 18, color: theme.primary }}>{item.Job.companyName}</Text>
+          <Text style={{ fontFamily: 'Roboto-Regular', fontSize: 14, color: theme.textDark }}>{item.Job.jobTitle}</Text>
         </View>
       </View>
     </TouchableOpacity>

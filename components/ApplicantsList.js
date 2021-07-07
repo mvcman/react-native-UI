@@ -38,10 +38,12 @@ export default function ApplicantsList({ item, navigation }) {
           resizeMode="center"
         />
         <View style={styles.content}>
-          <Text style={{ fontWeight: 'bold', fontSize: 18, color: theme.primary }}>
+          <Text style={{ fontSize: 18, color: theme.primary, fontFamily: 'Roboto-Bold' }}>
             {item.firstName} {item.lastName}
           </Text>
-          <Text style={{ fontWeight: 'normal', fontSize: 14, color: theme.textDark }}>{item.contactNumber}</Text>
+          <Text style={{ fontSize: 14, color: theme.textDark, fontFamily: 'Roboto-Regular' }}>
+            {item.contactNumber}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>

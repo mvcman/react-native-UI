@@ -47,7 +47,14 @@ export default function SingleApplicationDetails({ route, navigation }) {
         <Divider orientation="horizontal" height={1} />
         <View style={{ marginBottom: 10, display: 'flex' }}>
           <Text style={styles.label}>Status:-</Text>
-          <Text style={[styles.title, status === 'Accepted' ? styles.approve : styles.reject]}>{status}</Text>
+          <Text
+            style={[
+              styles.title,
+              status === 'Accepted' ? styles.approve : status === 'applied' ? styles.applied : styles.reject,
+            ]}
+          >
+            {status}
+          </Text>
         </View>
         <Divider orientation="horizontal" height={1} />
         <View style={{ marginBottom: 10 }}>
@@ -115,31 +122,38 @@ const styles = StyleSheet.create({
   heading: {
     color: theme.secondary,
     fontSize: 26,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
     marginBottom: 5,
   },
   sub: {
     color: theme.secondary,
     fontSize: 18,
     fontWeight: 'normal',
+    fontFamily: 'Roboto-Regular',
     marginBottom: 2,
   },
   label: {
     color: theme.secondary,
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Medium',
     marginBottom: 2,
   },
   title: {
     color: theme.primary,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
     marginBottom: 2,
   },
   approve: {
     color: 'green',
+    fontFamily: 'Roboto-Regular',
   },
   reject: {
     color: 'red',
+    fontFamily: 'Roboto-Regular',
+  },
+  applied: {
+    color: theme.primary,
+    fontFamily: 'Roboto-Regular',
   },
 });

@@ -63,8 +63,12 @@ subscription MySubscription {
           />
 
           <View style={styles.content}>
-            <Text style={{ fontWeight: 'bold', fontSize: 18, color: theme.primary }}>{item.item.companyName}</Text>
-            <Text style={{ fontWeight: 'normal', fontSize: 14, color: theme.textDark }}>{item.item.jobTitle}</Text>
+            <Text style={{ fontFamily: 'Roboto-Bold', fontSize: 18, color: theme.primary }}>
+              {item.item.companyName}
+            </Text>
+            <Text style={{ fontFamily: 'Roboto-Regular', fontSize: 14, color: theme.textDark }}>
+              {item.item.jobTitle}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>

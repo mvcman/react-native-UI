@@ -226,7 +226,7 @@ const styles2 = StyleSheet.create({
   },
   text_header: {
     color: theme.textLight,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
     fontSize: 30,
   },
   text_footer: {
@@ -236,7 +236,7 @@ const styles2 = StyleSheet.create({
   text_middle: {
     color: theme.primary,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
     marginTop: 20,
     textAlign: 'center',
   },
@@ -259,10 +259,12 @@ const styles2 = StyleSheet.create({
     marginTop: Platform.OS === 'ios' ? 0 : -12,
     paddingLeft: 10,
     color: '#05375a',
+    fontFamily: 'Roboto-Regular',
   },
   errorMsg: {
     color: '#FF0000',
     fontSize: 14,
+    fontFamily: 'Roboto-Regular',
   },
   button: {
     alignItems: 'center',
@@ -277,10 +279,11 @@ const styles2 = StyleSheet.create({
   },
   textSign: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
   },
   errorMsg: {
     color: 'red',
     fontSize: 14,
+    fontFamily: 'Roboto-Regular',
   },
 });

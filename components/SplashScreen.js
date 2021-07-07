@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
+    fontFamily: 'Roboto-Bold',
   },
   footer: {
     flex: 1,
@@ -75,11 +76,13 @@ const styles = StyleSheet.create({
   title: {
     color: '#05375a',
     fontSize: 30,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
   },
   text: {
     color: 'grey',
     marginTop: 5,
+    fontFamily: 'Roboto-Regular',
   },
   button: {
     alignItems: 'flex-end',
@@ -95,6 +98,7 @@ const styles = StyleSheet.create({
   },
   textSign: {
     color: 'white',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
   },
 });

@@ -90,7 +90,9 @@ const TabNavigator = () => {
               }}
             >
               <FontAwesomeIcon name="home" size={20} color={focused ? theme.primary : theme.secondary} />
-              <Text style={{ color: focused ? theme.primary : theme.secondary }}>Home</Text>
+              <Text style={{ color: focused ? theme.primary : theme.secondary, fontFamily: 'Roboto-Medium' }}>
+                Home
+              </Text>
             </View>
           ),
         }}
@@ -151,7 +153,9 @@ const TabNavigator = () => {
               }}
             >
               <FontAwesomeIcon name="user" size={20} color={focused ? theme.primary : theme.secondary} />
-              <Text style={{ color: focused ? theme.primary : theme.secondary }}>Profile</Text>
+              <Text style={{ color: focused ? theme.primary : theme.secondary, fontFamily: 'Roboto-Medium' }}>
+                Profile
+              </Text>
             </View>
           ),
         }}

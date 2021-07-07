@@ -79,7 +79,7 @@ export default function HomeApplicants({ navigation }) {
     <View style={styles.container}>
       {loading ? (
         <View style={styles.loading}>
-          <ActivityIndicator size="large" color="blue" />
+          <ActivityIndicator size="large" color={theme.primary} />
         </View>
       ) : (
         <View style={{ flex: 1, position: 'relative', paddingBottom: 30 }}>

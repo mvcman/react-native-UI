@@ -127,25 +127,25 @@ const styles = StyleSheet.create({
   heading: {
     color: theme.secondary,
     fontSize: 26,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
     marginBottom: 5,
   },
   sub: {
     color: theme.secondary,
     fontSize: 18,
-    fontWeight: 'normal',
+    fontFamily: 'Roboto-Regular',
     marginBottom: 2,
   },
   label: {
     color: theme.secondary,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Regular',
     marginBottom: 2,
   },
   title: {
     color: theme.primary,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
     marginBottom: 2,
   },
   // preferences: {
@@ -164,21 +164,21 @@ const styles = StyleSheet.create({
   role: {
     color: theme.primary,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Medium',
     marginBottom: 2,
     textAlign: 'center',
   },
   approved: {
     color: 'green',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
     marginBottom: 2,
     textAlign: 'center',
   },
   reject: {
     color: 'red',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
     marginBottom: 2,
     textAlign: 'center',
   },
@@ -216,5 +216,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#FFFFFF',
     fontSize: 20,
+    fontFamily: 'Roboto-Bold',
   },
 });

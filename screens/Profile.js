@@ -92,7 +92,7 @@ const Profile = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       {loading ? (
         <View style={styles.loading}>
-          <ActivityIndicator size="large" color="blue" />
+          <ActivityIndicator size="large" color={theme.primary} />
         </View>
       ) : (
         <View style={styles.container}>
@@ -249,7 +249,8 @@ const ProfileScreenStack = ({ navigation }) => {
           },
           headerTintColor: theme.textLight,
           headerTitleStyle: {
-            fontWeight: 'bold',
+            // fontWeight: 'bold',
+            fontFamily: 'Roboto-Bold',
           },
         }}
       />
@@ -263,7 +264,8 @@ const ProfileScreenStack = ({ navigation }) => {
           },
           headerTintColor: theme.textLight,
           headerTitleStyle: {
-            fontWeight: 'bold',
+            // fontWeight: 'bold',
+            fontFamily: 'Roboto-Bold',
           },
         }}
       />
@@ -277,7 +279,8 @@ const ProfileScreenStack = ({ navigation }) => {
           },
           headerTintColor: theme.textLight,
           headerTitleStyle: {
-            fontWeight: 'bold',
+            // fontWeight: 'bold',
+            fontFamily: 'Roboto-Bold',
           },
         }}
       />
@@ -291,7 +294,8 @@ const ProfileScreenStack = ({ navigation }) => {
           },
           headerTintColor: theme.textLight,
           headerTitleStyle: {
-            fontWeight: 'bold',
+            // fontWeight: 'bold',
+            fontFamily: 'Roboto-Bold',
           },
         }}
       />
@@ -305,7 +309,8 @@ const ProfileScreenStack = ({ navigation }) => {
           },
           headerTintColor: theme.textLight,
           headerTitleStyle: {
-            fontWeight: 'bold',
+            // fontWeight: 'bold',
+            fontFamily: 'Roboto-Bold',
           },
         }}
       />
@@ -320,7 +325,8 @@ const ProfileScreenStack = ({ navigation }) => {
           },
           headerTintColor: theme.textLight,
           headerTitleStyle: {
-            fontWeight: 'bold',
+            // fontWeight: 'bold',
+            fontFamily: 'Roboto-Bold',
           },
         }}
       />
@@ -334,7 +340,8 @@ const ProfileScreenStack = ({ navigation }) => {
           },
           headerTintColor: theme.textLight,
           headerTitleStyle: {
-            fontWeight: 'bold',
+            // fontWeight: 'bold',
+            fontFamily: 'Roboto-Bold',
           },
         }}
       />
@@ -348,7 +355,8 @@ const ProfileScreenStack = ({ navigation }) => {
           },
           headerTintColor: theme.textLight,
           headerTitleStyle: {
-            fontWeight: 'bold',
+            // fontWeight: 'bold',
+            fontFamily: 'Roboto-Bold',
           },
         }}
       />
@@ -361,7 +369,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   text: {
-    fontFamily: 'HelveticaNeue',
+    fontFamily: 'Roboto-Medium',
     // color: '#52575D',
     color: theme.primary,
   },
@@ -387,7 +395,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#AEB5BC',
     textTransform: 'uppercase',
-    fontWeight: '500',
+    fontFamily: 'Roboto-Bold',
   },
   profileImage: {
     width: 200,
@@ -490,6 +498,7 @@ const styles = StyleSheet.create({
   textStyle: {
     color: '#000',
     fontSize: 18,
+    fontFamily: 'Roboto-Regular',
   },
 });
 export default ProfileScreenStack;

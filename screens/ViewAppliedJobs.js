@@ -59,12 +59,26 @@ const ViewAppliedJobs = ({ navigation }) => {
       >
         <TouchableOpacity
           onPress={() => setIndex(0)}
-          style={[index === 0 && styles.activeTab, styles.tab, { borderRightWidth: 1 }]}
+          style={[
+            index === 0 && styles.activeTab,
+            styles.tab,
+            { borderRightWidth: 2, borderRightColor: theme.primary },
+          ]}
         >
-          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#fff' }}>Accepted</Text>
+          <Text style={{ fontSize: 18, fontFamily: 'Roboto-Bold', color: '#fff' }}>Accepted</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setIndex(1)} style={[index === 1 && styles.activeTab, styles.tab]}>
-          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#fff' }}>Rejected</Text>
+        <TouchableOpacity
+          onPress={() => setIndex(1)}
+          style={[
+            index === 1 && styles.activeTab,
+            styles.tab,
+            { borderRightWidth: 2, borderRightColor: theme.primary },
+          ]}
+        >
+          <Text style={{ fontSize: 18, fontFamily: 'Roboto-Bold', color: '#fff' }}>Rejected</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setIndex(2)} style={[index === 2 && styles.activeTab, styles.tab]}>
+          <Text style={{ fontSize: 18, fontFamily: 'Roboto-Bold', color: '#fff' }}>Applied</Text>
         </TouchableOpacity>
       </View>
     );
@@ -77,7 +91,7 @@ const ViewAppliedJobs = ({ navigation }) => {
     <View style={styles.container}>
       {loading ? (
         <View style={styles.loading}>
-          <ActivityIndicator size="large" color="blue" />
+          <ActivityIndicator size="large" color={theme.primary} />
         </View>
       ) : (
         <View style={{ flex: 1 }}>
@@ -86,9 +100,11 @@ const ViewAppliedJobs = ({ navigation }) => {
             <FlatList
               style={{ flex: 1, paddingHorizontal: 10, paddingTop: 10 }}
               data={
-                index === 0
-                  ? data.Application.filter(a => a.status === 'Accepted')
-                  : data.Application.filter(a => a.status === 'Rejected')
+                index === 1
+                  ? data.Application.filter(a => a.status.toLowerCase() === 'rejected')
+                  : index === 2
+                  ? data.Application.filter(a => a.status.toLowerCase() === 'applied')
+                  : data.Application.filter(a => a.status.toLowerCase() === 'accepted')
               }
               renderItem={({ item }) => <AppliedJobsUser navigation={navigation} item={item} />}
               keyExtractor={item => item.jobId}
@@ -141,7 +157,7 @@ const styles = StyleSheet.create({
     marginBottom: -3,
   },
   tab: {
-    width: width / 2,
+    width: width / 3,
     height: '100%',
     backgroundColor: theme.secondary,
     display: 'flex',
