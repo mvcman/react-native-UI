@@ -6,11 +6,11 @@ import { theme } from './ThemeColor';
 
 export default function LoadingComponent({ message }) {
   return (
-    <View style={{ flex: 1 }}>
-      <LinearGradient colors={[theme.primary, '#B0D6FC']} style={styles.container}>
-        <ActivityIndicator />
-        <Text style={styles.text}>{message}</Text>
-      </LinearGradient>
+    <View style={styles.container}>
+      {/* <LinearGradient colors={[theme.primary, '#B0D6FC']} style={styles.container}> */}
+      <ActivityIndicator />
+      {/* <Text style={styles.text}>{message}</Text> */}
+      {/* </LinearGradient> */}
     </View>
   );
 }

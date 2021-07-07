@@ -476,7 +476,7 @@ const CreateJobStack = ({ navigation }) => {
         },
       }}
     >
-      <Stack.Screen name="Enter JobDetails To Post" component={CreateJob} />
+      <Stack.Screen name="Enter Job Details To Post" component={CreateJob} />
     </Stack.Navigator>
   );
 };

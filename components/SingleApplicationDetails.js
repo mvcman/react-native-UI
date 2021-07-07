@@ -47,7 +47,7 @@ export default function SingleApplicationDetails({ route, navigation }) {
         <Divider orientation="horizontal" height={1} />
         <View style={{ marginBottom: 10, display: 'flex' }}>
           <Text style={styles.label}>Status:-</Text>
-          <Text style={styles.title}>{status}</Text>
+          <Text style={[styles.title, status === 'Accepted' ? styles.approve : styles.reject]}>{status}</Text>
         </View>
         <Divider orientation="horizontal" height={1} />
         <View style={{ marginBottom: 10 }}>
@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
   content: {
     paddingTop: 10,
     paddingBottom: 10,
+    paddingHorizontal: 20,
     // borderColor: theme.primary,
     // borderRadius: 5,
     // borderWidth: 2,
@@ -134,5 +135,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 2,
+  },
+  approve: {
+    color: 'green',
+  },
+  reject: {
+    color: 'red',
   },
 });
