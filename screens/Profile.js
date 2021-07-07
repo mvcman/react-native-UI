@@ -91,7 +91,9 @@ const Profile = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       {loading ? (
-        <LoadingComponent message="Fetching Profile details" />
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" color="blue" />
+        </View>
       ) : (
         <View style={styles.container}>
           <View style={styles.backgroundImageParent}>

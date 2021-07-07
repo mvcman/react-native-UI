@@ -78,7 +78,9 @@ export default function HomeApplicants({ navigation }) {
   return (
     <View style={styles.container}>
       {loading ? (
-        <LoadingComponent message="Fetching applicantions" />
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" color="blue" />
+        </View>
       ) : (
         <View style={{ flex: 1, position: 'relative', paddingBottom: 30 }}>
           <View

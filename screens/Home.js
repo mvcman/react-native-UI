@@ -79,44 +79,46 @@ const HomeScreen = ({ navigation }) => {
   const numColumns = 2;
   return (
     <View style={styles.container}>
-      {loading ? (
-        <LoadingComponent message="Fething Job details" />
-      ) : (
-        <View style={{ flex: 1, position: 'relative' }}>
-          <View
-            style={{
-              position: 'absolute',
-              height: 60,
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              zIndex: 9999,
-              paddingHorizontal: 10,
-              backgroundColor: theme.primary,
-            }}
-          >
-            <View style={styles.action}>
-              <Feather name="search" color="black" size={24} />
-              <TextInput
-                placeholder="Search"
-                placeholderTextColor="black"
-                style={styles.textInput}
-                autoCapitalize="none"
-                value={input}
-                onChangeText={text => {
-                  setInput(text);
-                  SearchResult(input);
-                }}
-                onEndEditing={t => SearchResult(t)}
-              />
-              {input === '' || input === 'demo' ? null : (
-                <TouchableOpacity onPress={() => SearchResult('demo')}>
-                  <Feather name="x" color="grey" size={16} />
-                </TouchableOpacity>
-              )}
-            </View>
+      <View style={{ flex: 1, position: 'relative' }}>
+        <View
+          style={{
+            position: 'absolute',
+            height: 60,
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 9999,
+            paddingHorizontal: 10,
+            backgroundColor: theme.primary,
+          }}
+        >
+          <View style={styles.action}>
+            <Feather name="search" color="black" size={24} />
+            <TextInput
+              placeholder="Search"
+              placeholderTextColor="black"
+              style={styles.textInput}
+              autoCapitalize="none"
+              value={input}
+              onChangeText={text => {
+                setInput(text);
+                SearchResult(input);
+              }}
+              onEndEditing={t => SearchResult(t)}
+            />
+            {input === '' || input === 'demo' ? null : (
+              <TouchableOpacity onPress={() => SearchResult('demo')}>
+                <Feather name="x" color="grey" size={16} />
+              </TouchableOpacity>
+            )}
           </View>
+        </View>
+        {loading ? (
+          <View style={styles.loading}>
+            <ActivityIndicator size="large" color="blue" />
+          </View>
+        ) : (
           <FlatList
             style={{
               flex: 1,
@@ -131,8 +133,8 @@ const HomeScreen = ({ navigation }) => {
             onRefresh={onRefresh}
             numColumns={numColumns}
           />
-        </View>
-      )}
+        )}
+      </View>
     </View>
   );
 };

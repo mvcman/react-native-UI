@@ -9,17 +9,22 @@ import {
   Text,
   StyleSheet,
   Button,
+  Dimensions,
 } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSubscription } from '@apollo/client';
 import { gql } from '@apollo/client';
 import AppliedJobsUser from '../components/AppliedJobsUser';
 import { AuthContext } from '../components/context';
+import { theme } from '../components/ThemeColor';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
+const { width } = Dimensions.get('screen');
 const Stack = createStackNavigator();
 
 const ViewAppliedJobs = ({ navigation }) => {
   const { user } = React.useContext(AuthContext);
+  const [index, setIndex] = React.useState(0);
   const numColumns = 2;
   const viewPostedJobs = gql`
   subscription MySubscription {
@@ -41,6 +46,29 @@ const ViewAppliedJobs = ({ navigation }) => {
     }
   }
 `;
+
+  const Tabs = () => {
+    return (
+      <View
+        style={{
+          height: 50,
+          width: width,
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => setIndex(0)}
+          style={[index === 0 && styles.activeTab, styles.tab, { borderRightWidth: 1 }]}
+        >
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#fff' }}>Accepted</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setIndex(1)} style={[index === 1 && styles.activeTab, styles.tab]}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#fff' }}>Rejected</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
   const { loading, error, data } = useSubscription(viewPostedJobs);
   if (error) {
     return <Text>Error! ${error.message}</Text>;
@@ -52,16 +80,21 @@ const ViewAppliedJobs = ({ navigation }) => {
           <ActivityIndicator size="large" color="blue" />
         </View>
       ) : (
-        <View style={{ flex: 1, marginBottom: '25%' }}>
-          {/* <Text style={{ fontSize: 26, paddingLeft: '22%', paddingBottom: '5%' }}>Your Applied Jobs</Text> */}
-
-          <FlatList
-            style={{ flex: 1, paddingHorizontal: 10 }}
-            data={data.Application}
-            renderItem={({ item }) => <AppliedJobsUser navigation={navigation} item={item} />}
-            keyExtractor={item => item.jobId}
-            numColumns={numColumns}
-          />
+        <View style={{ flex: 1 }}>
+          <Tabs />
+          <View style={{ flex: 1, marginBottom: '15%' }}>
+            <FlatList
+              style={{ flex: 1, paddingHorizontal: 10, paddingTop: 10 }}
+              data={
+                index === 0
+                  ? data.Application.filter(a => a.status === 'Accepted')
+                  : data.Application.filter(a => a.status === 'Rejected')
+              }
+              renderItem={({ item }) => <AppliedJobsUser navigation={navigation} item={item} />}
+              keyExtractor={item => item.jobId}
+              numColumns={numColumns}
+            />
+          </View>
         </View>
       )}
     </View>
@@ -106,5 +139,18 @@ const styles = StyleSheet.create({
     color: 'grey',
     fontSize: 18,
     marginBottom: -3,
+  },
+  tab: {
+    width: width / 2,
+    height: '100%',
+    backgroundColor: theme.secondary,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRightColor: '#fff',
+  },
+  activeTab: {
+    borderBottomWidth: 2,
+    borderBottomColor: theme.primary,
   },
 });

@@ -211,7 +211,7 @@ export default function SignUp({ navigation }) {
           <View style={styles2.actionName}>
             <FontAwesome name="address-book-o" color="#05375a" size={20} />
             <TextInput
-              placeholder="First Name"
+              placeholder="Last Name"
               style={styles2.textInput}
               autoCapitalize="none"
               // onChangeText={text => textInputChange(text)}

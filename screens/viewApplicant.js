@@ -17,6 +17,7 @@ export default function ViewApplicantScreen({ route, navigation }) {
     console.log(route.params.data.item.status);
     //Alert.alert('Success', 'Application accepted');
     ToastAndroid.show('Application approved', ToastAndroid.LONG);
+    navigation.navigate('Profile');
   };
 
   const handleReject = async r_id => {
@@ -28,6 +29,7 @@ export default function ViewApplicantScreen({ route, navigation }) {
     console.log('response', resp);
     //Alert.alert('Success', 'Application rejected');
     ToastAndroid.show('Application rejected', ToastAndroid.LONG);
+    navigation.navigate('Profile');
   };
 
   return (
