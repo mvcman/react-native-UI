@@ -62,23 +62,23 @@ const ViewAppliedJobs = ({ navigation }) => {
           style={[
             index === 0 && styles.activeTab,
             styles.tab,
-            { borderRightWidth: 2, borderRightColor: theme.primary },
+            { borderRightWidth: 2, borderRightColor: theme.secondary },
           ]}
         >
-          <Text style={{ fontSize: 18, fontFamily: 'Roboto-Bold', color: '#fff' }}>Accepted</Text>
+          <Text style={{ fontSize: 18, fontFamily: 'Roboto-Bold', color: theme.primary }}>Accepted</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setIndex(1)}
           style={[
             index === 1 && styles.activeTab,
             styles.tab,
-            { borderRightWidth: 2, borderRightColor: theme.primary },
+            { borderRightWidth: 2, borderRightColor: theme.secondary },
           ]}
         >
-          <Text style={{ fontSize: 18, fontFamily: 'Roboto-Bold', color: '#fff' }}>Rejected</Text>
+          <Text style={{ fontSize: 18, fontFamily: 'Roboto-Bold', color: theme.primary }}>Rejected</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setIndex(2)} style={[index === 2 && styles.activeTab, styles.tab]}>
-          <Text style={{ fontSize: 18, fontFamily: 'Roboto-Bold', color: '#fff' }}>Applied</Text>
+          <Text style={{ fontSize: 18, fontFamily: 'Roboto-Bold', theme.primary }}>Applied</Text>
         </TouchableOpacity>
       </View>
     );
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   tab: {
     width: width / 3,
     height: '100%',
-    backgroundColor: theme.secondary,
+    backgroundColor: '#fff',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
