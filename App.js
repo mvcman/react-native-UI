@@ -378,6 +378,13 @@ function App() {
       userId: userId,
     });
   };
+
+  const setUserName = userName => {
+    setState({
+      ...state,
+      userName: userName,
+    });
+  };
   const theme = isDark ? CustomDarkTheme : CustomDefaultTheme;
   // const loginReducer = (prevState, action) => {
   //   switch (action.type) {
@@ -511,6 +518,7 @@ function App() {
         signOut: signOut,
         getToken: getToken,
         setUserId: setUserId,
+        setUserName: setUserName,
       }}
     >
       <PaperProvider theme={theme}>

@@ -19,7 +19,7 @@ import { AuthContext } from './context';
 import { ForgotPassword as ForgotPass } from './aws-functions';
 
 export default function ForgotPassword({ navigation }) {
-  const { setUserId } = React.useContext(AuthContext);
+  const { setUserName } = React.useContext(AuthContext);
   const [data, setData] = React.useState({
     username: '',
     check_textInputChange: false,
@@ -61,7 +61,7 @@ export default function ForgotPassword({ navigation }) {
       Alert.alert('Wrong Input!', 'Username field cannot be empty!');
       return;
     }
-    await setUserId(data.username);
+    await setUserName(data.username);
     await ForgotPass(data.username);
     Alert.alert('Successful!', 'OTP sent to your respective mobile number please verify your account!');
     navigation.navigate('ForgotPasswordSubmit');

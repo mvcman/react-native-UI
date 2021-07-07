@@ -100,7 +100,7 @@ export default function VerifyOTP({ navigation }) {
       Alert.alert('Error', 'Please check your OTP!');
       return;
     }
-    const signup = await ForgotPasswordSubmit(user.userId, data.otp, data.password);
+    const signup = await ForgotPasswordSubmit(user.userName, data.otp, data.password);
     if (signup.Error) {
       Alert.alert('Error, Please enter valid OTP!');
       return;

@@ -65,7 +65,7 @@ export default function VerifyOTP({ navigation }) {
       Alert.alert('Error', 'Please check your OTP!');
       return;
     }
-    const signup = await ConfirmSignUp(user.userId, data.otp);
+    const signup = await ConfirmSignUp(user.userName, data.otp);
     if (signup.Error) {
       Alert.alert('Error, Please enter valid OTP!');
       return;

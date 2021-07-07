@@ -39,7 +39,7 @@ export default function SignUp({ navigation }) {
 
   const userType = ['Employer', 'Applicant'];
 
-  const { setUserId } = React.useContext(AuthContext);
+  const { setUserId, setUserName } = React.useContext(AuthContext);
 
   const textInputChange = value => {
     if (value.trim().length === 10) {
@@ -164,6 +164,7 @@ export default function SignUp({ navigation }) {
       return;
     }
     const user = await AWS_SignUp('+91' + data.username, data.password);
+    await setUserName(data.username);
     console.log('gettting aws cognito user ', user);
     if (user.Error) {
       Alert.alert(user.Error.code, user.Error.message);
