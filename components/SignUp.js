@@ -164,14 +164,16 @@ export default function SignUp({ navigation }) {
       return;
     }
     const user = await AWS_SignUp('+91' + data.username, data.password);
-    await setUserName(data.username);
+    console.log(user);
     console.log('gettting aws cognito user ', user);
     if (user.Error) {
       Alert.alert(user.Error.code, user.Error.message);
       return;
     }
     console.log('userId', user.userSub);
-    await setUserId(user.userSub);
+    console.log('username', data.username);
+    await setUserId(user.userId);
+    await setUserName(data.username);
     const createuser = await createUser({
       firstName: data.firstName,
       lastName: data.lastName,

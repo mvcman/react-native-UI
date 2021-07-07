@@ -372,14 +372,16 @@ function App() {
     });
   };
 
-  const setUserId = userId => {
+  const setUserId = async userId => {
+    // await AsyncStorage.setItem('userId', userId);
     setState({
       ...state,
       userId: userId,
     });
   };
 
-  const setUserName = userName => {
+  const setUserName = async userName => {
+    // await AsyncStorage.setItem('userName', userName);
     setState({
       ...state,
       userName: userName,

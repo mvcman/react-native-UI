@@ -17,7 +17,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import * as Animatable from 'react-native-animatable';
 import { theme } from './ThemeColor';
 import { AuthContext } from './context';
-import { ConfirmSignUp } from './aws-functions';
+import { ConfirmSignUp, ResendConfirmationCode } from './aws-functions';
 
 export default function VerifyOTP({ navigation }) {
   const [data, setData] = React.useState({
@@ -61,6 +61,7 @@ export default function VerifyOTP({ navigation }) {
   //   };
 
   const VerifyOTP = async navigation => {
+    console.log(user);
     if (data.otp.length != 6) {
       Alert.alert('Error', 'Please check your OTP!');
       return;
@@ -121,7 +122,7 @@ export default function VerifyOTP({ navigation }) {
             <Text style={[styles2.textSign, { color: theme.primary }]}>Back</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => ResendConfirmationCode(user.userName)}>
           <Text style={styles2.text_middle}>Resend OTP</Text>
         </TouchableOpacity>
       </Animatable.View>

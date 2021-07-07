@@ -15,9 +15,11 @@ async function SignUp(username, password) {
   }
 }
 async function ConfirmSignUp(username, code) {
+  console.log(username, code);
   try {
     const user = await Auth.confirmSignUp(username, code);
     console.log('aws confirm signup ', user);
+    return user;
   } catch (err) {
     console.log('error confirming sign up', err);
     return { Error: err };
@@ -37,6 +39,7 @@ async function SignIn(username, password) {
 }
 
 async function ResendConfirmationCode(username) {
+  console.log(username);
   try {
     await Auth.resendSignUp(username);
     console.log('code resent successfully');

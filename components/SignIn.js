@@ -17,7 +17,7 @@ import * as Animatable from 'react-native-animatable';
 import { AuthContext } from './context';
 import { Users } from './users';
 import { theme } from './ThemeColor';
-import { SignIn as AWS_SignIn } from './aws-functions';
+import { SignIn as AWS_SignIn, ResendConfirmationCode } from './aws-functions';
 import { ActivityIndicator } from 'react-native-paper';
 import LoadingComponent from './LoadingComponent';
 
@@ -31,7 +31,7 @@ export default function SignIn({ navigation }) {
     isValidPassword: true,
   });
   const [loading, setLoading] = React.useState(false);
-  const { user, signIn } = React.useContext(AuthContext);
+  const { user, signIn, setUserName } = React.useContext(AuthContext);
   const textInputChange = value => {
     if (value.trim().length === 10) {
       setData({
@@ -87,6 +87,7 @@ export default function SignIn({ navigation }) {
 
   const handleLogin = async (user, pass) => {
     setLoading(true);
+    await setUserName(data.username);
     const foundUser = Users.filter(item => {
       return user === item.username && pass === item.password;
     });
@@ -102,6 +103,13 @@ export default function SignIn({ navigation }) {
     // }
     const authenticated_user = await AWS_SignIn('+91' + data.username, data.password);
     if (authenticated_user.Error) {
+      if (authenticated_user.Error.message === 'User is not confirmed.') {
+        await ResendConfirmationCode(data.username);
+        Alert.alert(authenticated_user.Error.message, 'Please verify your account by entering OTP');
+        setLoading(false);
+        navigation.navigate('VerifyOTP');
+        return;
+      }
       Alert.alert(authenticated_user.Error.name, authenticated_user.Error.message);
       setLoading(false);
       return;
