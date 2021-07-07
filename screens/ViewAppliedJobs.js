@@ -62,7 +62,7 @@ const ViewAppliedJobs = ({ navigation }) => {
           style={[
             index === 0 && styles.activeTab,
             styles.tab,
-            { borderRightWidth: 2, borderRightColor: theme.secondary },
+            { borderRightWidth: 0.5, borderRightColor: theme.secondary },
           ]}
         >
           <Text style={{ fontSize: 18, fontFamily: 'Roboto-Bold', color: theme.primary }}>Accepted</Text>
@@ -72,13 +72,13 @@ const ViewAppliedJobs = ({ navigation }) => {
           style={[
             index === 1 && styles.activeTab,
             styles.tab,
-            { borderRightWidth: 2, borderRightColor: theme.secondary },
+            { borderRightWidth: 0.5, borderRightColor: theme.secondary },
           ]}
         >
           <Text style={{ fontSize: 18, fontFamily: 'Roboto-Bold', color: theme.primary }}>Rejected</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setIndex(2)} style={[index === 2 && styles.activeTab, styles.tab]}>
-          <Text style={{ fontSize: 18, fontFamily: 'Roboto-Bold', theme.primary }}>Applied</Text>
+          <Text style={{ fontSize: 18, fontFamily: 'Roboto-Bold', color: theme.primary }}>Applied</Text>
         </TouchableOpacity>
       </View>
     );
