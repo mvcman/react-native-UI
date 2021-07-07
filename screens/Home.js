@@ -242,6 +242,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 18,
     marginBottom: -3,
+    fontFamily: 'Roboto-Regular',
   },
 });
 export default HomeScreenStack;

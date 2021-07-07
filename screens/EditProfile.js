@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
   panelButtonTitle: {
     color: '#fff',
     fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
   },
   action: {
     width: '100%',
@@ -270,6 +270,7 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === 'ios' ? 0 : -12,
     paddingLeft: 10,
     color: '#05375a',
+    fontFamily: 'Roboto-Regular',
   },
   loading: {
     flex: 1,

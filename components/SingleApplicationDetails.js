@@ -142,18 +142,16 @@ const styles = StyleSheet.create({
     color: theme.primary,
     fontSize: 18,
     fontFamily: 'Roboto-Bold',
+    textTransform: 'capitalize',
     marginBottom: 2,
   },
   approve: {
     color: 'green',
-    fontFamily: 'Roboto-Regular',
   },
   reject: {
     color: 'red',
-    fontFamily: 'Roboto-Regular',
   },
   applied: {
     color: theme.primary,
-    fontFamily: 'Roboto-Regular',
   },
 });

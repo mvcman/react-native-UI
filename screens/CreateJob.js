@@ -413,8 +413,8 @@ const styles = StyleSheet.create({
     marginVertical: 7,
   },
   panelButtonTitle: {
-    fontSize: 17,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontFamily: 'Roboto-Bold',
     color: 'white',
   },
   witherror: {
@@ -444,6 +444,7 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === 'ios' ? 0 : -12,
     paddingLeft: 15,
     color: '#05375a',
+    fontFamily: 'Roboto-Regular',
   },
   dateButton: {
     backgroundColor: 'red',

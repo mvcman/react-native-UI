@@ -97,7 +97,7 @@ export default function HomeApplicants({ navigation }) {
             }}
           >
             <View style={styles.action}>
-              <Feather name="search" color="grey" size={24} />
+              <Feather name="search" color="#000" size={24} />
               <TextInput
                 placeholder="Search"
                 placeholderTextColor="black"
@@ -175,5 +175,6 @@ const styles = StyleSheet.create({
     color: 'grey',
     fontSize: 18,
     marginBottom: -3,
+    fontFamily: 'Roboto-Regular',
   },
 });
