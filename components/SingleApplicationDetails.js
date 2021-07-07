@@ -16,8 +16,8 @@ import { theme } from './ThemeColor';
 import { AuthContext } from './context';
 
 export default function SingleApplicationDetails({ route, navigation }) {
-  const { user } = React.useContext(AuthContext);
-  const { companyName, jobDescription, jobTitle, preferencesType, salary, startDate } = route.params.data;
+  const { companyName, jobDescription, jobTitle, preferencesType, salary, startDate } = route.params.data.Job;
+  const status = route.params.data.status;
   return (
     <ScrollView style={styles.container}>
       <Image
@@ -43,6 +43,11 @@ export default function SingleApplicationDetails({ route, navigation }) {
         <View style={{ marginBottom: 10, display: 'flex' }}>
           <Text style={styles.label}>Salary:-</Text>
           <Text style={styles.title}>Rs {salary}</Text>
+        </View>
+        <Divider orientation="horizontal" height={1} />
+        <View style={{ marginBottom: 10, display: 'flex' }}>
+          <Text style={styles.label}>Status:-</Text>
+          <Text style={styles.title}>{status}</Text>
         </View>
         <Divider orientation="horizontal" height={1} />
         <View style={{ marginBottom: 10 }}>

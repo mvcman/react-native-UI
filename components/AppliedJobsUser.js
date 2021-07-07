@@ -3,11 +3,10 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'rea
 import { theme } from './ThemeColor';
 
 export default function AppliedJobsUser({ item, navigation }) {
-  console.log(item);
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('Application Details', { data: item.Job });
+        navigation.navigate('Application Details', { data: item });
       }}
     >
       <View style={[styles.listItem, styles.shadow]}>

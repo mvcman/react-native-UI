@@ -1,19 +1,20 @@
-import React from 'react'
-import { View, 
-  Text, 
-  FlatList, 
-  ScrollView, 
-  Image, 
-  TouchableOpacity, 
-  ActivityIndicator, 
+import React from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
   StyleSheet,
   Dimensions,
-} from 'react-native'
-import { gql, useQuery, useSubscription} from '@apollo/client';
+} from 'react-native';
+import { gql, useQuery, useSubscription } from '@apollo/client';
 import { AuthContext } from './context';
-import {theme} from './ThemeColor';
+import { theme } from './ThemeColor';
 
-export default function applications({navigation}) {
+export default function applications({ navigation }) {
   const { user, signOut } = React.useContext(AuthContext);
   const JobFromEmployer = gql`
 subscription MySubscription {
@@ -41,27 +42,30 @@ subscription MySubscription {
  }
  
 `;
-    const {loading, error, data} = useSubscription(JobFromEmployer);
-    console.log(data);
-    //console.log(data.Applications.applicationId);
-    if(loading) return <View style={styles.loading}><ActivityIndicator size="large" color="blue" /></View>;
-    if(error) return <Text>Error! ${error.message}</Text>;
-    const Item = ({item}) =>{
-      //console.log('item', item.item.Applications);
-      return (
-      <TouchableOpacity
-      onPress={() => navigation.navigate('Applications', {data:item.item.Applications})}>
+  const { loading, error, data } = useSubscription(JobFromEmployer);
+  // console.log(data);
+  //console.log(data.Applications.applicationId);
+  if (loading)
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color="blue" />
+      </View>
+    );
+  if (error) return <Text>Error! ${error.message}</Text>;
+  const Item = ({ item }) => {
+    //console.log('item', item.item.Applications);
+    return (
+      <TouchableOpacity onPress={() => navigation.navigate('Applications', { data: item.item.Applications })}>
         <View style={[styles.listItem, styles.shadow]}>
           <Image
             source={[{ uri: `https://logo.clearbit.com/${item.item.companyName}.com` }]}
             style={{ position: 'absolute', top: 25, width: 60, height: 60, borderRadius: 50, zIndex: 99 }}
           />
-          
+
           <View style={styles.content}>
             <Text style={{ fontWeight: 'bold', fontSize: 18, color: theme.primary }}>{item.item.companyName}</Text>
             <Text style={{ fontWeight: 'normal', fontSize: 14, color: theme.textDark }}>{item.item.jobTitle}</Text>
           </View>
-
         </View>
       </TouchableOpacity>
       // <View style={styles.listItem}>
@@ -88,20 +92,19 @@ subscription MySubscription {
       //     </Text>
       //   </TouchableOpacity>
       // </View>
-      
-    )}
-    return(
-    <View style={styles.container}>      
-    <FlatList
-      style={{flex:1}}
-      numColumns={2}
-      data={data.Job}
-      renderItem={(item) => <Item item={item} />}
-      keyExtractor={(item) => item.jobId}
-    /> 
-  
+    );
+  };
+  return (
+    <View style={styles.container}>
+      <FlatList
+        style={{ flex: 1 }}
+        numColumns={2}
+        data={data.Job}
+        renderItem={item => <Item item={item} />}
+        keyExtractor={item => item.jobId}
+      />
     </View>
-    )
+  );
 }
 
 const { width } = Dimensions.get('screen');
@@ -109,7 +112,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 0.9,
     backgroundColor: '#F3F3F3',
-    padding: 10
+    padding: 10,
     // marginTop: 10,
   },
   listItem: {
@@ -158,4 +161,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-})
+});

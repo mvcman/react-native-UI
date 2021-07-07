@@ -311,6 +311,7 @@ const ProfileScreenStack = ({ navigation }) => {
         name="View Jobs"
         component={ApplicantScreen}
         options={{
+          title: 'Jobs that received applications',
           headerShown: true,
           headerStyle: {
             backgroundColor: theme.primary,
